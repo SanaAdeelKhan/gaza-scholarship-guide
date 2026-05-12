@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gaza Scholarship Guide — Find Your Future</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --green:#2E7D4F;--green-mid:#3D9962;--green-lt:#5DBF7E;--green-xlt:#C8EDD6;--green-bg:#F0FAF4;
+  --olive:#1A3D2B;
+  --sand:#FBF8F3;--sand-d:#EEE8DC;
+  --text:#1A2E22;--text-mid:#3D5948;--text-muted:#7A9882;
+  --white:#fff;
+  --r:14px;--b:1px solid rgba(46,125,79,0.15)
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--sand);color:var(--text);overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(251,248,243,0.92);backdrop-filter:blur(12px);border-bottom:var(--b);padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-logo-icon{width:36px;height:36px;background:var(--green);border-radius:9px;display:flex;align-items:center;justify-content:center}
+.nav-logo-icon i{color:white;font-size:18px}
+.nav-logo-name{font-family:'Playfair Display',serif;font-size:16px;color:var(--olive);font-weight:700}
+.nav-links{display:flex;align-items:center;gap:2rem}
+.nav-links a{font-size:13px;color:var(--text-mid);text-decoration:none;font-weight:500;transition:color 0.15s}
+.nav-links a:hover{color:var(--green)}
+.nav-cta{background:var(--green);color:white;padding:0.5rem 1.25rem;border-radius:50px;font-size:13px;font-weight:600;text-decoration:none;transition:background 0.15s}
+.nav-cta:hover{background:var(--green-mid)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:7rem 5% 4rem;text-align:center;position:relative;overflow:hidden;background:linear-gradient(160deg,var(--green-bg) 0%,var(--sand) 60%)}
+.hero::before{content:'';position:absolute;top:-100px;right:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(93,191,126,0.15) 0%,transparent 70%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-50px;left:-80px;width:350px;height:350px;background:radial-gradient(circle,rgba(46,125,79,0.08) 0%,transparent 70%);pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--green-xlt);color:var(--green);padding:5px 14px;border-radius:50px;font-size:12px;font-weight:600;letter-spacing:0.3px;margin-bottom:1.5rem;border:1px solid rgba(46,125,79,0.2)}
+.hero-badge i{font-size:14px}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,6vw,4.5rem);color:var(--olive);line-height:1.15;margin-bottom:1rem;max-width:800px}
+.hero h1 em{color:var(--green);font-style:italic}
+.hero-sub{font-size:clamp(15px,2vw,18px);color:var(--text-mid);max-width:580px;margin:0 auto 2.5rem;line-height:1.7}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:3rem}
+.btn-primary{background:var(--green);color:white;padding:0.85rem 2rem;border-radius:50px;font-size:15px;font-weight:600;text-decoration:none;transition:all 0.2s;box-shadow:0 4px 20px rgba(46,125,79,0.3);display:inline-flex;align-items:center;gap:8px}
+.btn-primary:hover{background:var(--green-mid);transform:translateY(-2px);box-shadow:0 6px 28px rgba(46,125,79,0.4)}
+.btn-secondary{background:white;color:var(--green);padding:0.85rem 2rem;border-radius:50px;font-size:15px;font-weight:600;text-decoration:none;border:2px solid var(--green);transition:all 0.2s;display:inline-flex;align-items:center;gap:8px}
+.btn-secondary:hover{background:var(--green-bg);transform:translateY(-2px)}
+.hero-stats{display:flex;gap:2.5rem;justify-content:center;flex-wrap:wrap}
+.hero-stat{text-align:center}
+.hero-stat-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--green)}
+.hero-stat-label{font-size:12px;color:var(--text-muted);margin-top:2px}
+.hero-img{width:100%;max-width:900px;margin:3rem auto 0;border-radius:20px;overflow:hidden;box-shadow:0 20px 80px rgba(26,61,43,0.15);border:var(--b)}
+.hero-img img{width:100%;display:block}
+.hero-img-placeholder{background:linear-gradient(135deg,var(--green) 0%,var(--green-mid) 100%);height:340px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.hero-img-placeholder::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+.grad-card{background:rgba(255,255,255,0.15);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.3);border-radius:16px;padding:1.5rem 2rem;text-align:center;color:white}
+.grad-card-title{font-family:'Playfair Display',serif;font-size:1.5rem;margin-bottom:0.5rem}
+.grad-card-sub{font-size:13px;opacity:0.8}
+
+/* SECTIONS */
+section{padding:5rem 5%}
+.section-tag{display:inline-block;background:var(--green-xlt);color:var(--green);padding:4px 14px;border-radius:50px;font-size:11px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;margin-bottom:1rem}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.8rem);color:var(--olive);line-height:1.2;margin-bottom:0.75rem}
+.section-sub{font-size:15px;color:var(--text-muted);max-width:560px;line-height:1.7}
+
+/* CARDS GRID */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.25rem;margin-top:2.5rem}
+.feature-card{background:white;border:var(--b);border-radius:var(--r);padding:1.5rem;transition:all 0.2s;position:relative;overflow:hidden}
+.feature-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--green);transform:scaleX(0);transition:transform 0.2s;transform-origin:left}
+.feature-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(46,125,79,0.12)}
+.feature-card:hover::before{transform:scaleX(1)}
+.fc-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:1rem;font-size:22px}
+.fc-icon.green{background:var(--green-xlt);color:var(--green)}
+.fc-icon.olive{background:#E8F0EB;color:var(--olive)}
+.fc-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:0.4rem}
+.fc-desc{font-size:13px;color:var(--text-muted);line-height:1.6}
+.fc-link{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;color:var(--green);text-decoration:none;margin-top:0.75rem;transition:gap 0.15s}
+.fc-link:hover{gap:8px}
+
+/* OPPORTUNITIES */
+.opps-section{background:var(--olive);color:white}
+.opps-section .section-title{color:white}
+.opps-section .section-sub{color:rgba(255,255,255,0.6)}
+.opps-section .section-tag{background:rgba(93,191,126,0.2);color:var(--green-lt)}
+.opps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-top:2rem}
+.opp-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:var(--r);padding:1.25rem;transition:all 0.2s}
+.opp-card:hover{background:rgba(255,255,255,0.1);transform:translateY(-2px)}
+.opp-header{display:flex;align-items:center;gap:10px;margin-bottom:0.75rem}
+.opp-flag{font-size:24px}
+.opp-country{font-size:11px;color:rgba(255,255,255,0.5);font-weight:500}
+.opp-name{font-size:14px;font-weight:600;color:white;line-height:1.3}
+.opp-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:0.75rem}
+.opp-tag{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:500}
+.opp-tag.funded{background:rgba(93,191,126,0.2);color:var(--green-lt)}
+.opp-tag.neutral{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.6)}
+.opp-match{font-size:18px;font-weight:700;color:var(--green-lt);margin-left:auto}
+
+/* PARTNERS */
+.partners-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:2rem}
+.partner-card{background:white;border:var(--b);border-radius:var(--r);padding:1.25rem;text-align:center;transition:all 0.2s}
+.partner-card:hover{border-color:var(--green-lt);transform:translateY(-2px);box-shadow:0 8px 24px rgba(46,125,79,0.1)}
+.partner-flag{font-size:28px;margin-bottom:0.5rem}
+.partner-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px}
+.partner-type{font-size:11px;color:var(--text-muted)}
+
+/* TESTIMONIALS */
+.testimonials-section{background:var(--green-bg)}
+.testimonials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.25rem;margin-top:2rem}
+.testimonial-card{background:white;border:var(--b);border-radius:var(--r);padding:1.5rem;position:relative}
+.testimonial-card::before{content:'"';font-family:'Playfair Display',serif;font-size:5rem;color:var(--green-xlt);position:absolute;top:-10px;left:16px;line-height:1}
+.t-text{font-size:14px;color:var(--text-mid);line-height:1.7;margin-bottom:1rem;margin-top:1.5rem}
+.t-author{display:flex;align-items:center;gap:10px}
+.t-avatar{width:36px;height:36px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;flex-shrink:0}
+.t-name{font-size:13px;font-weight:600;color:var(--text)}
+.t-role{font-size:11px;color:var(--text-muted)}
+
+/* AI ADVISOR SECTION */
+.ai-section{background:linear-gradient(135deg,var(--olive) 0%,var(--green) 100%);color:white;text-align:center;position:relative;overflow:hidden}
+.ai-section::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M40 40c0-22.09 17.91-40 40-40v80C57.91 80 40 62.09 40 40z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+.ai-section .section-title{color:white}
+.ai-section .section-sub{color:rgba(255,255,255,0.7);margin:0 auto 2rem}
+.ai-section .section-tag{background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.9)}
+.ai-features{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-bottom:2.5rem}
+.ai-feat{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:50px;padding:8px 16px;font-size:13px;color:rgba(255,255,255,0.9)}
+.ai-feat i{font-size:16px;color:var(--green-lt)}
+.ai-cta{display:inline-flex;align-items:center;gap:10px;background:white;color:var(--green);padding:1rem 2.5rem;border-radius:50px;font-size:15px;font-weight:700;text-decoration:none;transition:all 0.2s;box-shadow:0 4px 20px rgba(0,0,0,0.2)}
+.ai-cta:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(0,0,0,0.25)}
+
+/* HOW IT WORKS */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;margin-top:2.5rem;position:relative}
+.step{text-align:center;padding:1.5rem}
+.step-num{width:48px;height:48px;border-radius:50%;background:var(--green);color:white;font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem}
+.step-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:0.4rem}
+.step-desc{font-size:13px;color:var(--text-muted);line-height:1.6}
+
+/* FOOTER */
+footer{background:var(--olive);color:rgba(255,255,255,0.7);padding:3rem 5% 2rem}
+.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:2rem;margin-bottom:2rem}
+.footer-brand-name{font-family:'Playfair Display',serif;font-size:18px;color:white;margin-bottom:0.5rem}
+.footer-brand-desc{font-size:13px;line-height:1.7}
+.footer-col-title{font-size:12px;font-weight:700;color:white;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:1rem}
+.footer-links{display:flex;flex-direction:column;gap:6px}
+.footer-links a{font-size:13px;color:rgba(255,255,255,0.55);text-decoration:none;transition:color 0.15s}
+.footer-links a:hover{color:var(--green-lt)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.1);padding-top:1.5rem;display:flex;align-items:center;justify-content:space-between;font-size:12px}
+.footer-bottom-right{display:flex;gap:1rem}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .nav-links{display:none}
+  .footer-grid{grid-template-columns:1fr}
+  .hero-stats{gap:1.5rem}
+  section{padding:3.5rem 5%}
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.hero-badge,.hero h1,.hero-sub,.hero-btns,.hero-stats{animation:fadeUp 0.7s ease both}
+.hero h1{animation-delay:0.1s}
+.hero-sub{animation-delay:0.2s}
+.hero-btns{animation-delay:0.3s}
+.hero-stats{animation-delay:0.4s}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="nav-logo-icon"><i class="ti ti-school"></i></div>
+    <div class="nav-logo-name">Gaza Scholarship Guide</div>
+  </div>
+  <div class="nav-links">
+    <a href="#opportunities">Opportunities</a>
+    <a href="#partners">Partners</a>
+    <a href="#tips">Tips</a>
+    <a href="#voices">Student Voices</a>
+    <a href="#advisor">AI Advisor</a>
+  </div>
+  <a href="gaza-scholarship-guide.html" class="nav-cta">Open App →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge"><i class="ti ti-heart"></i> Free · No Barriers · Real Help</div>
+  <h1>Gaza Scholarship Guide<br/><em>Find Your Future</em></h1>
+  <p class="hero-sub">Specialized scholarship intelligence for Gaza students. Real opportunities, visa-aware matching, humanitarian support — built for your actual situation.</p>
+  <div class="hero-btns">
+    <a href="gaza-scholarship-guide.html" class="btn-primary"><i class="ti ti-layout-dashboard"></i> Open the App</a>
+    <a href="#opportunities" class="btn-secondary"><i class="ti ti-award"></i> Browse Opportunities</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-num">300+</div><div class="hero-stat-label">Students Helped</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">50+</div><div class="hero-stat-label">Scholarships Tracked</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">30+</div><div class="hero-stat-label">Countries Covered</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">100%</div><div class="hero-stat-label">Free to Use</div></div>
+  </div>
+  <div class="hero-img">
+    <div class="hero-img-placeholder">
+      <div class="grad-card">
+        <div class="grad-card-title">Gaza Scholarship Guide</div>
+        <div class="grad-card-sub">Matching students with real, executable scholarship pathways</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="tips">
+  <div class="section-tag">What We Offer</div>
+  <h2 class="section-title">Everything a Gaza student needs<br/>to find and win a scholarship</h2>
+  <p class="section-sub">Not generic advice. Actual execution — built around Palestinian passport reality, conflict circumstances, and full-funding requirements.</p>
+  <div class="cards-grid">
+    <div class="feature-card">
+      <div class="fc-icon green"><i class="ti ti-megaphone"></i></div>
+      <div class="fc-title">Latest Opportunities</div>
+      <div class="fc-desc">Curated, fully-funded scholarships filtered for Palestinian students — updated regularly with deadlines and match scores.</div>
+      <a href="#opportunities" class="fc-link">Browse now <i class="ti ti-arrow-right"></i></a>
+    </div>
+    <div class="feature-card">
+      <div class="fc-icon green"><i class="ti ti-building-bank"></i></div>
+      <div class="fc-title">University Partners</div>
+      <div class="fc-desc">Universities in Türkiye, Hungary, Malaysia, Jordan, Pakistan and more actively accepting Gaza students with humanitarian waivers.</div>
+      <a href="#partners" class="fc-link">See partners <i class="ti ti-arrow-right"></i></a>
+    </div>
+    <div class="feature-card">
+      <div class="fc-icon green"><i class="ti ti-bulb"></i></div>
+      <div class="fc-title">Application Tips</div>
+      <div class="fc-desc">Visa strategy, IELTS alternatives, document substitutions, essay frameworks — practical guidance for your real constraints.</div>
+      <a href="gaza-scholarship-guide.html" class="fc-link">Open app <i class="ti ti-arrow-right"></i></a>
+    </div>
+    <div class="feature-card">
+      <div class="fc-icon green"><i class="ti ti-search"></i></div>
+      <div class="fc-title">Scholarship Finder</div>
+      <div class="fc-desc">Enter your profile — GPA, field, English level, budget — and get a personalized ranked list of scholarships you can actually win.</div>
+      <a href="gaza-scholarship-guide.html" class="fc-link">Find scholarships <i class="ti ti-arrow-right"></i></a>
+    </div>
+    <div class="feature-card">
+      <div class="fc-icon olive"><i class="ti ti-map-pin"></i></div>
+      <div class="fc-title">Mobility Intelligence</div>
+      <div class="fc-desc">Palestinian passport visa feasibility checked for every country — no surprises, no impossible recommendations.</div>
+      <a href="gaza-scholarship-guide.html" class="fc-link">Check mobility <i class="ti ti-arrow-right"></i></a>
+    </div>
+    <div class="feature-card">
+      <div class="fc-icon olive"><i class="ti ti-files"></i></div>
+      <div class="fc-title">Document Tracker</div>
+      <div class="fc-desc">Know exactly what you have, what's missing, and what substitutions are accepted — so nothing blocks your application.</div>
+      <a href="gaza-scholarship-guide.html" class="fc-link">Track documents <i class="ti ti-arrow-right"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- OPPORTUNITIES -->
+<section class="opps-section" id="opportunities">
+  <div class="section-tag">Latest Opportunities</div>
+  <h2 class="section-title">Fully-funded scholarships<br/>matched for Gaza students</h2>
+  <p class="section-sub">Every scholarship here is full-funded, visa-feasible for Palestinian passport holders, and matched to real student profiles.</p>
+  <div class="opps-grid">
+    <div class="opp-card">
+      <div class="opp-header">
+        <span class="opp-flag">🇹🇷</span>
+        <div style="flex:1"><div class="opp-country">TÜRKIYE</div><div class="opp-name">Türkiye Burslari (YTB)</div></div>
+        <span class="opp-match">78%</span>
+      </div>
+      <div class="opp-tags"><span class="opp-tag funded">Full funded</span><span class="opp-tag neutral">No IELTS</span><span class="opp-tag neutral">Visa feasible</span></div>
+    </div>
+    <div class="opp-card">
+      <div class="opp-header">
+        <span class="opp-flag">🇯🇴</span>
+        <div style="flex:1"><div class="opp-country">JORDAN</div><div class="opp-name">Humanitarian Admission — Gaza</div></div>
+        <span class="opp-match">70%</span>
+      </div>
+      <div class="opp-tags"><span class="opp-tag funded">Full funded</span><span class="opp-tag neutral">Arabic</span><span class="opp-tag neutral">Rolling</span></div>
+    </div>
+    <div class="opp-card">
+      <div class="opp-header">
+        <span class="opp-flag">🇭🇺</span>
+        <div style="flex:1"><div class="opp-country">HUNGARY</div><div class="opp-name">Stipendium Hungaricum</div></div>
+        <span class="opp-match">65%</span>
+      </div>
+      <div class="opp-tags"><span class="opp-tag funded">Full funded</span><span class="opp-tag neutral">STEM</span><span class="opp-tag neutral">Visa feasible</span></div>
+    </div>
+    <div class="opp-card">
+      <div class="opp-header">
+        <span class="opp-flag">🇵🇰</span>
+        <div style="flex:1"><div class="opp-country">PAKISTAN</div><div class="opp-name">HEC Pakistan — Gaza Priority</div></div>
+        <span class="opp-match">54%</span>
+      </div>
+      <div class="opp-tags"><span class="opp-tag funded">Full funded</span><span class="opp-tag neutral">Arabic friendly</span><span class="opp-tag neutral">Engineering</span></div>
+    </div>
+    <div class="opp-card">
+      <div class="opp-header">
+        <span class="opp-flag">🇲🇾</span>
+        <div style="flex:1"><div class="opp-country">MALAYSIA</div><div class="opp-name">MTCP Malaysia</div></div>
+        <span class="opp-match">45%</span>
+      </div>
+      <div class="opp-tags"><span class="opp-tag funded">Full funded</span><span class="opp-tag neutral">No IELTS</span><span class="opp-tag neutral">Development</span></div>
+    </div>
+    <div class="opp-card">
+      <div class="opp-header">
+        <span class="opp-flag">🇩🇪</span>
+        <div style="flex:1"><div class="opp-country">GERMANY</div><div class="opp-name">DAAD Development Courses</div></div>
+        <span class="opp-match">38%</span>
+      </div>
+      <div class="opp-tags"><span class="opp-tag funded">Partial funded</span><span class="opp-tag neutral">Postgrad</span><span class="opp-tag neutral">B2 English</span></div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:2rem">
+    <a href="gaza-scholarship-guide.html" class="btn-primary" style="display:inline-flex"><i class="ti ti-layout-dashboard"></i> Open App to See All</a>
+  </div>
+</section>
+
+<!-- PARTNERS -->
+<section id="partners">
+  <div class="section-tag">University Partners</div>
+  <h2 class="section-title">Universities welcoming<br/>Gaza students</h2>
+  <p class="section-sub">Partner institutions in countries with strong Palestinian passport visa feasibility and active humanitarian admission programs.</p>
+  <div class="partners-grid">
+    <div class="partner-card"><div class="partner-flag">🇹🇷</div><div class="partner-name">Istanbul Universities</div><div class="partner-type">Engineering · Medicine · Arts</div></div>
+    <div class="partner-card"><div class="partner-flag">🇯🇴</div><div class="partner-name">Jordanian Universities</div><div class="partner-type">Humanitarian admission pathway</div></div>
+    <div class="partner-card"><div class="partner-flag">🇭🇺</div><div class="partner-name">Hungarian Universities</div><div class="partner-type">STEM · Technology · Sciences</div></div>
+    <div class="partner-card"><div class="partner-flag">🇵🇰</div><div class="partner-name">HEC Pakistan Network</div><div class="partner-type">Engineering · Medical · IT</div></div>
+    <div class="partner-card"><div class="partner-flag">🇲🇾</div><div class="partner-name">Malaysian Universities</div><div class="partner-type">Technology · Development</div></div>
+    <div class="partner-card"><div class="partner-flag">🇲🇦</div><div class="partner-name">Moroccan Universities</div><div class="partner-type">Arabic instruction · Sciences</div></div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section style="background:var(--sand-d)">
+  <div class="section-tag">How It Works</div>
+  <h2 class="section-title">From profile to acceptance<br/>in four steps</h2>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-title">Build Your Profile</div><div class="step-desc">Enter your GPA, field, English level, budget, and circumstances. Takes 2 minutes.</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-title">Get Matched</div><div class="step-desc">The system ranks scholarships by your match score, visa feasibility, and funding reality.</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-title">Execute with AI</div><div class="step-desc">Ask the AI Advisor for essay help, document strategy, and deadline planning specific to your situation.</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-title">Track & Win</div><div class="step-desc">Monitor all applications in one pipeline — from researching to decision.</div></div>
+  </div>
+</section>
+
+<!-- AI ADVISOR -->
+<section class="ai-section" id="advisor">
+  <div style="position:relative;z-index:1">
+    <div class="section-tag">AI Advisor</div>
+    <h2 class="section-title" style="max-width:600px;margin:0 auto 1rem">Your personal Gaza<br/>scholarship strategist</h2>
+    <p class="section-sub">Knows your profile. Understands your constraints. Gives executable advice — not generic tips.</p>
+    <div class="ai-features">
+      <div class="ai-feat"><i class="ti ti-pencil"></i> Essay writing</div>
+      <div class="ai-feat"><i class="ti ti-award"></i> Scholarship matching</div>
+      <div class="ai-feat"><i class="ti ti-map-pin"></i> Visa strategy</div>
+      <div class="ai-feat"><i class="ti ti-files"></i> Document help</div>
+      <div class="ai-feat"><i class="ti ti-calendar"></i> Deadline planning</div>
+    </div>
+    <a href="gaza-scholarship-guide.html" class="ai-cta"><i class="ti ti-robot" style="font-size:20px;color:var(--green)"></i> Talk to AI Advisor — Free</a>
+  </div>
+</section>
+
+<!-- STUDENT VOICES -->
+<section class="testimonials-section" id="voices">
+  <div class="section-tag">Student Voices</div>
+  <h2 class="section-title">What Gaza students say</h2>
+  <p class="section-sub">Real feedback from students who used the Gaza Scholarship Guide to navigate their path forward.</p>
+  <div class="testimonials-grid">
+    <div class="testimonial-card">
+      <div class="t-text">The scholarship matching was unlike anything I'd seen. It understood that I couldn't take IELTS and found me real alternatives. I got accepted to Stipendium Hungaricum with a humanitarian English waiver.</div>
+      <div class="t-author"><div class="t-avatar">AS</div><div><div class="t-name">Ahmed S.</div><div class="t-role">Engineering Graduate · Budapest</div></div></div>
+    </div>
+    <div class="testimonial-card">
+      <div class="t-text">I had no idea where to start. The AI Advisor asked me about my situation and within minutes gave me a 90-day plan with 10 real scholarships ranked by my chances. It felt like having a counselor who actually understood Gaza.</div>
+      <div class="t-author"><div class="t-avatar">FA</div><div><div class="t-name">Fatima A.</div><div class="t-role">Medical Student · Türkiye</div></div></div>
+    </div>
+    <div class="testimonial-card">
+      <div class="t-text">My transcripts were incomplete because of the war. The guide told me exactly which document substitutions were accepted and helped me write the Letter of Circumstance. I didn't think it was possible — but I got in.</div>
+      <div class="t-author"><div class="t-avatar">MK</div><div><div class="t-name">Mohammed K.</div><div class="t-role">Computer Science · Malaysia</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand-name">Gaza Scholarship Guide</div>
+      <div class="footer-brand-desc">Specialized scholarship intelligence for Gaza students. Real opportunities, visa-aware matching, and humanitarian support — built for your actual situation.</div>
+    </div>
+    <div>
+      <div class="footer-col-title">Platform</div>
+      <div class="footer-links">
+        <a href="gaza-scholarship-guide.html">Open App</a>
+        <a href="#opportunities">Opportunities</a>
+        <a href="#partners">University Partners</a>
+        <a href="#advisor">AI Advisor</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Support</div>
+      <div class="footer-links">
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+        <a href="https://gazabridge.netlify.app/" target="_blank">GazaBridge</a>
+        <a href="#">Privacy</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Gaza Scholarship Guide · Free for all Gaza students</span>
+    <div class="footer-bottom-right">
+      <span style="color:rgba(255,255,255,0.35)">Built with ♥ for the people of Gaza</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

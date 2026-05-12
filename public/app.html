@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gaza Scholarship Guide — v10 Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --olive:#2D3B2A;--olive-mid:#3D5238;--olive-light:#8FAF7A;
+  --sand:#F5F0E8;--sand-deep:#EAE3D2;--sand-darker:#D4C9B0;
+  --rust:#C4522A;--rust-light:#E8846A;
+  --teal:#1B6B6B;--teal-light:#4AACAC;
+  --amber:#B8860B;
+  --text:#1A2018;--text-mid:#4A5E42;--text-muted:#7A8E72;
+  --white:#FFFFFF;
+  --radius:10px;--border:1px solid rgba(45,59,42,0.15)
+}
+html,body{height:100%;font-family:'IBM Plex Sans Arabic',sans-serif;background:var(--sand);color:var(--text)}
+.app-shell{display:grid;grid-template-columns:220px 1fr;height:100vh;overflow:hidden}
+
+/* SIDEBAR */
+.sidebar{background:var(--olive);display:flex;flex-direction:column;overflow:hidden}
+.logo-area{padding:1.5rem 1.25rem 1rem;border-bottom:1px solid rgba(255,255,255,0.1);flex-shrink:0}
+.logo-icon{width:36px;height:36px;background:var(--rust);border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:0.75rem}
+.logo-icon i{color:white;font-size:18px}
+.logo-name{font-family:'Fraunces',serif;font-size:14px;color:rgba(255,255,255,0.95);line-height:1.3;font-weight:300}
+.logo-sub{font-size:10px;color:rgba(255,255,255,0.4);margin-top:2px;letter-spacing:0.5px;text-transform:uppercase}
+.nav{padding:1rem 0;flex:1;overflow-y:auto}
+.nav-item{display:flex;align-items:center;gap:10px;padding:0.6rem 1.25rem;cursor:pointer;font-size:13px;color:rgba(255,255,255,0.6);transition:all 0.15s;border-left:3px solid transparent;user-select:none}
+.nav-item:hover{color:rgba(255,255,255,0.9);background:rgba(255,255,255,0.05)}
+.nav-item.active{color:white;background:rgba(255,255,255,0.1);border-left-color:var(--rust-light)}
+.nav-item i{font-size:16px;width:18px;flex-shrink:0}
+.nav-label{font-size:12px;font-weight:500}
+.nav-section{font-size:10px;color:rgba(255,255,255,0.3);padding:0.75rem 1.25rem 0.25rem;letter-spacing:0.8px;text-transform:uppercase}
+.sidebar-footer{padding:1rem 1.25rem;border-top:1px solid rgba(255,255,255,0.1);flex-shrink:0}
+.student-chip{display:flex;align-items:center;gap:8px}
+.student-avatar{width:30px;height:30px;border-radius:50%;background:var(--rust);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:white;flex-shrink:0}
+.student-info{flex:1;min-width:0}
+.student-name{font-size:12px;color:rgba(255,255,255,0.85);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.student-status{font-size:10px;color:rgba(255,255,255,0.4)}
+
+/* MAIN */
+.main{display:flex;flex-direction:column;overflow:hidden}
+.topbar{background:white;border-bottom:var(--border);padding:0.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;z-index:10}
+.page-title{font-size:16px;font-weight:500;color:var(--text)}
+.page-subtitle{font-size:12px;color:var(--text-muted);margin-top:1px}
+.topbar-actions{display:flex;gap:8px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:0.45rem 0.9rem;border-radius:var(--radius);font-size:12px;font-weight:500;cursor:pointer;transition:all 0.15s;border:none;font-family:inherit}
+.btn-primary{background:var(--olive);color:white}
+.btn-primary:hover{background:var(--olive-mid)}
+.btn-ghost{background:transparent;color:var(--text-mid);border:var(--border)}
+.btn-ghost:hover{background:var(--sand-deep)}
+.content{flex:1;overflow-y:auto;padding:1.5rem}
+.panel{display:none}
+.panel.active{display:block}
+
+/* DASHBOARD */
+.greeting{font-family:'Fraunces',serif;font-size:22px;font-weight:300;color:var(--olive);margin-bottom:4px}
+.greeting-sub{font-size:13px;color:var(--text-muted);margin-bottom:1.25rem}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.25rem}
+.stat-card{background:white;border:var(--border);border-radius:var(--radius);padding:1rem}
+.stat-card.highlight{border-left:3px solid var(--rust)}
+.stat-label{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.stat-val{font-size:22px;font-weight:700;color:var(--text)}
+.stat-note{font-size:11px;color:var(--text-muted);margin-top:2px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.card{background:white;border:var(--border);border-radius:var(--radius);padding:1.25rem}
+.card-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:1rem;display:flex;align-items:center;gap:6px}
+.card-title i{color:var(--olive-light);font-size:15px}
+.alert-box{background:#fff8f5;border:1px solid rgba(196,82,42,0.25);border-radius:var(--radius);padding:0.75rem 1rem;margin-bottom:1.25rem;font-size:12px;color:var(--rust);display:flex;align-items:flex-start;gap:8px;line-height:1.5}
+.alert-box i{font-size:16px;flex-shrink:0;margin-top:1px}
+.schol-row{display:flex;align-items:center;gap:10px;padding:0.5rem 0;border-bottom:1px solid var(--sand-deep)}
+.schol-row:last-child{border-bottom:none}
+.schol-flag{font-size:18px;width:24px;text-align:center}
+.schol-info{flex:1}
+.schol-name{font-size:12px;font-weight:500;color:var(--text)}
+.schol-country{font-size:11px;color:var(--text-muted)}
+.schol-prob{font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px}
+.prob-high{background:#e8f5e9;color:#2e7d32}
+.prob-mid{background:#fff8e1;color:#f57c00}
+.prob-low{background:#fce4ec;color:#c62828}
+.mobility-bar{display:flex;align-items:center;gap:10px;margin:5px 0}
+.mobility-name{font-size:12px;color:var(--text-mid);width:95px;flex-shrink:0}
+.mobility-track{flex:1;height:6px;background:var(--sand-deep);border-radius:3px;overflow:hidden}
+.mobility-fill{height:100%;border-radius:3px;transition:width 0.5s}
+.fill-green{background:#4caf50}
+.fill-amber{background:#ff9800}
+.fill-red{background:#f44336}
+.mobility-status{font-size:10px;font-weight:700;width:60px;text-align:right}
+.deadline-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.dl-card{background:var(--sand);border-radius:8px;padding:0.75rem}
+.dl-urgency{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px}
+.dl-name{font-size:13px;font-weight:600;color:var(--text);margin:3px 0}
+.dl-note{font-size:11px;color:var(--text-muted)}
+
+/* PROFILE */
+.profile-grid{display:grid;grid-template-columns:270px 1fr;gap:1rem}
+.profile-sidebar-card{background:white;border:var(--border);border-radius:var(--radius);padding:1.5rem;text-align:center;margin-bottom:1rem}
+.big-avatar{width:60px;height:60px;border-radius:50%;background:var(--olive);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:white;margin:0 auto 0.75rem}
+.profile-name{font-size:16px;font-weight:600;color:var(--text);margin-bottom:2px}
+.profile-loc{font-size:12px;color:var(--text-muted);margin-bottom:1rem}
+.score-label{font-size:10px;color:var(--text-muted);text-align:center;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:1rem}
+.sub-scores{display:flex;flex-direction:column;gap:6px;text-align:left;margin-top:0.5rem}
+.sub-score-row{display:flex;justify-content:space-between;font-size:11px}
+.sub-score-label{color:var(--text-muted)}
+.sub-score-val{font-weight:600}
+.profile-fields{background:white;border:var(--border);border-radius:var(--radius);padding:1.25rem}
+.field-group{margin-bottom:1.25rem}
+.field-group:last-child{margin-bottom:0}
+.field-group-title{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.75rem;padding-bottom:0.5rem;border-bottom:var(--border)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px}
+.field-label{font-size:11px;color:var(--text-muted);margin-bottom:3px}
+.field-val{font-size:13px;font-weight:500;color:var(--text)}
+.tag{display:inline-block;background:var(--sand-deep);padding:2px 8px;border-radius:20px;font-size:11px;color:var(--text-mid);margin:2px}
+.circumstance-list{font-size:12px;line-height:1.9;color:var(--text-mid)}
+
+/* SCHOLARSHIPS */
+.search-bar{display:flex;gap:8px;margin-bottom:1rem}
+.search-input{flex:1;padding:0.5rem 0.75rem;border:var(--border);border-radius:var(--radius);font-size:13px;font-family:inherit;background:white;color:var(--text);outline:none}
+.search-input:focus{border-color:var(--olive-light)}
+.filter-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem}
+.chip{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:500;cursor:pointer;border:var(--border);background:white;color:var(--text-mid);transition:all 0.15s;user-select:none}
+.chip.on{background:var(--olive);color:white;border-color:var(--olive)}
+.schol-card{background:white;border:var(--border);border-radius:var(--radius);padding:1rem 1.25rem;margin-bottom:0.75rem;display:grid;grid-template-columns:auto 1fr auto;gap:1rem;align-items:start;transition:border-color 0.15s;cursor:default}
+.schol-card:hover{border-color:var(--olive-light)}
+.flag-big{font-size:28px;padding-top:2px}
+.schol-card-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:2px}
+.schol-card-meta{font-size:11px;color:var(--text-muted);margin-bottom:8px}
+.schol-tags{display:flex;gap:4px;flex-wrap:wrap}
+.schol-tag{font-size:10px;padding:2px 8px;border-radius:20px;background:var(--sand-deep);color:var(--text-mid);font-weight:500}
+.schol-tag.funded{background:#e8f5e9;color:#2e7d32}
+.schol-tag.risk{background:#fce4ec;color:#c62828}
+.schol-tag.warn{background:#fff8e1;color:#f57c00}
+.schol-tag.info{background:#e3f2fd;color:#1565c0}
+.schol-right{text-align:right;min-width:90px}
+.match-pct{font-size:22px;font-weight:700;color:var(--olive)}
+.match-label{font-size:10px;color:var(--text-muted)}
+.deadline-note{font-size:11px;color:var(--text-muted);margin-top:4px}
+.deadline-note strong{color:var(--rust)}
+
+/* TRACKER */
+.tracker-board{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;min-height:400px}
+.tracker-col{background:var(--sand-deep);border-radius:var(--radius);padding:0.75rem}
+.col-header{font-size:11px;font-weight:600;color:var(--text-mid);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.75rem;display:flex;align-items:center;justify-content:space-between}
+.col-count{background:white;border-radius:20px;padding:1px 7px;font-size:10px;color:var(--text-muted)}
+.tracker-item{background:white;border:var(--border);border-radius:8px;padding:0.6rem 0.75rem;margin-bottom:6px;cursor:default}
+.tracker-item:hover{border-color:var(--olive-light)}
+.t-flag{font-size:14px;margin-bottom:3px}
+.t-name{font-size:11px;font-weight:600;color:var(--text);margin-bottom:2px;line-height:1.3}
+.t-dl{font-size:10px;color:var(--text-muted)}
+.t-bar{height:3px;border-radius:2px;margin-top:5px;background:var(--sand-deep);overflow:hidden}
+.t-bar-fill{height:100%;border-radius:2px}
+.risk-chip{display:inline-block;font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;text-transform:uppercase;letter-spacing:0.3px;margin-top:4px}
+.rc-ok{background:#e8f5e9;color:#2e7d32}
+.rc-warn{background:#fff8e1;color:#f57c00}
+.rc-bad{background:#fce4ec;color:#c62828}
+.col-empty{font-size:11px;color:var(--text-muted);text-align:center;padding:1.5rem 0.5rem;line-height:1.5}
+
+/* DOCUMENTS */
+.doc-progress-bar{height:8px;border-radius:4px;background:var(--sand-deep);margin-bottom:1.5rem;overflow:hidden}
+.doc-progress-fill{height:100%;border-radius:4px;background:var(--olive-light)}
+.doc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.doc-card{background:white;border:var(--border);border-radius:var(--radius);padding:1rem}
+.doc-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:0.75rem;font-size:18px}
+.doc-name{font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px}
+.doc-status{font-size:11px;font-weight:500;margin-bottom:4px}
+.doc-ok{color:#2e7d32}
+.doc-missing{color:#c62828}
+.doc-partial{color:#f57c00}
+.doc-note{font-size:10px;color:var(--text-muted);line-height:1.5}
+
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+@keyframes blink{0%,80%,100%{opacity:0.15}40%{opacity:1}}
+.qbtn{font-size:11px;padding:5px 10px;border-radius:20px;border:var(--border);background:white;cursor:pointer;color:var(--text-mid);font-family:inherit;transition:all 0.15s;white-space:nowrap}
+.qbtn:hover{background:var(--sand-d);border-color:var(--olive-light)}
+</style>
+</head>
+<body>
+<div class="app-shell">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="logo-area">
+      <div class="logo-icon"><i class="ti ti-school"></i></div>
+      <div class="logo-name">Gaza Scholarship<br>Guide</div>
+      <div class="logo-sub">v10 Platform</div>
+    </div>
+    <div class="nav">
+      <div class="nav-section">Overview</div>
+      <div class="nav-item active" onclick="showPanel('dashboard',this)">
+        <i class="ti ti-layout-dashboard"></i><span class="nav-label">Dashboard</span>
+      </div>
+      <div class="nav-item" onclick="showPanel('profile',this)">
+        <i class="ti ti-user-circle"></i><span class="nav-label">My Profile</span>
+      </div>
+      <div class="nav-section">Applications</div>
+      <div class="nav-item" onclick="showPanel('scholarships',this)">
+        <i class="ti ti-award"></i><span class="nav-label">Find Scholarships</span>
+      </div>
+      <div class="nav-item" onclick="showPanel('tracker',this)">
+        <i class="ti ti-kanban"></i><span class="nav-label">Application Tracker</span>
+      </div>
+      <div class="nav-item" onclick="showPanel('documents',this)">
+        <i class="ti ti-files"></i><span class="nav-label">Documents</span>
+      </div>
+      <div class="nav-section">AI Support</div>
+      <div class="nav-item" onclick="showPanel('advisor',this)">
+        <i class="ti ti-message-circle-2"></i><span class="nav-label">AI Advisor</span>
+      </div>
+    </div>
+    <div class="sidebar-footer">
+      <div class="student-chip">
+        <div class="student-avatar">AM</div>
+        <div class="student-info">
+          <div class="student-name">Ahmad Mahmoud</div>
+          <div class="student-status">Gaza · Civil Engineering</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title" id="page-title">Dashboard</div>
+        <div class="page-subtitle" id="page-subtitle">Your scholarship journey at a glance</div>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn btn-ghost" onclick="showPanel('advisor', document.querySelectorAll('.nav-item')[5])">
+          <i class="ti ti-robot"></i> Ask AI Advisor
+        </button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- DASHBOARD -->
+      <div class="panel active" id="panel-dashboard">
+        <div class="greeting">Good morning, Ahmad.</div>
+        <div class="greeting-sub">You have 2 deadlines in the next 30 days. Your profile score is 72/100.</div>
+
+        <div class="alert-box">
+          <i class="ti ti-alert-triangle"></i>
+          <span><strong>Urgent:</strong> Türkiye YTB deadline in 18 days — essay draft incomplete. Click "AI Advisor" in the sidebar for essay help right now.</span>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-card highlight">
+            <div class="stat-label">Active Applications</div>
+            <div class="stat-val">6</div>
+            <div class="stat-note">Across 5 countries</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Profile Match Score</div>
+            <div class="stat-val">72<span style="font-size:14px;font-weight:400;color:var(--text-muted)">/100</span></div>
+            <div class="stat-note">Top 24% of applicants</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Documents Ready</div>
+            <div class="stat-val">7<span style="font-size:14px;font-weight:400;color:var(--text-muted)">/11</span></div>
+            <div class="stat-note">4 missing or partial</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Avg. Funding Prob.</div>
+            <div class="stat-val">41<span style="font-size:14px;font-weight:400;color:var(--text-muted)">%</span></div>
+            <div class="stat-note">Across all tracked</div>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title"><i class="ti ti-award"></i> Top Matched Scholarships</div>
+            <div class="schol-row"><span class="schol-flag">🇹🇷</span><div class="schol-info"><div class="schol-name">Türkiye Burslari (YTB)</div><div class="schol-country">Engineering · Full funded</div></div><span class="schol-prob prob-high">78%</span></div>
+            <div class="schol-row"><span class="schol-flag">🇯🇴</span><div class="schol-info"><div class="schol-name">Jordan Humanitarian Admission</div><div class="schol-country">Engineering · Full funded</div></div><span class="schol-prob prob-high">70%</span></div>
+            <div class="schol-row"><span class="schol-flag">🇭🇺</span><div class="schol-info"><div class="schol-name">Stipendium Hungaricum</div><div class="schol-country">STEM · Full funded</div></div><span class="schol-prob prob-high">65%</span></div>
+            <div class="schol-row"><span class="schol-flag">🇵🇰</span><div class="schol-info"><div class="schol-name">HEC Pakistan Scholarship</div><div class="schol-country">Engineering · Full funded</div></div><span class="schol-prob prob-mid">54%</span></div>
+            <div class="schol-row"><span class="schol-flag">🇩🇪</span><div class="schol-info"><div class="schol-name">DAAD Development</div><div class="schol-country">STEM · Partial funded</div></div><span class="schol-prob prob-low">38%</span></div>
+          </div>
+          <div class="card">
+            <div class="card-title"><i class="ti ti-map-pin"></i> Mobility Risk Map</div>
+            <div class="mobility-bar"><span class="mobility-name">🇹🇷 Türkiye</span><div class="mobility-track"><div class="mobility-fill fill-green" style="width:85%"></div></div><span class="mobility-status" style="color:#2e7d32;font-size:10px;font-weight:700">✓ Feasible</span></div>
+            <div class="mobility-bar"><span class="mobility-name">🇯🇴 Jordan</span><div class="mobility-track"><div class="mobility-fill fill-green" style="width:90%"></div></div><span class="mobility-status" style="color:#2e7d32;font-size:10px;font-weight:700">✓ Feasible</span></div>
+            <div class="mobility-bar"><span class="mobility-name">🇭🇺 Hungary</span><div class="mobility-track"><div class="mobility-fill fill-green" style="width:75%"></div></div><span class="mobility-status" style="color:#2e7d32;font-size:10px;font-weight:700">✓ Feasible</span></div>
+            <div class="mobility-bar"><span class="mobility-name">🇵🇰 Pakistan</span><div class="mobility-track"><div class="mobility-fill fill-green" style="width:80%"></div></div><span class="mobility-status" style="color:#2e7d32;font-size:10px;font-weight:700">✓ Feasible</span></div>
+            <div class="mobility-bar"><span class="mobility-name">🇩🇪 Germany</span><div class="mobility-track"><div class="mobility-fill fill-amber" style="width:55%"></div></div><span class="mobility-status" style="color:#f57c00;font-size:10px;font-weight:700">⚠ Moderate</span></div>
+            <div class="mobility-bar"><span class="mobility-name">🇻🇳 Vietnam</span><div class="mobility-track"><div class="mobility-fill fill-red" style="width:28%"></div></div><span class="mobility-status" style="color:#c62828;font-size:10px;font-weight:700">✗ High Risk</span></div>
+            <div style="margin-top:0.75rem;padding-top:0.75rem;border-top:var(--border);font-size:11px;color:var(--text-muted);line-height:1.5">Based on Palestinian passport acceptance, embassy presence & travel corridors. Updated monthly.</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><i class="ti ti-calendar-event"></i> Upcoming Deadlines</div>
+          <div class="deadline-grid">
+            <div class="dl-card" style="border-left:3px solid var(--rust)">
+              <div class="dl-urgency">🔴 Urgent · 18 days</div>
+              <div class="dl-name">🇹🇷 Türkiye YTB</div>
+              <div class="dl-note">Essay draft incomplete — action needed</div>
+            </div>
+            <div class="dl-card" style="border-left:3px solid var(--amber)">
+              <div class="dl-urgency">🟡 Soon · 32 days</div>
+              <div class="dl-name">🇭🇺 Stipendium Hungaricum</div>
+              <div class="dl-note">Recommendation letter still pending</div>
+            </div>
+            <div class="dl-card" style="border-left:3px solid var(--olive-light)">
+              <div class="dl-urgency">🟢 Upcoming · 68 days</div>
+              <div class="dl-name">🇵🇰 HEC Pakistan</div>
+              <div class="dl-note">On track — no action needed yet</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROFILE -->
+      <div class="panel" id="panel-profile">
+        <div style="display:flex;justify-content:flex-end;margin-bottom:1rem;gap:8px">
+          <button class="btn btn-ghost" id="btn-edit-profile" onclick="toggleEdit(true)"><i class="ti ti-edit"></i> Edit Profile</button>
+          <button class="btn btn-primary" id="btn-save-profile" onclick="saveProfile()" style="display:none"><i class="ti ti-check"></i> Save Changes</button>
+          <button class="btn btn-ghost" id="btn-cancel-profile" onclick="toggleEdit(false)" style="display:none">Cancel</button>
+        </div>
+        <div class="profile-grid">
+          <div>
+            <div class="profile-sidebar-card">
+              <div class="big-avatar" id="p-avatar">?</div>
+              <div class="profile-name" id="p-display-name">Your Name</div>
+              <div class="profile-loc" id="p-display-loc">Gaza, Palestine</div>
+              <svg width="90" height="90" viewBox="0 0 90 90" style="display:block;margin:0 auto 4px">
+                <circle cx="45" cy="45" r="36" fill="none" stroke="#EAE3D2" stroke-width="7"/>
+                <circle cx="45" cy="45" r="36" fill="none" stroke="#2D3B2A" stroke-width="7" stroke-dasharray="226" stroke-dashoffset="63" stroke-linecap="round" transform="rotate(-90 45 45)"/>
+                <text x="45" y="50" text-anchor="middle" font-size="18" font-weight="700" fill="#2D3B2A" id="p-score-svg">—</text>
+              </svg>
+              <div class="score-label">Profile Score</div>
+              <div class="sub-scores" id="p-subscores"></div>
+            </div>
+            <div class="card">
+              <div class="card-title"><i class="ti ti-shield-check"></i> Humanitarian Status</div>
+              <div style="font-size:12px;line-height:1.9;color:var(--text-mid)" id="p-humanitarian-display"></div>
+            </div>
+          </div>
+          <div class="profile-fields">
+            <!-- VIEW MODE -->
+            <div id="profile-view">
+              <div class="field-group">
+                <div class="field-group-title">Academic Background</div>
+                <div class="field-row">
+                  <div><div class="field-label">Full Name</div><div class="field-val" id="v-name"></div></div>
+                  <div><div class="field-label">GPA / Grade</div><div class="field-val" id="v-gpa"></div></div>
+                </div>
+                <div class="field-row">
+                  <div><div class="field-label">Field of Study</div><div class="field-val" id="v-field"></div></div>
+                  <div><div class="field-label">University</div><div class="field-val" id="v-university"></div></div>
+                </div>
+                <div class="field-row">
+                  <div><div class="field-label">Study Year</div><div class="field-val" id="v-year"></div></div>
+                  <div><div class="field-label">English Level</div><div class="field-val" id="v-english"></div></div>
+                </div>
+                <div class="field-row">
+                  <div><div class="field-label">IELTS / TOEFL</div><div class="field-val" id="v-ielts"></div></div>
+                  <div><div class="field-label">Location</div><div class="field-val" id="v-location"></div></div>
+                </div>
+              </div>
+              <div class="field-group">
+                <div class="field-group-title">Financial Situation</div>
+                <div class="field-row">
+                  <div><div class="field-label">Monthly Budget</div><div class="field-val" id="v-budget"></div></div>
+                  <div><div class="field-label">Funding Need</div><div class="field-val" id="v-funding"></div></div>
+                </div>
+              </div>
+              <div class="field-group">
+                <div class="field-group-title">Target Fields &amp; Regions</div>
+                <div style="margin-bottom:8px"><div class="field-label">Target Fields</div><div id="v-fields-tags"></div></div>
+                <div><div class="field-label">Preferred Regions</div><div id="v-regions-tags"></div></div>
+              </div>
+              <div class="field-group">
+                <div class="field-group-title">Special Circumstances</div>
+                <div class="circumstance-list" id="v-circumstances"></div>
+              </div>
+            </div>
+            <!-- EDIT MODE -->
+            <div id="profile-edit" style="display:none">
+              <div class="field-group">
+                <div class="field-group-title">Academic Background</div>
+                <div class="field-row">
+                  <div><div class="field-label">Full Name</div><input class="search-input" id="e-name" placeholder="Ahmad Mahmoud"/></div>
+                  <div><div class="field-label">GPA / Grade (%)</div><input class="search-input" id="e-gpa" placeholder="e.g. 93.4%"/></div>
+                </div>
+                <div class="field-row">
+                  <div><div class="field-label">Field of Study</div><input class="search-input" id="e-field" placeholder="Civil Engineering"/></div>
+                  <div><div class="field-label">University</div><input class="search-input" id="e-university" placeholder="Islamic Univ. Gaza"/></div>
+                </div>
+                <div class="field-row">
+                  <div><div class="field-label">Study Year</div><input class="search-input" id="e-year" placeholder="3rd Year (Paused)"/></div>
+                  <div><div class="field-label">English Level</div>
+                    <select class="search-input" id="e-english">
+                      <option>A1 – Beginner</option><option>A2 – Elementary</option>
+                      <option>B1 – Intermediate</option><option>B2 – Upper Intermediate</option>
+                      <option>C1 – Advanced</option><option>C2 – Proficient</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="field-row">
+                  <div><div class="field-label">IELTS / TOEFL Score</div><input class="search-input" id="e-ielts" placeholder="e.g. 6.5 or Not taken"/></div>
+                  <div><div class="field-label">Location (City)</div><input class="search-input" id="e-location" placeholder="Gaza City"/></div>
+                </div>
+              </div>
+              <div class="field-group">
+                <div class="field-group-title">Financial Situation</div>
+                <div class="field-row">
+                  <div><div class="field-label">Monthly Budget (USD)</div><input class="search-input" id="e-budget" placeholder="e.g. $0–200"/></div>
+                  <div><div class="field-label">Funding Requirement</div>
+                    <select class="search-input" id="e-funding">
+                      <option>Full scholarship only</option>
+                      <option>Partial funding acceptable</option>
+                      <option>Self-funded possible</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="field-group">
+                <div class="field-group-title">Target Fields (comma-separated)</div>
+                <input class="search-input" id="e-fields" placeholder="Civil Engineering, Architecture, Environmental" style="width:100%"/>
+              </div>
+              <div class="field-group">
+                <div class="field-group-title">Preferred Regions (comma-separated)</div>
+                <input class="search-input" id="e-regions" placeholder="Türkiye, Europe, Pakistan, Arab world" style="width:100%"/>
+              </div>
+              <div class="field-group">
+                <div class="field-group-title">Special Circumstances (one per line)</div>
+                <textarea class="search-input" id="e-circumstances" rows="5" style="width:100%;resize:vertical" placeholder="Studies disrupted by conflict&#10;IELTS inaccessible&#10;Transcripts incomplete"></textarea>
+              </div>
+              <div class="field-group">
+                <div class="field-group-title">Humanitarian Status (one per line)</div>
+                <textarea class="search-input" id="e-humanitarian" rows="4" style="width:100%;resize:vertical" placeholder="Confirmed Gaza resident&#10;UNRWA registered&#10;Document substitution eligible"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCHOLARSHIPS -->
+      <div class="panel" id="panel-scholarships">
+        <div class="search-bar">
+          <input class="search-input" type="text" placeholder="Search by country, field, or keyword..." id="schol-search" oninput="filterSchols()"/>
+          <button class="btn btn-primary" onclick="showPanel('advisor',document.querySelectorAll('.nav-item')[5]);setTimeout(()=>loadAdvisorWith('Find me more scholarships for civil engineering students from Gaza'),100)">
+            <i class="ti ti-robot"></i> Ask AI
+          </button>
+        </div>
+        <div class="filter-chips">
+          <span class="chip on" onclick="toggleChip(this,'all')">All</span>
+          <span class="chip" onclick="toggleChip(this,'funded')">Full funded</span>
+          <span class="chip" onclick="toggleChip(this,'high')">High match</span>
+          <span class="chip" onclick="toggleChip(this,'notest')">No English test</span>
+          <span class="chip" onclick="toggleChip(this,'feasible')">Visa feasible</span>
+        </div>
+        <div id="schol-list"></div>
+        <div id="schol-empty" style="display:none;text-align:center;padding:3rem 1rem;color:var(--text-muted)">
+          <i class="ti ti-award" style="font-size:40px;display:block;margin-bottom:1rem;color:var(--sand-dd)"></i>
+          <div style="font-size:14px;font-weight:500;margin-bottom:0.5rem">No scholarships match this filter</div>
+          <div style="font-size:12px">Try a different filter or complete your profile for better matches</div>
+        </div>
+      </div>
+
+      <!-- TRACKER -->
+      <div class="panel" id="panel-tracker">
+        <div class="tracker-board">
+          <div class="tracker-col">
+            <div class="col-header">Researching <span class="col-count">2</span></div>
+            <div class="tracker-item">
+              <div class="t-flag">🇲🇾</div>
+              <div class="t-name">MTCP Malaysia</div>
+              <div class="t-dl">Sep 15 deadline</div>
+              <div class="t-bar"><div class="t-bar-fill" style="width:45%;background:#4caf50"></div></div>
+              <span class="risk-chip rc-ok">45% match</span>
+            </div>
+            <div class="tracker-item">
+              <div class="t-flag">🇩🇿</div>
+              <div class="t-name">Algeria Govt. Scholarship</div>
+              <div class="t-dl">Oct deadline</div>
+              <div class="t-bar"><div class="t-bar-fill" style="width:30%;background:#ff9800"></div></div>
+              <span class="risk-chip rc-warn">30% match</span>
+            </div>
+          </div>
+          <div class="tracker-col">
+            <div class="col-header">In Progress <span class="col-count">2</span></div>
+            <div class="tracker-item">
+              <div class="t-flag">🇹🇷</div>
+              <div class="t-name">Türkiye YTB</div>
+              <div class="t-dl">⚠ Jun 20 — 18 days</div>
+              <div class="t-bar"><div class="t-bar-fill" style="width:78%;background:#f44336"></div></div>
+              <span class="risk-chip rc-bad">Essay incomplete</span>
+            </div>
+            <div class="tracker-item">
+              <div class="t-flag">🇭🇺</div>
+              <div class="t-name">Stipendium Hungaricum</div>
+              <div class="t-dl">Jul 14 — 32 days</div>
+              <div class="t-bar"><div class="t-bar-fill" style="width:65%;background:#ff9800"></div></div>
+              <span class="risk-chip rc-warn">Rec. letter pending</span>
+            </div>
+          </div>
+          <div class="tracker-col">
+            <div class="col-header">Submitted <span class="col-count">1</span></div>
+            <div class="tracker-item">
+              <div class="t-flag">🇯🇴</div>
+              <div class="t-name">Jordan Humanitarian Admission</div>
+              <div class="t-dl">Submitted May 1</div>
+              <div class="t-bar"><div class="t-bar-fill" style="width:70%;background:#4caf50"></div></div>
+              <span class="risk-chip rc-ok">Awaiting review</span>
+            </div>
+          </div>
+          <div class="tracker-col">
+            <div class="col-header">Interview <span class="col-count">0</span></div>
+            <div class="col-empty">No interviews scheduled yet</div>
+          </div>
+          <div class="tracker-col">
+            <div class="col-header">Decision <span class="col-count">1</span></div>
+            <div class="tracker-item">
+              <div class="t-flag">🇵🇰</div>
+              <div class="t-name">HEC Pakistan</div>
+              <div class="t-dl">Applied Feb 2025</div>
+              <div class="t-bar"><div class="t-bar-fill" style="width:54%;background:#4caf50"></div></div>
+              <span class="risk-chip rc-ok">Waitlisted</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DOCUMENTS -->
+      <div class="panel" id="panel-documents">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem">
+          <div style="font-size:13px;color:var(--text-muted)" id="doc-summary">No documents added yet</div>
+          <button class="btn btn-primary" onclick="openAddDoc()"><i class="ti ti-plus"></i> Add Document</button>
+        </div>
+        <div class="doc-progress-bar"><div class="doc-progress-fill" id="doc-progress-fill" style="width:0%"></div></div>
+        <div id="doc-empty" style="text-align:center;padding:3rem 1rem;color:var(--text-muted)">
+          <i class="ti ti-files" style="font-size:40px;display:block;margin-bottom:1rem;color:var(--sand-dd)"></i>
+          <div style="font-size:14px;font-weight:500;margin-bottom:0.5rem">No documents yet</div>
+          <div style="font-size:12px">Click "Add Document" to start tracking your scholarship documents</div>
+        </div>
+        <div class="doc-grid" id="doc-grid"></div>
+      </div>
+
+      <!-- ADD DOCUMENT MODAL -->
+      <div id="doc-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;align-items:center;justify-content:center;padding:1rem">
+        <div style="background:white;border-radius:14px;width:100%;max-width:480px;padding:1.5rem">
+          <div style="font-size:16px;font-weight:600;color:var(--text);margin-bottom:0.25rem" id="doc-modal-title">Add Document</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-bottom:1.25rem">Track the status of your scholarship documents</div>
+          <input type="hidden" id="doc-edit-id"/>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div>
+              <div style="font-size:11px;font-weight:500;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px">Document Name</div>
+              <input class="search-input" id="doc-name-input" placeholder="e.g. Passport, Academic Transcripts..." style="width:100%"/>
+            </div>
+            <div>
+              <div style="font-size:11px;font-weight:500;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px">Status</div>
+              <select class="search-input" id="doc-status-input" style="width:100%">
+                <option value="ready">✓ Ready</option>
+                <option value="partial">⚠ Partial / In Progress</option>
+                <option value="missing">✗ Missing</option>
+              </select>
+            </div>
+            <div>
+              <div style="font-size:11px;font-weight:500;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px">Notes (optional)</div>
+              <textarea class="search-input" id="doc-note-input" placeholder="Any details, substitutions, or next steps..." style="width:100%;resize:vertical;min-height:70px"></textarea>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:1.25rem;padding-top:1rem;border-top:var(--border)">
+            <button class="btn btn-ghost" onclick="closeDocModal()">Cancel</button>
+            <button class="btn btn-primary" onclick="saveDoc()">Save Document</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI ADVISOR -->
+      <div class="panel" id="panel-advisor">
+        <div style="background:white;border:var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;height:calc(100vh - 130px)">
+          <div style="padding:0.75rem 1rem;border-bottom:var(--border);display:flex;align-items:center;gap:10px;flex-shrink:0">
+            <div style="width:8px;height:8px;border-radius:50%;background:#4caf50;animation:pulse 2s infinite"></div>
+            <div style="flex:1">
+              <div style="font-size:13px;font-weight:600;color:var(--text)">Gaza Scholarship Guide — AI Advisor (v10)</div>
+              <div style="font-size:11px;color:var(--text-muted)">Reads your profile · Specialized for Gaza students · Powered by Groq</div>
+            </div>
+            <button onclick="clearChat()" style="font-size:11px;color:var(--text-muted);background:none;border:var(--border);border-radius:6px;padding:4px 10px;cursor:pointer;font-family:inherit">New chat</button>
+          </div>
+          <div id="chat-messages" style="flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:1rem"></div>
+          <div id="quick-prompts" style="padding:0.5rem 0.75rem;border-top:var(--border);display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0;background:var(--sand)">
+            <button class="qbtn" onclick="sendQuick(this.textContent)">What scholarships match my profile?</button>
+            <button class="qbtn" onclick="sendQuick(this.textContent)">Help me write my essay</button>
+            <button class="qbtn" onclick="sendQuick(this.textContent)">I don't have IELTS — what can I do?</button>
+            <button class="qbtn" onclick="sendQuick(this.textContent)">What documents am I missing?</button>
+            <button class="qbtn" onclick="sendQuick(this.textContent)">Give me a 90-day action plan</button>
+          </div>
+          <div style="display:flex;gap:8px;padding:0.6rem 0.75rem;border-top:var(--border);flex-shrink:0;background:white">
+            <textarea id="chat-input" placeholder="Ask about scholarships, essays, visas, documents..." style="flex:1;border:var(--border);border-radius:8px;padding:0.5rem 0.75rem;font-size:13px;font-family:inherit;resize:none;outline:none;min-height:38px;max-height:100px;line-height:1.5;color:var(--text)" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg()}"></textarea>
+            <button onclick="sendMsg()" style="background:var(--olive);color:white;border:none;border-radius:8px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;align-self:flex-end"><i class="ti ti-send" style="font-size:16px"></i></button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /app-shell -->
+
+<script>
+const DEFAULT_PROFILE = {
+  name:'', gpa:'', field:'', university:'', year:'', english:'B1 – Intermediate',
+  ielts:'Not taken (inaccessible)', location:'Gaza City',
+  budget:'$0–$200', funding:'Full scholarship only',
+  fields:'Civil Engineering, Architecture, Environmental',
+  regions:'Türkiye, Europe, Pakistan, Arab world',
+  circumstances:'⚠ Studies disrupted by conflict\n⚠ IELTS/TOEFL inaccessible\n⚠ Transcripts may be incomplete\n✓ Humanitarian admission eligible\n✓ Letter of Circumstance available',
+  humanitarian:'✓ Confirmed Gaza resident\n✓ Conflict-affected applicant\n✓ Document substitution eligible\n✓ UNRWA registration active'
+};
+
+function loadProfile() {
+  try { return Object.assign({}, DEFAULT_PROFILE, JSON.parse(localStorage.getItem('gsg_profile') || '{}')); }
+  catch(e) { return Object.assign({}, DEFAULT_PROFILE); }
+}
+
+function saveProfile() {
+  const p = {
+    name: document.getElementById('e-name').value,
+    gpa: document.getElementById('e-gpa').value,
+    field: document.getElementById('e-field').value,
+    university: document.getElementById('e-university').value,
+    year: document.getElementById('e-year').value,
+    english: document.getElementById('e-english').value,
+    ielts: document.getElementById('e-ielts').value,
+    location: document.getElementById('e-location').value,
+    budget: document.getElementById('e-budget').value,
+    funding: document.getElementById('e-funding').value,
+    fields: document.getElementById('e-fields').value,
+    regions: document.getElementById('e-regions').value,
+    circumstances: document.getElementById('e-circumstances').value,
+    humanitarian: document.getElementById('e-humanitarian').value,
+  };
+  localStorage.setItem('gsg_profile', JSON.stringify(p));
+  renderProfile(p);
+  toggleEdit(false);
+  updateSidebarName(p);
+}
+
+function renderProfile(p) {
+  const initials = p.name ? p.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2) : '?';
+  document.getElementById('p-avatar').textContent = initials;
+  document.getElementById('p-display-name').textContent = p.name || 'Your Name';
+  document.getElementById('p-display-loc').textContent = (p.location || 'Gaza') + ', Palestine';
+  document.getElementById('v-name').textContent = p.name || '—';
+  document.getElementById('v-gpa').textContent = p.gpa || '—';
+  document.getElementById('v-field').textContent = p.field || '—';
+  document.getElementById('v-university').textContent = p.university || '—';
+  document.getElementById('v-year').textContent = p.year || '—';
+  document.getElementById('v-english').textContent = p.english || '—';
+  document.getElementById('v-ielts').textContent = p.ielts || '—';
+  document.getElementById('v-location').textContent = p.location || '—';
+  document.getElementById('v-budget').textContent = p.budget || '—';
+  document.getElementById('v-funding').textContent = p.funding || '—';
+  const fTags = document.getElementById('v-fields-tags');
+  fTags.innerHTML = (p.fields||'').split(',').map(f=>`<span class="tag">${f.trim()}</span>`).join('');
+  const rTags = document.getElementById('v-regions-tags');
+  rTags.innerHTML = (p.regions||'').split(',').map(r=>`<span class="tag">${r.trim()}</span>`).join('');
+  document.getElementById('v-circumstances').innerHTML = (p.circumstances||'').replace(/\n/g,'<br>');
+  document.getElementById('p-humanitarian-display').innerHTML = (p.humanitarian||'').replace(/\n/g,'<br>');
+  // score
+  const hasName = p.name ? 10 : 0;
+  const hasGpa = p.gpa ? 20 : 0;
+  const hasField = p.field ? 15 : 0;
+  const hasEnglish = p.english && !p.english.includes('A1') ? 15 : 5;
+  const hasFunding = p.funding === 'Full scholarship only' ? 20 : 10;
+  const hasCirc = p.circumstances ? 20 : 0;
+  const score = Math.min(100, hasName+hasGpa+hasField+hasEnglish+hasFunding+hasCirc);
+  document.getElementById('p-score-svg').textContent = score;
+  document.getElementById('p-subscores').innerHTML = `
+    <div class="sub-score-row"><span class="sub-score-label">Profile completeness</span><span class="sub-score-val" style="color:var(--olive)">${score}/100</span></div>
+    <div class="sub-score-row"><span class="sub-score-label">Funding requirement</span><span class="sub-score-val" style="color:var(--olive)">${p.funding||'—'}</span></div>
+    <div class="sub-score-row"><span class="sub-score-label">English level</span><span class="sub-score-val" style="color:var(--amber)">${p.english||'—'}</span></div>`;
+}
+
+function populateEditForm(p) {
+  document.getElementById('e-name').value = p.name||'';
+  document.getElementById('e-gpa').value = p.gpa||'';
+  document.getElementById('e-field').value = p.field||'';
+  document.getElementById('e-university').value = p.university||'';
+  document.getElementById('e-year').value = p.year||'';
+  document.getElementById('e-english').value = p.english||'B1 – Intermediate';
+  document.getElementById('e-ielts').value = p.ielts||'';
+  document.getElementById('e-location').value = p.location||'';
+  document.getElementById('e-budget').value = p.budget||'';
+  document.getElementById('e-funding').value = p.funding||'Full scholarship only';
+  document.getElementById('e-fields').value = p.fields||'';
+  document.getElementById('e-regions').value = p.regions||'';
+  document.getElementById('e-circumstances').value = p.circumstances||'';
+  document.getElementById('e-humanitarian').value = p.humanitarian||'';
+}
+
+function toggleEdit(on) {
+  document.getElementById('profile-view').style.display = on ? 'none' : 'block';
+  document.getElementById('profile-edit').style.display = on ? 'block' : 'none';
+  document.getElementById('btn-edit-profile').style.display = on ? 'none' : '';
+  document.getElementById('btn-save-profile').style.display = on ? '' : 'none';
+  document.getElementById('btn-cancel-profile').style.display = on ? '' : 'none';
+  if (on) populateEditForm(loadProfile());
+}
+
+function updateSidebarName(p) {
+  const el = document.querySelector('.student-name');
+  if (el) el.textContent = p.name || 'Your Name';
+  const sub = document.querySelector('.student-status');
+  if (sub) sub.textContent = (p.location||'Gaza') + ' · ' + (p.field||'Student');
+}
+
+const pageTitles = {
+  dashboard: ['Dashboard', 'Your scholarship journey at a glance'],
+  profile: ['My Profile', 'Academic, financial & mobility information'],
+  scholarships: ['Find Scholarships', 'AI-matched opportunities ranked for your profile'],
+  tracker: ['Application Tracker', 'Pipeline status across all your applications'],
+  documents: ['Documents', 'Checklist and readiness status for all 11 documents'],
+  advisor: ['AI Advisor', 'Your Gaza Scholarship Guide GPT — v10']
+};
+
+function showPanel(name, navEl) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  if (navEl) navEl.classList.add('active');
+  const t = pageTitles[name];
+  document.getElementById('page-title').textContent = t[0];
+  document.getElementById('page-subtitle').textContent = t[1];
+}
+
+function toggleChip(el, filter) {
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
+  el.classList.add('on');
+  const q = document.getElementById('schol-search')?.value || '';
+  renderSchols(filter, q);
+}
+
+function filterSchols() {
+  const q = document.getElementById('schol-search').value;
+  const activeChip = document.querySelector('.chip.on');
+  const filter = activeChip ? activeChip.getAttribute('data-filter') || 'all' : 'all';
+  renderSchols(filter, q);
+}
+
+// ── SCHOLARSHIPS DATABASE + DYNAMIC RENDERING ───
+const ALL_SCHOLARSHIPS = [
+  { flag:'🇹🇷', code:'TR', name:'Türkiye Burslari (YTB)', meta:'Republic of Türkiye · Undergraduate & Graduate', funding:'full', english:'none', visa:'feasible', deadline:'Jun 20', baseMatch:78, tags:['funded','high','notest','feasible'], tagLabels:['Full funded','No IELTS required','Visa feasible','Housing included'], fields:['all'], levels:['undergraduate','graduate'] },
+  { flag:'🇯🇴', code:'JO', name:'Jordan Humanitarian Admission', meta:'Multiple Jordanian Universities · Emergency pathway', funding:'full', english:'arabic', visa:'feasible', deadline:'Rolling', baseMatch:75, tags:['funded','high','feasible'], tagLabels:['Full funded','Arabic instruction','Visa feasible','Immediate start'], fields:['all'], levels:['undergraduate','graduate'] },
+  { flag:'🇭🇺', code:'HU', name:'Stipendium Hungaricum', meta:'Ministry of Foreign Affairs Hungary · All levels', funding:'full', english:'b2', visa:'feasible', deadline:'Jul 14', baseMatch:65, tags:['funded','high','feasible'], tagLabels:['Full funded','B2 English (waiver possible)','Visa feasible'], fields:['stem','engineering','science','it'], levels:['undergraduate','graduate'] },
+  { flag:'🇵🇰', code:'PK', name:'HEC Pakistan — Gaza Priority', meta:'Higher Education Commission · Engineering & STEM', funding:'full', english:'none', visa:'feasible', deadline:'Aug 30', baseMatch:60, tags:['funded','notest','feasible'], tagLabels:['Full funded','Arabic-friendly','Humanitarian priority','Visa feasible'], fields:['engineering','medicine','science','it'], levels:['undergraduate','graduate'] },
+  { flag:'🇲🇾', code:'MY', name:'Malaysian Technical Cooperation Programme (MTCP)', meta:'Government of Malaysia · Engineering & Development', funding:'full', english:'none', visa:'feasible', deadline:'Sep 15', baseMatch:50, tags:['funded','notest','feasible'], tagLabels:['Full funded','No IELTS required','Visa feasible'], fields:['engineering','development','science'], levels:['graduate'] },
+  { flag:'🇲🇦', code:'MA', name:'Morocco Government Scholarship', meta:'Moroccan Government · All fields', funding:'full', english:'french', visa:'feasible', deadline:'Jul 31', baseMatch:55, tags:['funded','feasible'], tagLabels:['Full funded','Arabic instruction','Visa feasible'], fields:['all'], levels:['undergraduate','graduate'] },
+  { flag:'🇸🇦', code:'SA', name:'King Abdullah Scholarship (Saudi Arabia)', meta:'Saudi Ministry of Education · All fields', funding:'full', english:'arabic', visa:'feasible', deadline:'Aug 01', baseMatch:60, tags:['funded','feasible','notest'], tagLabels:['Full funded','Arabic instruction','Visa feasible'], fields:['all'], levels:['undergraduate','graduate'] },
+  { flag:'🇶🇦', code:'QA', name:'Qatar Foundation Scholarship', meta:'Qatar Foundation · STEM & Humanities', funding:'full', english:'b2', visa:'feasible', deadline:'Jan 15', baseMatch:50, tags:['funded','feasible'], tagLabels:['Full funded','Visa feasible','Merit based'], fields:['stem','engineering','humanities'], levels:['graduate'] },
+  { flag:'🇩🇪', code:'DE', name:'DAAD Development-Related Courses', meta:'German Academic Exchange Service · Postgraduate', funding:'partial', english:'b2', visa:'moderate', deadline:'Oct 31', baseMatch:35, tags:['feasible'], tagLabels:['Partial funded','B2+ English required','Visa moderate risk'], fields:['all'], levels:['graduate'] },
+  { flag:'🇨🇳', code:'CN', name:'Chinese Government Scholarship (CSC)', meta:'China Scholarship Council · All fields', funding:'full', english:'none', visa:'feasible', deadline:'Mar 15', baseMatch:45, tags:['funded','notest','feasible'], tagLabels:['Full funded','No IELTS required','Visa feasible'], fields:['all'], levels:['undergraduate','graduate'] },
+  { flag:'🇷🇺', code:'RU', name:'Russian Government Scholarship', meta:'Ministry of Education Russia · All fields', funding:'full', english:'none', visa:'feasible', deadline:'Feb 20', baseMatch:40, tags:['funded','notest','feasible'], tagLabels:['Full funded','No IELTS required','Russian language support'], fields:['all'], levels:['undergraduate','graduate'] },
+  { flag:'🇮🇩', code:'ID', name:'Indonesia KNB Scholarship', meta:'Government of Indonesia · All fields', funding:'full', english:'b1', visa:'feasible', deadline:'Apr 30', baseMatch:42, tags:['funded','feasible'], tagLabels:['Full funded','B1 English minimum','Visa feasible'], fields:['all'], levels:['graduate'] },
+];
+
+function calcMatch(schol, profile) {
+  let score = schol.baseMatch;
+  const field = (profile.field || '').toLowerCase();
+  const english = (profile.english || '').toLowerCase();
+  const funding = profile.funding || '';
+  const gpa = parseFloat((profile.gpa || '0').replace('%',''));
+
+  // Field match boost
+  if (schol.fields.includes('all') || schol.fields.some(f => field.includes(f))) score += 8;
+  else score -= 15;
+
+  // English match
+  if (schol.english === 'none' || schol.english === 'arabic') score += 5;
+  else if (schol.english === 'b1' && (english.includes('b1') || english.includes('b2') || english.includes('c'))) score += 3;
+  else if (schol.english === 'b2' && (english.includes('b2') || english.includes('c'))) score += 3;
+  else score -= 10;
+
+  // GPA boost
+  if (gpa >= 90) score += 8;
+  else if (gpa >= 80) score += 4;
+  else if (gpa >= 70) score += 0;
+  else score -= 8;
+
+  // Funding requirement match
+  if (funding === 'Full scholarship only' && schol.funding !== 'full') score -= 20;
+
+  return Math.min(99, Math.max(5, Math.round(score)));
+}
+
+function renderSchols(filterTag = 'all', searchQ = '') {
+  const profile = loadProfile();
+  const list = document.getElementById('schol-list');
+  const empty = document.getElementById('schol-empty');
+
+  let schols = ALL_SCHOLARSHIPS.map(s => ({...s, match: calcMatch(s, profile)}));
+  schols.sort((a, b) => b.match - a.match);
+
+  if (filterTag !== 'all') schols = schols.filter(s => s.tags.includes(filterTag));
+  if (searchQ) schols = schols.filter(s => (s.name + s.meta + s.tagLabels.join(' ')).toLowerCase().includes(searchQ.toLowerCase()));
+
+  if (schols.length === 0) {
+    list.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  list.innerHTML = schols.map(s => {
+    const matchColor = s.match >= 65 ? 'var(--olive)' : s.match >= 45 ? 'var(--amber)' : 'var(--rust)';
+    const tagHtml = s.tagLabels.map((t,i) => {
+      const cls = i === 0 && s.funding === 'full' ? 'funded' : s.tagLabels[i].toLowerCase().includes('risk') ? 'risk' : s.tagLabels[i].toLowerCase().includes('required') && s.english !== 'none' ? 'warn' : '';
+      return `<span class="schol-tag ${cls}">${t}</span>`;
+    }).join('');
+    return `
+    <div class="schol-card" data-tags="${s.tags.join(',')}">
+      <span class="flag-big">${s.flag}</span>
+      <div>
+        <div class="schol-card-title">${s.name}</div>
+        <div class="schol-card-meta">${s.meta}</div>
+        <div class="schol-tags">${tagHtml}</div>
+      </div>
+      <div class="schol-right">
+        <div class="match-pct" style="color:${matchColor}">${s.match}%</div>
+        <div class="match-label">match</div>
+        <div class="deadline-note">Deadline: <strong>${s.deadline}</strong></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── DOCUMENTS ────────────────────────────────
+const DOC_ICONS = {
+  'Passport':'ti-id-badge','Transcript':'ti-school','Certificate':'ti-certificate',
+  'IELTS':'ti-language','TOEFL':'ti-language','English':'ti-language',
+  'Recommendation':'ti-users','Letter':'ti-heart-handshake','Essay':'ti-pencil',
+  'Statement':'ti-pencil','Photo':'ti-photo','UNRWA':'ti-file-description',
+  'Proposal':'ti-file-text','Medical':'ti-stethoscope','default':'ti-file'
+};
+
+function getDocIcon(name) {
+  const n = name.toLowerCase();
+  for (const [k,v] of Object.entries(DOC_ICONS)) {
+    if (n.includes(k.toLowerCase())) return v;
+  }
+  return DOC_ICONS.default;
+}
+
+const DEFAULT_DOCS = [
+  { name: 'Passport / Travel Document', status: 'missing', note: 'Required for all international applications. Contact UNRWA if expired.' },
+  { name: 'National ID Card', status: 'missing', note: 'Required by most scholarship programs as identity proof.' },
+  { name: 'Academic Transcripts', status: 'missing', note: 'Official transcripts from your university. If unavailable, a Letter of Circumstance may substitute.' },
+  { name: 'High School Certificate (Tawjihi)', status: 'missing', note: 'Original + translated copy required for undergraduate applications.' },
+  { name: 'English Proficiency (IELTS / TOEFL)', status: 'missing', note: 'If test centers are inaccessible in Gaza, apply for a humanitarian English waiver.' },
+  { name: 'Recommendation Letters (x3)', status: 'missing', note: 'From university professors or teachers. Usually 2-3 letters required.' },
+  { name: 'Personal Statement / Essay', status: 'missing', note: 'Your essay explaining why you deserve the scholarship. Use AI Advisor for help.' },
+  { name: 'Letter of Circumstance', status: 'missing', note: 'Explains disruption to studies due to conflict. Can be issued by your university.' },
+  { name: 'Passport Photos', status: 'missing', note: 'Usually 4-6 photos required. Check each scholarship for exact specifications.' },
+  { name: 'UNRWA Registration Proof', status: 'missing', note: 'Required for many humanitarian scholarships. Get from nearest UNRWA office.' },
+  { name: 'Medical Certificate', status: 'missing', note: 'Health clearance from a licensed doctor. Valid for 6 months from issue date.' },
+  { name: 'CV / Resume', status: 'missing', note: 'Academic and extracurricular achievements. Keep it under 2 pages.' },
+];
+
+function loadDocs() {
+  try {
+    const stored = localStorage.getItem('gsg_docs');
+    if (!stored) {
+      saveDocs(DEFAULT_DOCS);
+      return JSON.parse(JSON.stringify(DEFAULT_DOCS));
+    }
+    return JSON.parse(stored);
+  }
+  catch(e) { return JSON.parse(JSON.stringify(DEFAULT_DOCS)); }
+}
+
+function saveDocs(docs) {
+  localStorage.setItem('gsg_docs', JSON.stringify(docs));
+}
+
+function renderDocs() {
+  const docs = loadDocs();
+  const grid = document.getElementById('doc-grid');
+  const empty = document.getElementById('doc-empty');
+  const summary = document.getElementById('doc-summary');
+  const fill = document.getElementById('doc-progress-fill');
+
+  if (docs.length === 0) {
+    empty.style.display = 'block';
+    grid.innerHTML = '';
+    summary.textContent = 'No documents added yet';
+    fill.style.width = '0%';
+    return;
+  }
+
+  empty.style.display = 'none';
+  const ready = docs.filter(d => d.status === 'ready').length;
+  const pct = Math.round((ready / docs.length) * 100);
+  summary.textContent = `${ready} of ${docs.length} documents ready · ${docs.length - ready} require action`;
+  fill.style.width = pct + '%';
+
+  const statusColors = {
+    ready: { bg:'#e8f5e9', color:'#2e7d32', label:'✓ Ready' },
+    partial: { bg:'#fff8e1', color:'#f57c00', label:'⚠ Partial / In Progress' },
+    missing: { bg:'#fce4ec', color:'#c62828', label:'✗ Missing' }
+  };
+
+  grid.innerHTML = docs.map((doc, i) => {
+    const s = statusColors[doc.status] || statusColors.missing;
+    const icon = getDocIcon(doc.name);
+    return `
+      <div class="doc-card">
+        <div style="display:flex;align-items:start;justify-content:space-between;margin-bottom:0.75rem">
+          <div class="doc-icon" style="background:${s.bg}"><i class="ti ${icon}" style="color:${s.color}"></i></div>
+          <div style="display:flex;gap:4px">
+            <button onclick="editDoc(${i})" style="background:none;border:var(--border);border-radius:6px;padding:3px 7px;cursor:pointer;font-size:11px;color:var(--text-muted)"><i class="ti ti-edit"></i></button>
+            <button onclick="deleteDoc(${i})" style="background:none;border:var(--border);border-radius:6px;padding:3px 7px;cursor:pointer;font-size:11px;color:var(--rust)"><i class="ti ti-trash"></i></button>
+          </div>
+        </div>
+        <div class="doc-name">${doc.name}</div>
+        <div class="doc-status" style="color:${s.color}">${s.label}</div>
+        ${doc.note ? `<div class="doc-note">${doc.note}</div>` : ''}
+      </div>`;
+  }).join('');
+}
+
+function openAddDoc() {
+  document.getElementById('doc-modal-title').textContent = 'Add Document';
+  document.getElementById('doc-edit-id').value = '';
+  document.getElementById('doc-name-input').value = '';
+  document.getElementById('doc-status-input').value = 'missing';
+  document.getElementById('doc-note-input').value = '';
+  document.getElementById('doc-modal').style.display = 'flex';
+}
+
+function editDoc(i) {
+  const docs = loadDocs();
+  const doc = docs[i];
+  document.getElementById('doc-modal-title').textContent = 'Edit Document';
+  document.getElementById('doc-edit-id').value = i;
+  document.getElementById('doc-name-input').value = doc.name;
+  document.getElementById('doc-status-input').value = doc.status;
+  document.getElementById('doc-note-input').value = doc.note || '';
+  document.getElementById('doc-modal').style.display = 'flex';
+}
+
+function saveDoc() {
+  const name = document.getElementById('doc-name-input').value.trim();
+  if (!name) { alert('Please enter a document name.'); return; }
+  const doc = {
+    name,
+    status: document.getElementById('doc-status-input').value,
+    note: document.getElementById('doc-note-input').value.trim()
+  };
+  const docs = loadDocs();
+  const editId = document.getElementById('doc-edit-id').value;
+  if (editId !== '') { docs[parseInt(editId)] = doc; }
+  else { docs.push(doc); }
+  saveDocs(docs);
+  closeDocModal();
+  renderDocs();
+}
+
+function deleteDoc(i) {
+  if (!confirm('Delete this document?')) return;
+  const docs = loadDocs();
+  docs.splice(i, 1);
+  saveDocs(docs);
+  renderDocs();
+}
+
+function closeDocModal() {
+  document.getElementById('doc-modal').style.display = 'none';
+}
+
+// ── GROQ AI CHAT ──
+// API key is stored safely in .env on the server — never exposed in browser
+let chatHistory = [];
+let aiTyping = false;
+
+function buildSystemPrompt() {
+  const p = loadProfile();
+  return `You are the Gaza Scholarship Guide AI Advisor (v10), a specialized scholarship intelligence system built for Gaza students.
+
+CURRENT STUDENT PROFILE:
+- Name: ${p.name || 'Not provided'}
+- Location: ${p.location || 'Gaza'}, Palestine
+- GPA: ${p.gpa || 'Not provided'}
+- Field: ${p.field || 'Not provided'}
+- University: ${p.university || 'Not provided'}
+- Study Year: ${p.year || 'Not provided'}
+- English Level: ${p.english || 'Not provided'}
+- IELTS/TOEFL: ${p.ielts || 'Not taken'}
+- Monthly Budget: ${p.budget || '$0–200'}
+- Funding Requirement: ${p.funding || 'Full scholarship only'}
+- Target Fields: ${p.fields || 'Not specified'}
+- Preferred Regions: ${p.regions || 'Not specified'}
+- Special Circumstances: ${p.circumstances || 'Gaza student'}
+- Humanitarian Status: ${p.humanitarian || 'Gaza resident'}
+
+YOUR CORE RULES (v10 Engine):
+1. FUNDING SAFETY LOCK: Never recommend scholarships requiring fees or partial funding. Full coverage only unless student says otherwise.
+2. MOBILITY INTELLIGENCE: Always assess Palestinian passport visa feasibility before recommending any country.
+3. ENGLISH WAIVER AWARENESS: Flag which scholarships allow humanitarian English waivers. Never assume IELTS is accessible unless student confirms.
+4. ANTI-OVERWHELM: Give max 3–5 specific actionable recommendations, not overwhelming lists.
+5. EXECUTION SEQUENCING: Order by deadline urgency + feasibility, not prestige.
+6. DOCUMENT REALISM: Account for missing/partial documents. Suggest acceptable substitutions.
+7. HUMANITARIAN FRAMING: Conflict-affected status is an ASSET. Coach the student to frame and leverage it.
+8. ESSAY STRATEGY: Write full usable essay drafts, not just advice. Emphasize resilience, reconstruction, community impact.
+9. HONEST PROBABILITY: Give realistic probability estimates (High/Medium/Low or %).
+10. ALWAYS HAVE PLAN B: Include fallback options.
+
+KNOWN SCHOLARSHIP DATABASE:
+- Türkiye YTB: Full funded, no IELTS, Palestinian visa feasible, Jun 20 deadline
+- Jordan Humanitarian Admission: Full funded, Arabic, visa very feasible, rolling
+- Stipendium Hungaricum (Hungary): Full funded, B2 English (waiver possible), visa feasible, Jul 14
+- HEC Pakistan: Full funded, Arabic-friendly, visa feasible, humanitarian priority, Aug 30
+- MTCP Malaysia: Full funded, no IELTS, visa feasible, Sep 15
+- DAAD Germany: Partial funded, high English requirement, visa moderate — not primary recommendation
+
+TONE: Warm, direct, honest. Speak like a knowledgeable friend who deeply understands Gaza reality. Be specific to this student's actual profile above. Keep responses focused and readable. Respond in English unless asked for Arabic.`;
+}
+
+function initChat() {
+  const p = loadProfile();
+  const name = p.name ? p.name.split(' ')[0] : 'there';
+  chatHistory = [];
+  const msgs = document.getElementById('chat-messages');
+  msgs.innerHTML = '';
+  appendAiMsg(`Hi ${name}! I'm your Gaza Scholarship Guide AI Advisor.\n\nI've already read your profile — **${p.field || 'your field'}**, **${p.gpa || 'your GPA'}**, **${p.english || 'your English level'}**, funding requirement: **${p.funding || 'full scholarship'}**.\n\nI'll only recommend what's actually executable for your real situation. What would you like help with?`);
+}
+
+function clearChat() { initChat(); document.getElementById('quick-prompts').style.display = ''; }
+
+async function sendQuick(text) {
+  document.getElementById('chat-input').value = text;
+  await sendMsg();
+}
+
+async function sendMsg() {
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text || aiTyping) return;
+  input.value = '';
+  input.style.height = 'auto';
+  document.getElementById('quick-prompts').style.display = 'none';
+
+  appendUserMsg(text);
+  chatHistory.push({ role: 'user', content: text });
+  aiTyping = true;
+
+  const tid = 'typing-' + Date.now();
+  const tel = document.createElement('div');
+  tel.id = tid;
+  tel.style.cssText = 'display:flex;gap:4px;align-items:center;padding:0.75rem 1rem;background:var(--sand);border:var(--border);border-radius:12px;border-bottom-left-radius:3px;width:fit-content;max-width:80%';
+  tel.innerHTML = '<span style="width:6px;height:6px;border-radius:50%;background:var(--text-muted);animation:blink 1.2s infinite"></span><span style="width:6px;height:6px;border-radius:50%;background:var(--text-muted);animation:blink 1.2s infinite 0.2s"></span><span style="width:6px;height:6px;border-radius:50%;background:var(--text-muted);animation:blink 1.2s infinite 0.4s"></span>';
+  document.getElementById('chat-messages').appendChild(tel);
+  scrollChat();
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        messages: chatHistory,
+        systemPrompt: buildSystemPrompt()
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'API error');
+    const reply = data.reply || 'Something went wrong. Please try again.';
+    chatHistory.push({ role: 'assistant', content: reply });
+    document.getElementById(tid)?.remove();
+    appendAiMsg(reply);
+  } catch(e) {
+    document.getElementById(tid)?.remove();
+    appendAiMsg('Connection error. Please check your internet and try again.');
+  }
+  aiTyping = false;
+}
+
+function appendUserMsg(text) {
+  const el = document.createElement('div');
+  el.style.cssText = 'align-self:flex-end;max-width:80%;display:flex;flex-direction:column;align-items:flex-end;gap:3px';
+  el.innerHTML = `<div style="background:var(--olive);color:white;padding:0.75rem 1rem;border-radius:12px;border-bottom-right-radius:3px;font-size:13px;line-height:1.6">${text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')}</div><div style="font-size:10px;color:var(--text-muted)">You</div>`;
+  document.getElementById('chat-messages').appendChild(el);
+  scrollChat();
+}
+
+function appendAiMsg(text) {
+  const el = document.createElement('div');
+  el.style.cssText = 'align-self:flex-start;max-width:82%;display:flex;flex-direction:column;gap:3px';
+  const html = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+  el.innerHTML = `<div style="background:var(--sand);border:var(--border);color:var(--text);padding:0.75rem 1rem;border-radius:12px;border-bottom-left-radius:3px;font-size:13px;line-height:1.65">${html}</div><div style="font-size:10px;color:var(--text-muted)">AI Advisor · v10</div>`;
+  document.getElementById('chat-messages').appendChild(el);
+  scrollChat();
+}
+
+function scrollChat() {
+  const c = document.getElementById('chat-messages');
+  if (c) c.scrollTop = c.scrollHeight;
+}
+
+const ta = document.getElementById('chat-input');
+if (ta) ta.addEventListener('input', () => { ta.style.height='auto'; ta.style.height=Math.min(ta.scrollHeight,100)+'px'; });
+
+// Init
+const p = loadProfile();
+renderProfile(p);
+updateSidebarName(p);
+renderDocs();
+renderSchols();
+initChat();
+</script>
+</body>
+</html>

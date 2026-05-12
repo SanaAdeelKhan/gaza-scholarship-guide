@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin Panel — Gaza Scholarship Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--olive:#2D3B2A;--olive-lt:#8FAF7A;--sand:#F5F0E8;--sand-d:#EAE3D2;--rust:#C4522A;--text:#1A2018;--text-muted:#7A8E72;--white:#fff;--r:10px;--b:1px solid rgba(45,59,42,0.15)}
+body{font-family:'IBM Plex Sans',sans-serif;background:var(--sand);color:var(--text);min-height:100vh}
+
+/* LOGIN */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:1rem}
+.login-box{background:white;border:var(--b);border-radius:16px;padding:2.5rem;width:100%;max-width:380px;text-align:center}
+.login-icon{width:56px;height:56px;background:var(--olive);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem}
+.login-icon i{color:white;font-size:26px}
+.login-title{font-size:20px;font-weight:600;color:var(--olive);margin-bottom:0.25rem}
+.login-sub{font-size:13px;color:var(--text-muted);margin-bottom:1.75rem}
+.login-input{width:100%;padding:0.65rem 0.9rem;border:var(--b);border-radius:8px;font-size:14px;font-family:inherit;outline:none;margin-bottom:0.75rem}
+.login-input:focus{border-color:var(--olive-lt)}
+.login-btn{width:100%;padding:0.7rem;background:var(--olive);color:white;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit}
+.login-btn:hover{background:#3D5238}
+.login-error{font-size:12px;color:var(--rust);margin-top:0.5rem;display:none}
+
+/* APP */
+#admin-app{display:none;min-height:100vh}
+.topbar{background:var(--olive);padding:0.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+.topbar-left{display:flex;align-items:center;gap:10px}
+.topbar-logo{font-size:14px;font-weight:600;color:white}
+.topbar-badge{font-size:10px;background:var(--rust);color:white;padding:2px 8px;border-radius:20px;font-weight:600}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.topbar-link{color:rgba(255,255,255,0.7);text-decoration:none;font-size:12px;border:1px solid rgba(255,255,255,0.2);padding:4px 12px;border-radius:6px;transition:all 0.15s}
+.topbar-link:hover{color:white;border-color:rgba(255,255,255,0.5)}
+.logout-btn{background:none;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);font-size:12px;padding:4px 12px;border-radius:6px;cursor:pointer;font-family:inherit;transition:all 0.15s}
+.logout-btn:hover{color:white;border-color:rgba(255,255,255,0.5)}
+.content{padding:1.5rem;max-width:1100px;margin:0 auto}
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
+.page-title{font-size:20px;font-weight:600;color:var(--olive)}
+.page-sub{font-size:13px;color:var(--text-muted);margin-top:2px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:0.5rem 1rem;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;border:none;font-family:inherit;transition:all 0.15s}
+.btn-primary{background:var(--olive);color:white}.btn-primary:hover{background:#3D5238}
+.btn-ghost{background:white;color:var(--text);border:var(--b)}.btn-ghost:hover{background:var(--sand-d)}
+.btn-danger{background:#fce4ec;color:#c62828;border:1px solid rgba(198,40,40,0.2)}.btn-danger:hover{background:#f8bbd0}
+.btn-success{background:#e8f5e9;color:#2e7d32;border:1px solid rgba(46,125,50,0.2)}.btn-success:hover{background:#c8e6c9}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.5rem}
+.stat{background:white;border:var(--b);border-radius:var(--r);padding:1rem}
+.stat-label{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.stat-val{font-size:24px;font-weight:700;color:var(--olive)}
+
+/* TABLE */
+.table-card{background:white;border:var(--b);border-radius:var(--r);overflow:hidden;margin-bottom:1.5rem}
+.table-head{padding:0.9rem 1.25rem;border-bottom:var(--b);display:flex;align-items:center;justify-content:space-between}
+.table-title{font-size:14px;font-weight:600;color:var(--text)}
+table{width:100%;border-collapse:collapse}
+th{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;padding:0.65rem 1.25rem;text-align:left;border-bottom:var(--b);background:var(--sand)}
+td{font-size:13px;color:var(--text);padding:0.75rem 1.25rem;border-bottom:var(--b)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--sand)}
+.badge{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px}
+.badge-full{background:#e8f5e9;color:#2e7d32}
+.badge-partial{background:#fff8e1;color:#f57c00}
+.badge-high{background:#e8f5e9;color:#2e7d32}
+.badge-moderate{background:#fff8e1;color:#f57c00}
+.badge-low{background:#fce4ec;color:#c62828}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:100;display:none;align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto}
+.modal-overlay.open{display:flex}
+.modal{background:white;border-radius:14px;width:100%;max-width:680px;padding:1.75rem;margin:auto}
+.modal-title{font-size:18px;font-weight:600;color:var(--olive);margin-bottom:0.25rem}
+.modal-sub{font-size:12px;color:var(--text-muted);margin-bottom:1.5rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.form-group{display:flex;flex-direction:column;gap:4px}
+.form-group.full{grid-column:1/-1}
+.form-label{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.4px}
+.form-input,.form-select,.form-textarea{padding:0.5rem 0.75rem;border:var(--b);border-radius:8px;font-size:13px;font-family:inherit;color:var(--text);outline:none}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--olive-lt)}
+.form-textarea{resize:vertical;min-height:80px;line-height:1.5}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:1.25rem;padding-top:1rem;border-top:var(--b)}
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--olive);color:white;padding:0.75rem 1.25rem;border-radius:10px;font-size:13px;font-weight:500;z-index:200;display:none;align-items:center;gap:8px;box-shadow:0 4px 20px rgba(0,0,0,0.2)}
+.toast.show{display:flex}
+.section-divider{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;padding:0.75rem 0 0.5rem;border-top:var(--b);margin-top:0.5rem;grid-column:1/-1}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-icon"><i class="ti ti-shield-lock"></i></div>
+    <div class="login-title">Admin Panel</div>
+    <div class="login-sub">Gaza Scholarship Guide · Authorized access only</div>
+    <input class="login-input" type="text" id="login-user" placeholder="Username" onkeydown="if(event.key==='Enter')doLogin()"/>
+    <input class="login-input" type="password" id="login-pass" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()"/>
+    <button class="login-btn" onclick="doLogin()">Sign In</button>
+    <div class="login-error" id="login-error">Invalid username or password</div>
+  </div>
+</div>
+
+<!-- ADMIN APP -->
+<div id="admin-app">
+  <div class="topbar">
+    <div class="topbar-left">
+      <i class="ti ti-school" style="color:white;font-size:20px"></i>
+      <span class="topbar-logo">Gaza Scholarship Guide</span>
+      <span class="topbar-badge">ADMIN</span>
+    </div>
+    <div class="topbar-right">
+      <a href="/" class="topbar-link"><i class="ti ti-external-link"></i> View Landing</a>
+      <a href="/app" class="topbar-link"><i class="ti ti-layout-dashboard"></i> View App</a>
+      <button class="logout-btn" onclick="logout()"><i class="ti ti-logout"></i> Logout</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Scholarship Data Manager</div>
+        <div class="page-sub">All changes reflect immediately across the app for all students</div>
+      </div>
+      <button class="btn btn-primary" onclick="openAddModal()"><i class="ti ti-plus"></i> Add Scholarship</button>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats">
+      <div class="stat"><div class="stat-label">Total Scholarships</div><div class="stat-val" id="stat-total">0</div></div>
+      <div class="stat"><div class="stat-label">Full Funded</div><div class="stat-val" id="stat-full">0</div></div>
+      <div class="stat"><div class="stat-label">No IELTS Required</div><div class="stat-val" id="stat-noielts">0</div></div>
+      <div class="stat"><div class="stat-label">Gaza Specific</div><div class="stat-val" id="stat-gaza">0</div></div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-card">
+      <div class="table-head">
+        <div class="table-title">All Scholarships</div>
+        <div style="font-size:12px;color:var(--text-muted)" id="last-updated-label"></div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Scholarship</th>
+            <th>Country</th>
+            <th>Funding</th>
+            <th>English</th>
+            <th>Visa</th>
+            <th>Deadline</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="schol-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ADD/EDIT MODAL -->
+<div class="modal-overlay" id="schol-modal">
+  <div class="modal">
+    <div class="modal-title" id="modal-title">Add Scholarship</div>
+    <div class="modal-sub">All fields marked * are required. Changes go live immediately for all students.</div>
+    <input type="hidden" id="edit-id"/>
+    <div class="form-grid">
+      <div class="form-group full"><div class="form-label">Scholarship Name *</div><input class="form-input" id="f-name" placeholder="e.g. Türkiye Burslari (YTB)"/></div>
+      <div class="form-group"><div class="form-label">Country *</div><input class="form-input" id="f-country" placeholder="e.g. Türkiye"/></div>
+      <div class="form-group"><div class="form-label">Flag Emoji</div><input class="form-input" id="f-flag" placeholder="🇹🇷"/></div>
+      <div class="form-group"><div class="form-label">Funding Type *</div>
+        <select class="form-select" id="f-funding">
+          <option value="full">Full funded</option>
+          <option value="partial">Partial funded</option>
+        </select>
+      </div>
+      <div class="form-group"><div class="form-label">Deadline *</div><input class="form-input" id="f-deadline" placeholder="e.g. June 20 or Rolling"/></div>
+      <div class="form-group full"><div class="form-label">What it Covers *</div><input class="form-input" id="f-covers" placeholder="Tuition, housing, stipend, health insurance..."/></div>
+
+      <div class="section-divider">Eligibility</div>
+      <div class="form-group"><div class="form-label">Minimum GPA (%)</div><input class="form-input" id="f-gpa" placeholder="e.g. 70"/></div>
+      <div class="form-group"><div class="form-label">Study Level *</div>
+        <select class="form-select" id="f-level">
+          <option value="undergraduate,graduate,phd">All levels</option>
+          <option value="undergraduate">Undergraduate only</option>
+          <option value="graduate">Graduate only</option>
+          <option value="undergraduate,graduate">Undergrad & Graduate</option>
+          <option value="graduate,phd">Graduate & PhD</option>
+        </select>
+      </div>
+      <div class="form-group"><div class="form-label">English Required?</div>
+        <select class="form-select" id="f-english">
+          <option value="false">No English test required</option>
+          <option value="b1">Yes — B1 minimum</option>
+          <option value="b2">Yes — B2 minimum</option>
+          <option value="c1">Yes — C1 minimum</option>
+        </select>
+      </div>
+      <div class="form-group"><div class="form-label">IELTS Waiver Available?</div>
+        <select class="form-select" id="f-waiver">
+          <option value="true">Yes — waiver possible</option>
+          <option value="false">No — IELTS required</option>
+        </select>
+      </div>
+      <div class="form-group"><div class="form-label">Fields Accepted *</div>
+        <select class="form-select" id="f-fields">
+          <option value="all">All fields</option>
+          <option value="engineering,science,it">STEM only</option>
+          <option value="medicine,health">Medicine & Health</option>
+          <option value="engineering,science,it,medicine">STEM + Medicine</option>
+          <option value="humanities,social">Humanities & Social</option>
+        </select>
+      </div>
+      <div class="form-group"><div class="form-label">Visa Feasibility *</div>
+        <select class="form-select" id="f-visa">
+          <option value="high">High — easy for Palestinian passport</option>
+          <option value="moderate">Moderate — possible but complex</option>
+          <option value="low">Low — difficult</option>
+        </select>
+      </div>
+
+      <div class="section-divider">Details</div>
+      <div class="form-group full"><div class="form-label">Official Link</div><input class="form-input" id="f-link" placeholder="https://..."/></div>
+      <div class="form-group full"><div class="form-label">Required Documents (one per line)</div>
+        <textarea class="form-textarea" id="f-docs" rows="5" placeholder="Passport&#10;Academic transcripts&#10;Recommendation letters (2)&#10;Personal statement"></textarea>
+      </div>
+      <div class="form-group full"><div class="form-label">Notes for Students</div>
+        <textarea class="form-textarea" id="f-notes" placeholder="Special instructions, tips, Gaza-specific advice..."></textarea>
+      </div>
+      <div class="form-group full"><div class="form-label">Visa Notes</div>
+        <textarea class="form-textarea" id="f-visanotes" placeholder="Which embassy to use, processing time, tips..." rows="2"></textarea>
+      </div>
+      <div class="form-group"><div class="form-label">Gaza Specific?</div>
+        <select class="form-select" id="f-gazaspecific">
+          <option value="false">No — open to all</option>
+          <option value="true">Yes — Gaza/Palestine priority</option>
+        </select>
+      </div>
+      <div class="form-group"><div class="form-label">Verified?</div>
+        <select class="form-select" id="f-verified">
+          <option value="true">Yes — verified data</option>
+          <option value="false">No — needs verification</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveScholarship()"><i class="ti ti-check"></i> Save Scholarship</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><i class="ti ti-check"></i> <span id="toast-msg"></span></div>
+
+<script>
+// ── AUTH ──────────────────────────────────────
+function doLogin() {
+  const user = document.getElementById('login-user').value.trim();
+  const pass = document.getElementById('login-pass').value.trim();
+  fetch('/api/admin/login', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({username: user, password: pass})
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.success) {
+      sessionStorage.setItem('gsg_admin_token', data.token);
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('admin-app').style.display = 'block';
+      loadData();
+    } else {
+      document.getElementById('login-error').style.display = 'block';
+    }
+  })
+  .catch(() => {
+    document.getElementById('login-error').style.display = 'block';
+    document.getElementById('login-error').textContent = 'Server error. Is the server running?';
+  });
+}
+
+function logout() {
+  sessionStorage.removeItem('gsg_admin_token');
+  location.reload();
+}
+
+function getToken() { return sessionStorage.getItem('gsg_admin_token'); }
+
+// Check if already logged in
+if (getToken()) {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('admin-app').style.display = 'block';
+  loadData();
+}
+
+// ── DATA ──────────────────────────────────────
+let scholarships = [];
+
+async function loadData() {
+  try {
+    const r = await fetch('/api/admin/scholarships', {
+      headers: {'Authorization': `Bearer ${getToken()}`}
+    });
+    if (r.status === 401) { logout(); return; }
+    scholarships = await r.json();
+    renderTable();
+    renderStats();
+  } catch(e) {
+    showToast('Error loading data', true);
+  }
+}
+
+function renderStats() {
+  document.getElementById('stat-total').textContent = scholarships.length;
+  document.getElementById('stat-full').textContent = scholarships.filter(s => s.funding === 'full').length;
+  document.getElementById('stat-noielts').textContent = scholarships.filter(s => !s.english_required || s.ielts_waiver).length;
+  document.getElementById('stat-gaza').textContent = scholarships.filter(s => s.gaza_specific).length;
+  document.getElementById('last-updated-label').textContent = `Last updated: ${new Date().toLocaleDateString()}`;
+}
+
+function renderTable() {
+  const tbody = document.getElementById('schol-tbody');
+  if (scholarships.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--text-muted)">No scholarships yet. Click "Add Scholarship" to get started.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = scholarships.map((s, i) => `
+    <tr>
+      <td><strong>${s.flag || ''} ${s.name}</strong>${s.gaza_specific ? ' <span style="font-size:10px;background:#e8f5e9;color:#2e7d32;padding:1px 6px;border-radius:10px;font-weight:600">Gaza</span>' : ''}</td>
+      <td>${s.country}</td>
+      <td><span class="badge badge-${s.funding}">${s.funding === 'full' ? 'Full funded' : 'Partial'}</span></td>
+      <td>${s.english_required ? (s.ielts_waiver ? '⚠ Required (waiver ok)' : '✗ Required') : '✓ Not required'}</td>
+      <td><span class="badge badge-${s.visa_feasibility}">${s.visa_feasibility}</span></td>
+      <td>${s.deadline}</td>
+      <td>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-ghost" style="padding:4px 10px;font-size:11px" onclick="openEditModal(${i})"><i class="ti ti-edit"></i> Edit</button>
+          <button class="btn btn-danger" style="padding:4px 10px;font-size:11px" onclick="deleteScholarship(${i})"><i class="ti ti-trash"></i></button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+// ── MODAL ─────────────────────────────────────
+function openAddModal() {
+  document.getElementById('modal-title').textContent = 'Add Scholarship';
+  document.getElementById('edit-id').value = '';
+  ['f-name','f-country','f-flag','f-deadline','f-covers','f-gpa','f-link','f-docs','f-notes','f-visanotes'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('f-funding').value = 'full';
+  document.getElementById('f-level').value = 'undergraduate,graduate,phd';
+  document.getElementById('f-english').value = 'false';
+  document.getElementById('f-waiver').value = 'true';
+  document.getElementById('f-fields').value = 'all';
+  document.getElementById('f-visa').value = 'high';
+  document.getElementById('f-gazaspecific').value = 'false';
+  document.getElementById('f-verified').value = 'true';
+  document.getElementById('schol-modal').classList.add('open');
+}
+
+function openEditModal(i) {
+  const s = scholarships[i];
+  document.getElementById('modal-title').textContent = 'Edit Scholarship';
+  document.getElementById('edit-id').value = i;
+  document.getElementById('f-name').value = s.name || '';
+  document.getElementById('f-country').value = s.country || '';
+  document.getElementById('f-flag').value = s.flag || '';
+  document.getElementById('f-funding').value = s.funding || 'full';
+  document.getElementById('f-deadline').value = s.deadline || '';
+  document.getElementById('f-covers').value = s.covers || '';
+  document.getElementById('f-gpa').value = s.gpa_min || '';
+  document.getElementById('f-level').value = (s.level || []).join(',');
+  document.getElementById('f-english').value = s.english_required ? (s.english_min || 'b2').toLowerCase() : 'false';
+  document.getElementById('f-waiver').value = s.ielts_waiver ? 'true' : 'false';
+  document.getElementById('f-fields').value = (s.fields || ['all']).join(',');
+  document.getElementById('f-visa').value = s.visa_feasibility || 'high';
+  document.getElementById('f-link').value = s.link || '';
+  document.getElementById('f-docs').value = (s.required_documents || []).join('\n');
+  document.getElementById('f-notes').value = s.notes || '';
+  document.getElementById('f-visanotes').value = s.visa_notes || '';
+  document.getElementById('f-gazaspecific').value = s.gaza_specific ? 'true' : 'false';
+  document.getElementById('f-verified').value = s.verified ? 'true' : 'false';
+  document.getElementById('schol-modal').classList.add('open');
+}
+
+function closeModal() { document.getElementById('schol-modal').classList.remove('open'); }
+
+async function saveScholarship() {
+  const name = document.getElementById('f-name').value.trim();
+  const country = document.getElementById('f-country').value.trim();
+  if (!name || !country) { alert('Name and Country are required.'); return; }
+
+  const englishVal = document.getElementById('f-english').value;
+  const s = {
+    id: name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
+    name,
+    country,
+    flag: document.getElementById('f-flag').value.trim(),
+    funding: document.getElementById('f-funding').value,
+    deadline: document.getElementById('f-deadline').value.trim(),
+    covers: document.getElementById('f-covers').value.trim(),
+    gpa_min: parseInt(document.getElementById('f-gpa').value) || 60,
+    level: document.getElementById('f-level').value.split(','),
+    english_required: englishVal !== 'false',
+    english_min: englishVal !== 'false' ? englishVal.toUpperCase() : null,
+    ielts_waiver: document.getElementById('f-waiver').value === 'true',
+    fields: document.getElementById('f-fields').value.split(','),
+    visa_feasibility: document.getElementById('f-visa').value,
+    link: document.getElementById('f-link').value.trim(),
+    required_documents: document.getElementById('f-docs').value.split('\n').map(d => d.trim()).filter(Boolean),
+    notes: document.getElementById('f-notes').value.trim(),
+    visa_notes: document.getElementById('f-visanotes').value.trim(),
+    gaza_specific: document.getElementById('f-gazaspecific').value === 'true',
+    verified: document.getElementById('f-verified').value === 'true',
+    last_updated: new Date().toISOString().split('T')[0]
+  };
+
+  const editId = document.getElementById('edit-id').value;
+  if (editId !== '') scholarships[parseInt(editId)] = s;
+  else scholarships.push(s);
+
+  await pushData();
+  closeModal();
+}
+
+async function deleteScholarship(i) {
+  if (!confirm(`Delete "${scholarships[i].name}"? This removes it for all students immediately.`)) return;
+  scholarships.splice(i, 1);
+  await pushData();
+}
+
+async function pushData() {
+  try {
+    const r = await fetch('/api/admin/scholarships', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','Authorization':`Bearer ${getToken()}`},
+      body: JSON.stringify(scholarships)
+    });
+    if (r.status === 401) { logout(); return; }
+    const data = await r.json();
+    if (data.success) { renderTable(); renderStats(); showToast('Saved! All students see the updated data.'); }
+    else showToast('Save failed: ' + data.error, true);
+  } catch(e) { showToast('Server error', true); }
+}
+
+function showToast(msg, isError = false) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.style.background = isError ? '#c62828' : 'var(--olive)';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+document.getElementById('schol-modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('schol-modal')) closeModal();
+});
+</script>
+</body>
+</html>
