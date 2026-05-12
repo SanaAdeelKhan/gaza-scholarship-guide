@@ -122,7 +122,10 @@ tr:hover td{background:var(--sand)}
         <div class="page-title">Scholarship Data Manager</div>
         <div class="page-sub">All changes reflect immediately across the app for all students</div>
       </div>
-      <button class="btn btn-primary" onclick="openAddModal()"><i class="ti ti-plus"></i> Add Scholarship</button>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-ghost" onclick="openImportModal()"><i class="ti ti-download"></i> Import from Text</button>
+        <button class="btn btn-primary" onclick="openAddModal()"><i class="ti ti-plus"></i> Add Scholarship</button>
+      </div>
     </div>
 
     <!-- STATS -->
@@ -245,6 +248,37 @@ tr:hover td{background:var(--sand)}
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
       <button class="btn btn-primary" onclick="saveScholarship()"><i class="ti ti-check"></i> Save Scholarship</button>
+    </div>
+  </div>
+</div>
+
+<!-- IMPORT MODAL -->
+<div class="modal-overlay" id="import-modal">
+  <div class="modal" style="max-width:620px">
+    <div class="modal-title">Import Scholarships from Text</div>
+    <div class="modal-sub">Paste any raw text — WhatsApp message, email, notes, website copy. Groq AI will extract and structure the scholarship data automatically.</div>
+
+    <div style="background:var(--sand);border-radius:8px;padding:1rem;margin-bottom:1rem;font-size:12px;color:var(--text-muted);line-height:1.7">
+      <strong style="color:var(--text)">Example input:</strong><br/>
+      "Türkiye Burslari — full scholarship for all fields, no IELTS needed, covers housing and monthly stipend of $400, deadline is June 20 every year, Palestinian passport accepted easily, need transcripts and passport and motivation letter"
+    </div>
+
+    <div class="form-group full" style="margin-bottom:1rem">
+      <div class="form-label">Paste Mark's text here</div>
+      <textarea class="form-textarea" id="import-text" rows="8" style="width:100%;font-size:13px" placeholder="Paste any text about scholarships here — can be messy, bullet points, paragraphs, multiple scholarships at once. Groq will figure it out..."></textarea>
+    </div>
+
+    <div id="import-result" style="display:none;margin-bottom:1rem">
+      <div style="font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.5rem">Groq extracted this data — review before saving:</div>
+      <div id="import-preview" style="background:var(--sand);border-radius:8px;padding:1rem;font-size:12px;line-height:1.8;max-height:250px;overflow-y:auto;border:var(--b)"></div>
+    </div>
+
+    <div id="import-error" style="display:none;background:#fce4ec;border-radius:8px;padding:0.75rem 1rem;font-size:12px;color:#c62828;margin-bottom:1rem"></div>
+
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeImportModal()">Cancel</button>
+      <button class="btn btn-ghost" id="btn-extract" onclick="extractFromText()"><i class="ti ti-wand"></i> Extract with Groq AI</button>
+      <button class="btn btn-primary" id="btn-save-import" onclick="saveImported()" style="display:none"><i class="ti ti-check"></i> Save to Database</button>
     </div>
   </div>
 </div>
@@ -453,6 +487,141 @@ function showToast(msg, isError = false) {
 document.getElementById('schol-modal').addEventListener('click', e => {
   if (e.target === document.getElementById('schol-modal')) closeModal();
 });
+
+document.getElementById('import-modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('import-modal')) closeImportModal();
+});
+
+// ── IMPORT FROM TEXT ───────────────────────────
+let importedScholarships = [];
+
+function openImportModal() {
+  document.getElementById('import-text').value = '';
+  document.getElementById('import-result').style.display = 'none';
+  document.getElementById('import-error').style.display = 'none';
+  document.getElementById('btn-save-import').style.display = 'none';
+  document.getElementById('btn-extract').textContent = '✦ Extract with Groq AI';
+  document.getElementById('btn-extract').disabled = false;
+  importedScholarships = [];
+  document.getElementById('import-modal').classList.add('open');
+}
+
+function closeImportModal() {
+  document.getElementById('import-modal').classList.remove('open');
+}
+
+async function extractFromText() {
+  const text = document.getElementById('import-text').value.trim();
+  if (!text) { alert('Please paste some text first.'); return; }
+
+  const btn = document.getElementById('btn-extract');
+  btn.textContent = '⏳ Groq is reading...';
+  btn.disabled = true;
+  document.getElementById('import-result').style.display = 'none';
+  document.getElementById('import-error').style.display = 'none';
+  document.getElementById('btn-save-import').style.display = 'none';
+
+  const prompt = `You are a scholarship data extractor for the Gaza Scholarship Guide.
+
+Extract ALL scholarships from the text below and return ONLY a valid JSON array. No explanation, no markdown, no code blocks — just the raw JSON array.
+
+For each scholarship extract:
+- name (string)
+- country (string)  
+- flag (emoji string, guess from country)
+- funding ("full" or "partial")
+- covers (string - what it covers)
+- fields (array - use ["all"] if open to all, or specific like ["engineering","medicine","science","it","humanities"])
+- level (array - ["undergraduate","graduate","phd"] or subset)
+- english_required (boolean)
+- english_min (string or null - e.g. "B2" or null)
+- ielts_waiver (boolean)
+- visa_feasibility ("high", "moderate", or "low" for Palestinian passport)
+- deadline (string)
+- gpa_min (number, default 60 if not mentioned)
+- link (string or "")
+- required_documents (array of strings)
+- notes (string - any special notes for Gaza students)
+- visa_notes (string)
+- gaza_specific (boolean)
+- verified (boolean - false since this is raw input)
+- last_updated (today's date as string)
+
+If a field is not mentioned, use a sensible default.
+If multiple scholarships are in the text, extract all of them as separate objects in the array.
+
+TEXT TO EXTRACT FROM:
+${text}
+
+Return ONLY the JSON array starting with [ and ending with ]`;
+
+  try {
+    const r = await fetch('/api/chat', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json', 'Authorization': `Bearer ${getToken()}`},
+      body: JSON.stringify({
+        messages: [{ role: 'user', content: prompt }],
+        systemPrompt: 'You are a JSON data extractor. Always respond with valid JSON only. No markdown, no explanation.'
+      })
+    });
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.error || 'API error');
+
+    // Parse the JSON from Groq response
+    let reply = data.reply.trim();
+    // Strip markdown code blocks if present
+    reply = reply.replace(/^```json\n?/,'').replace(/^```\n?/,'').replace(/```$/,'').trim();
+
+    const parsed = JSON.parse(reply);
+    if (!Array.isArray(parsed) || parsed.length === 0) throw new Error('No scholarships found in text');
+
+    importedScholarships = parsed;
+
+    // Show preview
+    const preview = document.getElementById('import-preview');
+    preview.innerHTML = parsed.map((s, i) => `
+      <div style="padding:0.5rem 0;${i > 0 ? 'border-top:1px solid var(--sand-d);margin-top:0.5rem' : ''}">
+        <strong>${s.flag || ''} ${s.name}</strong> — ${s.country}<br/>
+        💰 ${s.funding === 'full' ? 'Full funded' : 'Partial'} &nbsp;|&nbsp;
+        🌐 English: ${s.english_required ? s.english_min + (s.ielts_waiver ? ' (waiver ok)' : '') : 'Not required'} &nbsp;|&nbsp;
+        ✈️ Visa: ${s.visa_feasibility} &nbsp;|&nbsp;
+        📅 Deadline: ${s.deadline}<br/>
+        📋 Docs: ${(s.required_documents || []).join(', ')}<br/>
+        📝 ${s.notes || 'No notes'}
+      </div>`).join('');
+
+    document.getElementById('import-result').style.display = 'block';
+    document.getElementById('btn-save-import').style.display = 'inline-flex';
+    btn.textContent = '✦ Re-extract';
+    btn.disabled = false;
+    showToast(`Groq found ${parsed.length} scholarship${parsed.length > 1 ? 's' : ''} — review and save`);
+
+  } catch(e) {
+    document.getElementById('import-error').style.display = 'block';
+    document.getElementById('import-error').textContent = 'Error: ' + (e.message || 'Could not parse response. Try rephrasing the text.');
+    btn.textContent = '✦ Extract with Groq AI';
+    btn.disabled = false;
+  }
+}
+
+async function saveImported() {
+  if (!importedScholarships.length) return;
+  // Merge with existing — avoid duplicates by name
+  const existing = scholarships.map(s => s.name.toLowerCase());
+  const newOnes = importedScholarships.filter(s => !existing.includes(s.name.toLowerCase()));
+  const updated = [...scholarships, ...newOnes];
+
+  // Also update existing ones if same name
+  importedScholarships.forEach(imp => {
+    const idx = scholarships.findIndex(s => s.name.toLowerCase() === imp.name.toLowerCase());
+    if (idx >= 0) updated[idx] = imp;
+  });
+
+  scholarships = updated;
+  await pushData();
+  closeImportModal();
+  showToast(`✅ ${importedScholarships.length} scholarship${importedScholarships.length > 1 ? 's' : ''} saved to database!`);
+}
 </script>
 </body>
 </html>
