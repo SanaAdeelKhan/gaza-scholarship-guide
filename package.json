@@ -1,25 +1,24 @@
 {
   "name": "gaza-scholarship-guide",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Gaza Scholarship Guide — AI-powered scholarship platform for Gaza students",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js",
-    "setup": "npm install && cp .env.example .env && echo '\n✅ Setup complete! Now edit .env and add your GROQ_API_KEY'"
+    "dev": "nodemon server.js"
   },
   "dependencies": {
     "express": "^4.18.2",
     "dotenv": "^16.3.1",
     "node-fetch": "^2.7.0",
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "multer": "^1.4.5-lts.1",
+    "@google/generative-ai": "^0.21.0",
+    "xlsx": "^0.18.5",
+    "mammoth": "^1.7.2"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"
   },
-  "engines": {
-    "node": ">=18.0.0"
-  },
-  "author": "Gaza Scholarship Guide Team",
-  "license": "MIT"
+  "engines": { "node": ">=18.0.0" }
 }

@@ -8,25 +8,25 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--olive:#2D3B2A;--olive-lt:#8FAF7A;--sand:#F5F0E8;--sand-d:#EAE3D2;--rust:#C4522A;--text:#1A2018;--text-muted:#7A8E72;--white:#fff;--r:10px;--b:1px solid rgba(45,59,42,0.15)}
-body{font-family:'IBM Plex Sans',sans-serif;background:var(--sand);color:var(--text);min-height:100vh}
+:root{--olive:#0A4D68;--olive-lt:#38BDF8;--sand:#F0FAFA;--sand-d:#E0F2FE;--rust:#F97316;--text:#0C2D3F;--text-muted:#5B9AB5;--white:#fff;--r:10px;--b:1px solid #BAE6FD}
+body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 
 /* LOGIN */
 #login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:1rem}
-.login-box{background:white;border:var(--b);border-radius:16px;padding:2.5rem;width:100%;max-width:380px;text-align:center}
+.login-box{background:white;border:1px solid var(--border);border-radius:16px;padding:2.5rem;width:100%;max-width:380px;text-align:center}
 .login-icon{width:56px;height:56px;background:var(--olive);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem}
 .login-icon i{color:white;font-size:26px}
-.login-title{font-size:20px;font-weight:600;color:var(--olive);margin-bottom:0.25rem}
+.login-title{font-size:20px;font-weight:600;color:var(--accent);margin-bottom:0.25rem}
 .login-sub{font-size:13px;color:var(--text-muted);margin-bottom:1.75rem}
-.login-input{width:100%;padding:0.65rem 0.9rem;border:var(--b);border-radius:8px;font-size:14px;font-family:inherit;outline:none;margin-bottom:0.75rem}
+.login-input{width:100%;padding:0.65rem 0.9rem;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;outline:none;margin-bottom:0.75rem}
 .login-input:focus{border-color:var(--olive-lt)}
-.login-btn{width:100%;padding:0.7rem;background:var(--olive);color:white;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit}
+.login-btn{width:100%;padding:0.7rem;background:linear-gradient(135deg,#0A4D68,#0891B2);color:white;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;box-shadow:0 2px 10px rgba(8,145,178,0.3)}
 .login-btn:hover{background:#3D5238}
 .login-error{font-size:12px;color:var(--rust);margin-top:0.5rem;display:none}
 
 /* APP */
 #admin-app{display:none;min-height:100vh}
-.topbar{background:var(--olive);padding:0.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+.topbar{background:linear-gradient(135deg,#0A4D68,#0891B2);padding:0.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
 .topbar-left{display:flex;align-items:center;gap:10px}
 .topbar-logo{font-size:14px;font-weight:600;color:white}
 .topbar-badge{font-size:10px;background:var(--rust);color:white;padding:2px 8px;border-radius:20px;font-weight:600}
@@ -37,29 +37,29 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--sand);color:var(--t
 .logout-btn:hover{color:white;border-color:rgba(255,255,255,0.5)}
 .content{padding:1.5rem;max-width:1100px;margin:0 auto}
 .page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
-.page-title{font-size:20px;font-weight:600;color:var(--olive)}
+.page-title{font-size:20px;font-weight:600;color:var(--accent)}
 .page-sub{font-size:13px;color:var(--text-muted);margin-top:2px}
 .btn{display:inline-flex;align-items:center;gap:6px;padding:0.5rem 1rem;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;border:none;font-family:inherit;transition:all 0.15s}
-.btn-primary{background:var(--olive);color:white}.btn-primary:hover{background:#3D5238}
-.btn-ghost{background:white;color:var(--text);border:var(--b)}.btn-ghost:hover{background:var(--sand-d)}
+.btn-primary{background:linear-gradient(135deg,#0A4D68,#0891B2);color:white;box-shadow:0 2px 8px rgba(8,145,178,0.3)}.btn-primary:hover{background:linear-gradient(135deg,#0D6B8F,#06B6D4)}
+.btn-ghost{background:white;color:var(--text);border:1px solid var(--border)}.btn-ghost:hover{background:var(--card2)}
 .btn-danger{background:#fce4ec;color:#c62828;border:1px solid rgba(198,40,40,0.2)}.btn-danger:hover{background:#f8bbd0}
 .btn-success{background:#e8f5e9;color:#2e7d32;border:1px solid rgba(46,125,50,0.2)}.btn-success:hover{background:#c8e6c9}
 
 /* STATS */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.5rem}
-.stat{background:white;border:var(--b);border-radius:var(--r);padding:1rem}
+.stat{background:white;border:1px solid var(--border);border-radius:var(--r);padding:1rem}
 .stat-label{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
-.stat-val{font-size:24px;font-weight:700;color:var(--olive)}
+.stat-val{font-size:24px;font-weight:700;color:var(--accent)}
 
 /* TABLE */
-.table-card{background:white;border:var(--b);border-radius:var(--r);overflow:hidden;margin-bottom:1.5rem}
+.table-card{background:white;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:1.5rem}
 .table-head{padding:0.9rem 1.25rem;border-bottom:var(--b);display:flex;align-items:center;justify-content:space-between}
-.table-title{font-size:14px;font-weight:600;color:var(--text)}
+.table-title{font-size:14px;font-weight:600;color:var(--text-mid)}
 table{width:100%;border-collapse:collapse}
-th{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;padding:0.65rem 1.25rem;text-align:left;border-bottom:var(--b);background:var(--sand)}
-td{font-size:13px;color:var(--text);padding:0.75rem 1.25rem;border-bottom:var(--b)}
+th{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;padding:0.65rem 1.25rem;text-align:left;border-bottom:var(--b);background:var(--bg)}
+td{font-size:13px;color:var(--text-mid);padding:0.75rem 1.25rem;border-bottom:1px solid var(--border)}
 tr:last-child td{border-bottom:none}
-tr:hover td{background:var(--sand)}
+tr:hover td{background:var(--bg)}
 .badge{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px}
 .badge-full{background:#e8f5e9;color:#2e7d32}
 .badge-partial{background:#fff8e1;color:#f57c00}
@@ -71,16 +71,16 @@ tr:hover td{background:var(--sand)}
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:100;display:none;align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto}
 .modal-overlay.open{display:flex}
 .modal{background:white;border-radius:14px;width:100%;max-width:680px;padding:1.75rem;margin:auto}
-.modal-title{font-size:18px;font-weight:600;color:var(--olive);margin-bottom:0.25rem}
+.modal-title{font-size:18px;font-weight:600;color:var(--accent);margin-bottom:0.25rem}
 .modal-sub{font-size:12px;color:var(--text-muted);margin-bottom:1.5rem}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
 .form-group{display:flex;flex-direction:column;gap:4px}
 .form-group.full{grid-column:1/-1}
 .form-label{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.4px}
-.form-input,.form-select,.form-textarea{padding:0.5rem 0.75rem;border:var(--b);border-radius:8px;font-size:13px;font-family:inherit;color:var(--text);outline:none}
-.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--olive-lt)}
+.form-input,.form-select,.form-textarea{padding:0.5rem 0.75rem;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;color:var(--text);outline:none}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent)}
 .form-textarea{resize:vertical;min-height:80px;line-height:1.5}
-.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:1.25rem;padding-top:1rem;border-top:var(--b)}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--border)}
 .toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--olive);color:white;padding:0.75rem 1.25rem;border-radius:10px;font-size:13px;font-weight:500;z-index:200;display:none;align-items:center;gap:8px;box-shadow:0 4px 20px rgba(0,0,0,0.2)}
 .toast.show{display:flex}
 .section-divider{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;padding:0.75rem 0 0.5rem;border-top:var(--b);margin-top:0.5rem;grid-column:1/-1}
@@ -112,6 +112,7 @@ tr:hover td{background:var(--sand)}
     <div class="topbar-right">
       <a href="/" class="topbar-link"><i class="ti ti-external-link"></i> View Landing</a>
       <a href="/app" class="topbar-link"><i class="ti ti-layout-dashboard"></i> View App</a>
+      <button onclick="toggleAdminTheme()" style="background:none;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);font-size:12px;padding:4px 10px;border-radius:6px;cursor:pointer;font-family:inherit" id="admin-theme-btn">🌙</button>
       <button class="logout-btn" onclick="logout()"><i class="ti ti-logout"></i> Logout</button>
     </div>
   </div>
@@ -258,26 +259,48 @@ tr:hover td{background:var(--sand)}
     <div class="modal-title">Import Scholarships from Text</div>
     <div class="modal-sub">Paste any raw text — WhatsApp message, email, notes, website copy. Groq AI will extract and structure the scholarship data automatically.</div>
 
-    <div style="background:var(--sand);border-radius:8px;padding:1rem;margin-bottom:1rem;font-size:12px;color:var(--text-muted);line-height:1.7">
+    <div style="background:var(--bg);border-radius:8px;padding:1rem;margin-bottom:1rem;font-size:12px;color:var(--text-muted);line-height:1.7">
       <strong style="color:var(--text)">Example input:</strong><br/>
       "Türkiye Burslari — full scholarship for all fields, no IELTS needed, covers housing and monthly stipend of $400, deadline is June 20 every year, Palestinian passport accepted easily, need transcripts and passport and motivation letter"
     </div>
 
+    <!-- FILE UPLOAD -->
+    <div style="margin-bottom:1rem">
+      <div class="form-label" style="margin-bottom:0.5rem">Upload Files (PDF, Excel, Word — multiple allowed)</div>
+      <div id="drop-zone" onclick="document.getElementById('file-input').click()"
+        style="border:2px dashed rgba(58,191,248,0.3);border-radius:10px;padding:1.5rem;text-align:center;cursor:pointer;transition:all 0.2s;background:rgba(58,191,248,0.03)"
+        ondragover="event.preventDefault();this.style.borderColor='var(--accent)'"
+        ondragleave="this.style.borderColor='rgba(58,191,248,0.3)'"
+        ondrop="handleDrop(event)">
+        <i class="ti ti-cloud-upload" style="font-size:28px;color:var(--accent);display:block;margin-bottom:0.5rem"></i>
+        <div style="font-size:13px;color:var(--text-mid)">Click to upload or drag & drop files here</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:4px">PDF, Excel (.xlsx), Word (.docx) · Up to 10 files · 20MB each</div>
+      </div>
+      <input type="file" id="file-input" multiple accept=".pdf,.xlsx,.xls,.docx,.doc,.txt,.csv" style="display:none" onchange="handleFileSelect(this.files)"/>
+      <div id="file-list" style="margin-top:0.5rem;display:flex;flex-wrap:wrap;gap:6px"></div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem">
+      <div style="flex:1;height:1px;background:var(--border)"></div>
+      <div style="font-size:11px;color:var(--text-muted);font-weight:600">OR PASTE TEXT</div>
+      <div style="flex:1;height:1px;background:var(--border)"></div>
+    </div>
+
     <div class="form-group full" style="margin-bottom:1rem">
-      <div class="form-label">Paste Mark's text here</div>
-      <textarea class="form-textarea" id="import-text" rows="8" style="width:100%;font-size:13px" placeholder="Paste any text about scholarships here — can be messy, bullet points, paragraphs, multiple scholarships at once. Groq will figure it out..."></textarea>
+      <div class="form-label">Paste text about scholarships</div>
+      <textarea class="form-textarea" id="import-text" rows="5" style="width:100%;font-size:13px" placeholder="Paste any text — WhatsApp message, email, notes, website copy. Gemini will extract scholarship data automatically..."></textarea>
     </div>
 
     <div id="import-result" style="display:none;margin-bottom:1rem">
       <div style="font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.5rem">Groq extracted this data — review before saving:</div>
-      <div id="import-preview" style="background:var(--sand);border-radius:8px;padding:1rem;font-size:12px;line-height:1.8;max-height:250px;overflow-y:auto;border:var(--b)"></div>
+      <div id="import-preview" style="background:var(--bg);border-radius:8px;padding:1rem;font-size:12px;line-height:1.8;max-height:250px;overflow-y:auto;border:1px solid var(--border)"></div>
     </div>
 
     <div id="import-error" style="display:none;background:#fce4ec;border-radius:8px;padding:0.75rem 1rem;font-size:12px;color:#c62828;margin-bottom:1rem"></div>
 
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeImportModal()">Cancel</button>
-      <button class="btn btn-ghost" id="btn-extract" onclick="extractFromText()"><i class="ti ti-wand"></i> Extract with Groq AI</button>
+      <button class="btn btn-ghost" id="btn-extract" onclick="extractAll()"><i class="ti ti-wand"></i> Extract with Gemini AI</button>
       <button class="btn btn-primary" id="btn-save-import" onclick="saveImported()" style="display:none"><i class="ti ti-check"></i> Save to Database</button>
     </div>
   </div>
@@ -492,6 +515,18 @@ document.getElementById('import-modal').addEventListener('click', e => {
   if (e.target === document.getElementById('import-modal')) closeImportModal();
 });
 
+function toggleAdminTheme() {
+  const html = document.documentElement;
+  const isLight = html.getAttribute('data-theme') === 'light';
+  html.setAttribute('data-theme', isLight ? 'dark' : 'light');
+  document.getElementById('admin-theme-btn').textContent = isLight ? '🌙' : '☀️';
+  localStorage.setItem('gsg_admin_theme', isLight ? 'dark' : 'light');
+}
+(function(){
+  const t = localStorage.getItem('gsg_admin_theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', t);
+})();
+
 // ── IMPORT FROM TEXT ───────────────────────────
 let importedScholarships = [];
 
@@ -510,96 +545,96 @@ function closeImportModal() {
   document.getElementById('import-modal').classList.remove('open');
 }
 
-async function extractFromText() {
+// ── FILE HANDLING ─────────────────────────────
+let selectedFiles = [];
+
+function handleFileSelect(files) {
+  selectedFiles = Array.from(files);
+  renderFileList();
+}
+
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('drop-zone').style.borderColor = 'rgba(58,191,248,0.3)';
+  selectedFiles = Array.from(e.dataTransfer.files);
+  renderFileList();
+}
+
+function renderFileList() {
+  const list = document.getElementById('file-list');
+  list.innerHTML = selectedFiles.map((f, i) => `
+    <div style="display:flex;align-items:center;gap:6px;background:rgba(58,191,248,0.08);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px">
+      <i class="ti ti-file" style="color:var(--accent)"></i>
+      <span style="color:var(--text-mid)">${f.name}</span>
+      <button onclick="selectedFiles.splice(${i},1);renderFileList()" style="background:none;border:none;cursor:pointer;color:#f87171;font-size:14px;line-height:1;padding:0">×</button>
+    </div>`).join('');
+}
+
+async function extractAll() {
   const text = document.getElementById('import-text').value.trim();
-  if (!text) { alert('Please paste some text first.'); return; }
+  if (selectedFiles.length === 0 && !text) {
+    alert('Please upload files or paste text first.'); return;
+  }
 
   const btn = document.getElementById('btn-extract');
-  btn.textContent = '⏳ Groq is reading...';
+  btn.innerHTML = '⏳ Gemini is reading...';
   btn.disabled = true;
   document.getElementById('import-result').style.display = 'none';
   document.getElementById('import-error').style.display = 'none';
   document.getElementById('btn-save-import').style.display = 'none';
-
-  const prompt = `You are a scholarship data extractor for the Gaza Scholarship Guide.
-
-Extract ALL scholarships from the text below and return ONLY a valid JSON array. No explanation, no markdown, no code blocks — just the raw JSON array.
-
-For each scholarship extract:
-- name (string)
-- country (string)  
-- flag (emoji string, guess from country)
-- funding ("full" or "partial")
-- covers (string - what it covers)
-- fields (array - use ["all"] if open to all, or specific like ["engineering","medicine","science","it","humanities"])
-- level (array - ["undergraduate","graduate","phd"] or subset)
-- english_required (boolean)
-- english_min (string or null - e.g. "B2" or null)
-- ielts_waiver (boolean)
-- visa_feasibility ("high", "moderate", or "low" for Palestinian passport)
-- deadline (string)
-- gpa_min (number, default 60 if not mentioned)
-- link (string or "")
-- required_documents (array of strings)
-- notes (string - any special notes for Gaza students)
-- visa_notes (string)
-- gaza_specific (boolean)
-- verified (boolean - false since this is raw input)
-- last_updated (today's date as string)
-
-If a field is not mentioned, use a sensible default.
-If multiple scholarships are in the text, extract all of them as separate objects in the array.
-
-TEXT TO EXTRACT FROM:
-${text}
-
-Return ONLY the JSON array starting with [ and ending with ]`;
+  importedScholarships = [];
 
   try {
-    const r = await fetch('/api/chat', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json', 'Authorization': `Bearer ${getToken()}`},
-      body: JSON.stringify({
-        messages: [{ role: 'user', content: prompt }],
-        systemPrompt: 'You are a JSON data extractor. Always respond with valid JSON only. No markdown, no explanation.'
-      })
-    });
-    const data = await r.json();
-    if (!r.ok) throw new Error(data.error || 'API error');
+    // Handle file uploads
+    if (selectedFiles.length > 0) {
+      const formData = new FormData();
+      selectedFiles.forEach(f => formData.append('files', f));
+      const r = await fetch('/api/admin/extract-files', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${getToken()}` },
+        body: formData
+      });
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.error || 'File extraction failed');
+      importedScholarships.push(...(data.extracted || []));
+    }
 
-    // Parse the JSON from Groq response
-    let reply = data.reply.trim();
-    // Strip markdown code blocks if present
-    reply = reply.replace(/^```json\n?/,'').replace(/^```\n?/,'').replace(/```$/,'').trim();
+    // Handle text
+    if (text) {
+      const r = await fetch('/api/admin/extract-text', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken()}` },
+        body: JSON.stringify({ text })
+      });
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.error || 'Text extraction failed');
+      importedScholarships.push(...(data.extracted || []));
+    }
 
-    const parsed = JSON.parse(reply);
-    if (!Array.isArray(parsed) || parsed.length === 0) throw new Error('No scholarships found in text');
-
-    importedScholarships = parsed;
+    if (importedScholarships.length === 0) throw new Error('No scholarships found. Try different content.');
 
     // Show preview
     const preview = document.getElementById('import-preview');
-    preview.innerHTML = parsed.map((s, i) => `
-      <div style="padding:0.5rem 0;${i > 0 ? 'border-top:1px solid var(--sand-d);margin-top:0.5rem' : ''}">
+    preview.innerHTML = importedScholarships.map((s, i) => `
+      <div style="padding:0.5rem 0;${i > 0 ? 'border-top:1px solid var(--border);margin-top:0.5rem' : ''}">
         <strong>${s.flag || ''} ${s.name}</strong> — ${s.country}<br/>
         💰 ${s.funding === 'full' ? 'Full funded' : 'Partial'} &nbsp;|&nbsp;
-        🌐 English: ${s.english_required ? s.english_min + (s.ielts_waiver ? ' (waiver ok)' : '') : 'Not required'} &nbsp;|&nbsp;
-        ✈️ Visa: ${s.visa_feasibility} &nbsp;|&nbsp;
-        📅 Deadline: ${s.deadline}<br/>
-        📋 Docs: ${(s.required_documents || []).join(', ')}<br/>
-        📝 ${s.notes || 'No notes'}
+        🌐 English: ${s.english_required ? (s.english_min || '') + (s.ielts_waiver ? ' (waiver ok)' : '') : 'Not required'} &nbsp;|&nbsp;
+        ✈️ Visa: ${s.visa_feasibility} &nbsp;|&nbsp; 📅 ${s.deadline}<br/>
+        📋 Docs: ${(s.required_documents || []).slice(0,4).join(', ')}${(s.required_documents||[]).length > 4 ? '...' : ''}<br/>
+        📝 ${s.notes || ''}
       </div>`).join('');
 
     document.getElementById('import-result').style.display = 'block';
     document.getElementById('btn-save-import').style.display = 'inline-flex';
-    btn.textContent = '✦ Re-extract';
+    btn.innerHTML = '✦ Re-extract';
     btn.disabled = false;
-    showToast(`Groq found ${parsed.length} scholarship${parsed.length > 1 ? 's' : ''} — review and save`);
+    showToast(`✨ Gemini found ${importedScholarships.length} scholarship${importedScholarships.length > 1 ? 's' : ''} — review and save`);
 
   } catch(e) {
     document.getElementById('import-error').style.display = 'block';
-    document.getElementById('import-error').textContent = 'Error: ' + (e.message || 'Could not parse response. Try rephrasing the text.');
-    btn.textContent = '✦ Extract with Groq AI';
+    document.getElementById('import-error').textContent = 'Error: ' + (e.message || 'Extraction failed');
+    btn.innerHTML = '✦ Extract with Gemini AI';
     btn.disabled = false;
   }
 }

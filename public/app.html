@@ -10,173 +10,177 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --olive:#2D3B2A;--olive-mid:#3D5238;--olive-light:#8FAF7A;
-  --sand:#F5F0E8;--sand-deep:#EAE3D2;--sand-darker:#D4C9B0;
-  --rust:#C4522A;--rust-light:#E8846A;
-  --teal:#1B6B6B;--teal-light:#4AACAC;
-  --amber:#B8860B;
-  --text:#1A2018;--text-mid:#4A5E42;--text-muted:#7A8E72;
+  /* Deep Navy Dark Mode + Ocean Blue */
+  --olive:#0A4D68;--olive-mid:#0D6B8F;--olive-light:#38BDF8;
+  --sand:#1E293B;--sand-deep:#263548;--sand-darker:#2D3F55;
+  --rust:#F97316;--rust-light:#FB923C;
+  --amber:#F59E0B;
+  --text:#E2E8F0;--text-mid:#94A3B8;--text-muted:#64748B;
   --white:#FFFFFF;
-  --radius:10px;--border:1px solid rgba(45,59,42,0.15)
+  --radius:10px;--border:1px solid rgba(148,163,184,0.12);
+  --bg:#0F172A;--card:#1E293B;--card-hover:#263548;
+  --coral:#F97316;--gold:#F59E0B;--mint:#10B981;--sky:#38BDF8;
+  --ocean:#0891B2;--wave:#06B6D4
 }
-html,body{height:100%;font-family:'IBM Plex Sans Arabic',sans-serif;background:var(--sand);color:var(--text)}
+html,body{height:100%;font-family:'IBM Plex Sans Arabic',sans-serif;background:#0F172A;color:var(--text)}
 .app-shell{display:grid;grid-template-columns:220px 1fr;height:100vh;overflow:hidden}
 
 /* SIDEBAR */
-.sidebar{background:var(--olive);display:flex;flex-direction:column;overflow:hidden}
+.sidebar{background:var(--sidebar);display:flex;flex-direction:column;overflow:hidden}
 .logo-area{padding:1.5rem 1.25rem 1rem;border-bottom:1px solid rgba(255,255,255,0.1);flex-shrink:0}
-.logo-icon{width:36px;height:36px;background:var(--rust);border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:0.75rem}
+.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,#F97316,#F59E0B);border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:0.75rem;box-shadow:0 2px 12px rgba(249,115,22,0.4)}
 .logo-icon i{color:white;font-size:18px}
 .logo-name{font-family:'Fraunces',serif;font-size:14px;color:rgba(255,255,255,0.95);line-height:1.3;font-weight:300}
 .logo-sub{font-size:10px;color:rgba(255,255,255,0.4);margin-top:2px;letter-spacing:0.5px;text-transform:uppercase}
 .nav{padding:1rem 0;flex:1;overflow-y:auto}
 .nav-item{display:flex;align-items:center;gap:10px;padding:0.6rem 1.25rem;cursor:pointer;font-size:13px;color:rgba(255,255,255,0.6);transition:all 0.15s;border-left:3px solid transparent;user-select:none}
 .nav-item:hover{color:rgba(255,255,255,0.9);background:rgba(255,255,255,0.05)}
-.nav-item.active{color:white;background:rgba(255,255,255,0.1);border-left-color:var(--rust-light)}
+.nav-item.active{color:white;background:rgba(255,255,255,0.15);border-left-color:var(--accent);border-left-width:3px}
 .nav-item i{font-size:16px;width:18px;flex-shrink:0}
 .nav-label{font-size:12px;font-weight:500}
 .nav-section{font-size:10px;color:rgba(255,255,255,0.3);padding:0.75rem 1.25rem 0.25rem;letter-spacing:0.8px;text-transform:uppercase}
 .sidebar-footer{padding:1rem 1.25rem;border-top:1px solid rgba(255,255,255,0.1);flex-shrink:0}
 .student-chip{display:flex;align-items:center;gap:8px}
-.student-avatar{width:30px;height:30px;border-radius:50%;background:var(--rust);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:white;flex-shrink:0}
+.student-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#F97316,#F59E0B);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:white;flex-shrink:0}
 .student-info{flex:1;min-width:0}
 .student-name{font-size:12px;color:rgba(255,255,255,0.85);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .student-status{font-size:10px;color:rgba(255,255,255,0.4)}
 
 /* MAIN */
-.main{display:flex;flex-direction:column;overflow:hidden}
-.topbar{background:white;border-bottom:var(--border);padding:0.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;z-index:10}
-.page-title{font-size:16px;font-weight:500;color:var(--text)}
-.page-subtitle{font-size:12px;color:var(--text-muted);margin-top:1px}
+.main{display:flex;flex-direction:column;overflow:hidden;background:var(--bg)}
+.topbar{background:#1E293B;border-bottom:1px solid rgba(148,163,184,0.12);padding:0.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;z-index:10}
+.page-title{font-size:16px;font-weight:500;color:#E2E8F0}
+.page-subtitle{font-size:12px;color:#64748B;margin-top:1px}
 .topbar-actions{display:flex;gap:8px}
 .btn{display:inline-flex;align-items:center;gap:6px;padding:0.45rem 0.9rem;border-radius:var(--radius);font-size:12px;font-weight:500;cursor:pointer;transition:all 0.15s;border:none;font-family:inherit}
 .btn-primary{background:var(--olive);color:white}
 .btn-primary:hover{background:var(--olive-mid)}
-.btn-ghost{background:transparent;color:var(--text-mid);border:var(--border)}
+.btn-ghost{background:transparent;color:#94A3B8;border:1px solid rgba(148,163,184,0.2)}
 .btn-ghost:hover{background:var(--sand-deep)}
-.content{flex:1;overflow-y:auto;padding:1.5rem}
+.content{flex:1;overflow-y:auto;padding:1.5rem;background:var(--bg)}
 .panel{display:none}
 .panel.active{display:block}
 
 /* DASHBOARD */
-.greeting{font-family:'Fraunces',serif;font-size:22px;font-weight:300;color:var(--olive);margin-bottom:4px}
-.greeting-sub{font-size:13px;color:var(--text-muted);margin-bottom:1.25rem}
+.greeting{font-family:'Fraunces',serif;font-size:22px;font-weight:300;background:linear-gradient(135deg,#38BDF8,#818CF8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px}
+.greeting-sub{font-size:13px;color:#64748B;margin-bottom:1.25rem}
 .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.25rem}
-.stat-card{background:white;border:var(--border);border-radius:var(--radius);padding:1rem}
-.stat-card.highlight{border-left:3px solid var(--rust)}
-.stat-label{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
-.stat-val{font-size:22px;font-weight:700;color:var(--text)}
-.stat-note{font-size:11px;color:var(--text-muted);margin-top:2px}
+.stat-card{background:#1E293B;border:1px solid rgba(148,163,184,0.12);border-radius:var(--radius);padding:1rem;transition:all 0.2s}
+.stat-card.highlight{border-left:4px solid #F97316;background:linear-gradient(135deg,rgba(249,115,22,0.15),#1E293B)}
+.stat-label{font-size:11px;color:#64748B;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.stat-val{font-size:22px;font-weight:700;color:var(--accent)}
+.stat-note{font-size:11px;color:#64748B;margin-top:2px}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
-.card{background:white;border:var(--border);border-radius:var(--radius);padding:1.25rem}
-.card-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:1rem;display:flex;align-items:center;gap:6px}
-.card-title i{color:var(--olive-light);font-size:15px}
+.card{background:#1E293B;border:1px solid rgba(148,163,184,0.12);border-radius:var(--radius);padding:1.25rem;transition:all 0.2s}
+.card-title{font-size:13px;font-weight:600;color:#E2E8F0;margin-bottom:1rem;display:flex;align-items:center;gap:6px}
+.card-title i{color:var(--secondary);font-size:15px}
 .alert-box{background:#fff8f5;border:1px solid rgba(196,82,42,0.25);border-radius:var(--radius);padding:0.75rem 1rem;margin-bottom:1.25rem;font-size:12px;color:var(--rust);display:flex;align-items:flex-start;gap:8px;line-height:1.5}
 .alert-box i{font-size:16px;flex-shrink:0;margin-top:1px}
-.schol-row{display:flex;align-items:center;gap:10px;padding:0.5rem 0;border-bottom:1px solid var(--sand-deep)}
+.schol-row{display:flex;align-items:center;gap:10px;padding:0.5rem 0;border-bottom:1px solid rgba(148,163,184,0.1)}
 .schol-row:last-child{border-bottom:none}
 .schol-flag{font-size:18px;width:24px;text-align:center}
 .schol-info{flex:1}
-.schol-name{font-size:12px;font-weight:500;color:var(--text)}
-.schol-country{font-size:11px;color:var(--text-muted)}
+.schol-name{font-size:12px;font-weight:500;color:#E2E8F0}
+.schol-country{font-size:11px;color:#64748B}
 .schol-prob{font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px}
-.prob-high{background:#e8f5e9;color:#2e7d32}
-.prob-mid{background:#fff8e1;color:#f57c00}
-.prob-low{background:#fce4ec;color:#c62828}
+.prob-high{background:rgba(16,185,129,0.15);color:#34D399}
+.prob-mid{background:rgba(245,158,11,0.15);color:#FCD34D}
+.prob-low{background:rgba(239,68,68,0.15);color:#F87171}
 .mobility-bar{display:flex;align-items:center;gap:10px;margin:5px 0}
-.mobility-name{font-size:12px;color:var(--text-mid);width:95px;flex-shrink:0}
-.mobility-track{flex:1;height:6px;background:var(--sand-deep);border-radius:3px;overflow:hidden}
+.mobility-name{font-size:12px;color:#94A3B8;width:95px;flex-shrink:0}
+.mobility-track{flex:1;height:6px;background:#263548;border-radius:3px;overflow:hidden}
 .mobility-fill{height:100%;border-radius:3px;transition:width 0.5s}
-.fill-green{background:#4caf50}
-.fill-amber{background:#ff9800}
-.fill-red{background:#f44336}
+.fill-green{background:linear-gradient(90deg,#10B981,#34D399)}
+.fill-amber{background:linear-gradient(90deg,#F59E0B,#FCD34D)}
+.fill-red{background:linear-gradient(90deg,#EF4444,#F87171)}
 .mobility-status{font-size:10px;font-weight:700;width:60px;text-align:right}
 .deadline-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.dl-card{background:var(--sand);border-radius:8px;padding:0.75rem}
-.dl-urgency{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px}
-.dl-name{font-size:13px;font-weight:600;color:var(--text);margin:3px 0}
-.dl-note{font-size:11px;color:var(--text-muted)}
+.dl-card{background:#263548;border-radius:8px;padding:0.75rem}
+.dl-urgency{font-size:10px;color:#64748B;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px}
+.dl-name{font-size:13px;font-weight:600;color:#E2E8F0;margin:3px 0}
+.dl-note{font-size:11px;color:#64748B}
 
 /* PROFILE */
 .profile-grid{display:grid;grid-template-columns:270px 1fr;gap:1rem}
-.profile-sidebar-card{background:white;border:var(--border);border-radius:var(--radius);padding:1.5rem;text-align:center;margin-bottom:1rem}
-.big-avatar{width:60px;height:60px;border-radius:50%;background:var(--olive);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:white;margin:0 auto 0.75rem}
-.profile-name{font-size:16px;font-weight:600;color:var(--text);margin-bottom:2px}
-.profile-loc{font-size:12px;color:var(--text-muted);margin-bottom:1rem}
-.score-label{font-size:10px;color:var(--text-muted);text-align:center;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:1rem}
+.profile-sidebar-card{background:#1E293B;border:1px solid rgba(148,163,184,0.12);border-radius:var(--radius);padding:1.5rem;text-align:center;margin-bottom:1rem}
+.big-avatar{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#0A4D68,#0891B2);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:white;margin:0 auto 0.75rem;box-shadow:0 4px 16px rgba(8,145,178,0.35)}
+.profile-name{font-size:16px;font-weight:600;color:#E2E8F0;margin-bottom:2px}
+.profile-loc{font-size:12px;color:#64748B;margin-bottom:1rem}
+.score-label{font-size:10px;color:#64748B;text-align:center;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:1rem}
 .sub-scores{display:flex;flex-direction:column;gap:6px;text-align:left;margin-top:0.5rem}
 .sub-score-row{display:flex;justify-content:space-between;font-size:11px}
-.sub-score-label{color:var(--text-muted)}
+.sub-score-label{color:#64748B}
 .sub-score-val{font-weight:600}
-.profile-fields{background:white;border:var(--border);border-radius:var(--radius);padding:1.25rem}
+.profile-fields{background:#1E293B;border:1px solid rgba(148,163,184,0.12);border-radius:var(--radius);padding:1.25rem}
 .field-group{margin-bottom:1.25rem}
 .field-group:last-child{margin-bottom:0}
-.field-group-title{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.75rem;padding-bottom:0.5rem;border-bottom:var(--border)}
+.field-group-title{font-size:11px;font-weight:600;color:#38BDF8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.75rem;padding-bottom:0.5rem;border-bottom:1px solid rgba(148,163,184,0.12)}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px}
-.field-label{font-size:11px;color:var(--text-muted);margin-bottom:3px}
-.field-val{font-size:13px;font-weight:500;color:var(--text)}
-.tag{display:inline-block;background:var(--sand-deep);padding:2px 8px;border-radius:20px;font-size:11px;color:var(--text-mid);margin:2px}
-.circumstance-list{font-size:12px;line-height:1.9;color:var(--text-mid)}
+.field-label{font-size:11px;color:#64748B;margin-bottom:3px}
+.field-val{font-size:13px;font-weight:500;color:#E2E8F0}
+.tag{display:inline-block;background:rgba(56,189,248,0.12);padding:2px 8px;border-radius:20px;font-size:11px;color:#38BDF8;margin:2px;border:1px solid rgba(56,189,248,0.2)}
+.circumstance-list{font-size:12px;line-height:1.9;color:#94A3B8}
 
 /* SCHOLARSHIPS */
 .search-bar{display:flex;gap:8px;margin-bottom:1rem}
-.search-input{flex:1;padding:0.5rem 0.75rem;border:var(--border);border-radius:var(--radius);font-size:13px;font-family:inherit;background:white;color:var(--text);outline:none}
-.search-input:focus{border-color:var(--olive-light)}
+.search-input{flex:1;padding:0.5rem 0.75rem;border:1px solid rgba(148,163,184,0.2);border-radius:var(--radius);font-size:13px;font-family:inherit;background:#1E293B;color:#E2E8F0;outline:none}
+.search-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(58,191,248,0.1)}
 .filter-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem}
-.chip{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:500;cursor:pointer;border:var(--border);background:white;color:var(--text-mid);transition:all 0.15s;user-select:none}
-.chip.on{background:var(--olive);color:white;border-color:var(--olive)}
-.schol-card{background:white;border:var(--border);border-radius:var(--radius);padding:1rem 1.25rem;margin-bottom:0.75rem;display:grid;grid-template-columns:auto 1fr auto;gap:1rem;align-items:start;transition:border-color 0.15s;cursor:default}
-.schol-card:hover{border-color:var(--olive-light)}
+.chip{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:500;cursor:pointer;border:1px solid rgba(148,163,184,0.2);background:#1E293B;color:#94A3B8;transition:all 0.15s;user-select:none}
+.chip.on{background:linear-gradient(135deg,var(--primary),var(--accent));color:white;border-color:var(--accent)}
+.schol-card{background:#1E293B;border:1px solid rgba(148,163,184,0.12);border-radius:var(--radius);padding:1rem 1.25rem;margin-bottom:0.75rem;display:grid;grid-template-columns:auto 1fr auto;gap:1rem;align-items:start;transition:all 0.2s;cursor:default}
+.schol-card:hover{border-color:#38BDF8;box-shadow:0 4px 24px rgba(56,189,248,0.12);transform:translateY(-2px)}
 .flag-big{font-size:28px;padding-top:2px}
-.schol-card-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:2px}
-.schol-card-meta{font-size:11px;color:var(--text-muted);margin-bottom:8px}
+.schol-card-title{font-size:14px;font-weight:600;color:#E2E8F0;margin-bottom:2px}
+.schol-card-meta{font-size:11px;color:#64748B;margin-bottom:8px}
 .schol-tags{display:flex;gap:4px;flex-wrap:wrap}
-.schol-tag{font-size:10px;padding:2px 8px;border-radius:20px;background:var(--sand-deep);color:var(--text-mid);font-weight:500}
-.schol-tag.funded{background:#e8f5e9;color:#2e7d32}
-.schol-tag.risk{background:#fce4ec;color:#c62828}
-.schol-tag.warn{background:#fff8e1;color:#f57c00}
-.schol-tag.info{background:#e3f2fd;color:#1565c0}
+.schol-tag{font-size:10px;padding:2px 8px;border-radius:20px;background:rgba(148,163,184,0.1);color:#94A3B8;font-weight:500}
+.schol-tag.funded{background:rgba(16,185,129,0.15);color:#34D399}
+.schol-tag.risk{background:rgba(239,68,68,0.15);color:#F87171}
+.schol-tag.warn{background:rgba(245,158,11,0.15);color:#FCD34D}
+.schol-tag.info{background:rgba(56,189,248,0.15);color:#38BDF8}
 .schol-right{text-align:right;min-width:90px}
-.match-pct{font-size:22px;font-weight:700;color:var(--olive)}
-.match-label{font-size:10px;color:var(--text-muted)}
-.deadline-note{font-size:11px;color:var(--text-muted);margin-top:4px}
+.match-pct{font-size:22px;font-weight:700;color:var(--secondary)}
+.match-label{font-size:10px;color:#64748B}
+.deadline-note{font-size:11px;color:#64748B;margin-top:4px}
 .deadline-note strong{color:var(--rust)}
 
 /* TRACKER */
 .tracker-board{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;min-height:400px}
-.tracker-col{background:var(--sand-deep);border-radius:var(--radius);padding:0.75rem}
-.col-header{font-size:11px;font-weight:600;color:var(--text-mid);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.75rem;display:flex;align-items:center;justify-content:space-between}
-.col-count{background:white;border-radius:20px;padding:1px 7px;font-size:10px;color:var(--text-muted)}
-.tracker-item{background:white;border:var(--border);border-radius:8px;padding:0.6rem 0.75rem;margin-bottom:6px;cursor:default}
-.tracker-item:hover{border-color:var(--olive-light)}
+.tracker-col{background:#1E293B;border-radius:var(--radius);padding:0.75rem;border:1px solid rgba(148,163,184,0.12)}
+.col-header{font-size:11px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.75rem;display:flex;align-items:center;justify-content:space-between}
+.col-count{background:#263548;border-radius:20px;padding:1px 7px;font-size:10px;color:#64748B}
+.tracker-item{background:#263548;border:1px solid rgba(148,163,184,0.12);border-radius:8px;padding:0.6rem 0.75rem;margin-bottom:6px;cursor:default;transition:all 0.15s}
+.tracker-item:hover{border-color:#38BDF8;box-shadow:0 2px 12px rgba(56,189,248,0.15)}
 .t-flag{font-size:14px;margin-bottom:3px}
-.t-name{font-size:11px;font-weight:600;color:var(--text);margin-bottom:2px;line-height:1.3}
-.t-dl{font-size:10px;color:var(--text-muted)}
-.t-bar{height:3px;border-radius:2px;margin-top:5px;background:var(--sand-deep);overflow:hidden}
+.t-name{font-size:11px;font-weight:600;color:#E2E8F0;margin-bottom:2px;line-height:1.3}
+.t-dl{font-size:10px;color:#64748B}
+.t-bar{height:3px;border-radius:2px;margin-top:5px;background:#334155;overflow:hidden}
 .t-bar-fill{height:100%;border-radius:2px}
 .risk-chip{display:inline-block;font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;text-transform:uppercase;letter-spacing:0.3px;margin-top:4px}
-.rc-ok{background:#e8f5e9;color:#2e7d32}
-.rc-warn{background:#fff8e1;color:#f57c00}
-.rc-bad{background:#fce4ec;color:#c62828}
-.col-empty{font-size:11px;color:var(--text-muted);text-align:center;padding:1.5rem 0.5rem;line-height:1.5}
+.rc-ok{background:rgba(16,185,129,0.15);color:#34D399}
+.rc-warn{background:rgba(245,158,11,0.15);color:#FCD34D}
+.rc-bad{background:rgba(239,68,68,0.15);color:#F87171}
+.col-empty{font-size:11px;color:#475569;text-align:center;padding:1.5rem 0.5rem;line-height:1.5}
 
 /* DOCUMENTS */
-.doc-progress-bar{height:8px;border-radius:4px;background:var(--sand-deep);margin-bottom:1.5rem;overflow:hidden}
-.doc-progress-fill{height:100%;border-radius:4px;background:var(--olive-light)}
+.doc-progress-bar{height:8px;border-radius:4px;background:#263548;margin-bottom:1.5rem;overflow:hidden}
+.doc-progress-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#0891B2,#38BDF8)}
 .doc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.doc-card{background:white;border:var(--border);border-radius:var(--radius);padding:1rem}
+.doc-card{background:#1E293B;border:1px solid rgba(148,163,184,0.12);border-radius:var(--radius);padding:1rem;transition:all 0.2s}
+.doc-card:hover{border-color:var(--accent);box-shadow:var(--shadow)}
 .doc-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:0.75rem;font-size:18px}
-.doc-name{font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px}
+.doc-name{font-size:12px;font-weight:600;color:#E2E8F0;margin-bottom:3px}
 .doc-status{font-size:11px;font-weight:500;margin-bottom:4px}
-.doc-ok{color:#2e7d32}
-.doc-missing{color:#c62828}
-.doc-partial{color:#f57c00}
-.doc-note{font-size:10px;color:var(--text-muted);line-height:1.5}
+.doc-ok{color:#34D399}
+.doc-missing{color:#F87171}
+.doc-partial{color:#FCD34D}
+.doc-note{font-size:10px;color:#64748B;line-height:1.5}
 
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
 @keyframes blink{0%,80%,100%{opacity:0.15}40%{opacity:1}}
-.qbtn{font-size:11px;padding:5px 10px;border-radius:20px;border:var(--border);background:white;cursor:pointer;color:var(--text-mid);font-family:inherit;transition:all 0.15s;white-space:nowrap}
-.qbtn:hover{background:var(--sand-d);border-color:var(--olive-light)}
+.qbtn{font-size:11px;padding:5px 10px;border-radius:20px;border:1px solid rgba(148,163,184,0.2);background:#263548;cursor:pointer;color:#94A3B8;font-family:inherit;transition:all 0.15s;white-space:nowrap}
+.qbtn:hover{background:#2D3F55;border-color:#38BDF8;color:#38BDF8}
 </style>
 </head>
 <body>
@@ -230,7 +234,11 @@ html,body{height:100%;font-family:'IBM Plex Sans Arabic',sans-serif;background:v
         <div class="page-title" id="page-title">Dashboard</div>
         <div class="page-subtitle" id="page-subtitle">Your scholarship journey at a glance</div>
       </div>
-      <div class="topbar-actions">
+      <div class="topbar-actions" style="display:flex;gap:8px;align-items:center">
+        <button onclick="toggleTheme()" id="theme-btn" title="Toggle dark/light mode"
+          style="background:var(--card);border:1px solid var(--border);border-radius:8px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--accent);transition:all 0.2s">
+          <i class="ti ti-sun" id="theme-icon" style="font-size:16px"></i>
+        </button>
         <button class="btn btn-ghost" onclick="showPanel('advisor', document.querySelectorAll('.nav-item')[5])">
           <i class="ti ti-robot"></i> Ask AI Advisor
         </button>
@@ -241,8 +249,8 @@ html,body{height:100%;font-family:'IBM Plex Sans Arabic',sans-serif;background:v
 
       <!-- DASHBOARD -->
       <div class="panel active" id="panel-dashboard">
-        <div class="greeting">Good morning, Ahmad.</div>
-        <div class="greeting-sub">You have 2 deadlines in the next 30 days. Your profile score is 72/100.</div>
+        <div class="greeting" id="dash-greeting">Good morning.</div>
+        <div class="greeting-sub" id="dash-sub">Complete your profile to see your scholarship score.</div>
 
         <div class="alert-box">
           <i class="ti ti-alert-triangle"></i>
@@ -252,22 +260,22 @@ html,body{height:100%;font-family:'IBM Plex Sans Arabic',sans-serif;background:v
         <div class="stat-grid">
           <div class="stat-card highlight">
             <div class="stat-label">Active Applications</div>
-            <div class="stat-val">6</div>
-            <div class="stat-note">Across 5 countries</div>
+            <div class="stat-val" id="dash-apps">—</div>
+            <div class="stat-note" id="dash-apps-note">Track in Application Tracker</div>
           </div>
           <div class="stat-card">
             <div class="stat-label">Profile Match Score</div>
-            <div class="stat-val">72<span style="font-size:14px;font-weight:400;color:var(--text-muted)">/100</span></div>
-            <div class="stat-note">Top 24% of applicants</div>
+            <div class="stat-val"><span id="dash-score">—</span><span style="font-size:14px;font-weight:400;color:var(--text-muted)">/100</span></div>
+            <div class="stat-note" id="dash-score-note">Complete profile to calculate</div>
           </div>
           <div class="stat-card">
             <div class="stat-label">Documents Ready</div>
-            <div class="stat-val">7<span style="font-size:14px;font-weight:400;color:var(--text-muted)">/11</span></div>
-            <div class="stat-note">4 missing or partial</div>
+            <div class="stat-val"><span id="dash-docs-ready">—</span><span style="font-size:14px;font-weight:400;color:var(--text-muted)" id="dash-docs-total"></span></div>
+            <div class="stat-note" id="dash-docs-note">Add documents to track</div>
           </div>
           <div class="stat-card">
             <div class="stat-label">Avg. Funding Prob.</div>
-            <div class="stat-val">41<span style="font-size:14px;font-weight:400;color:var(--text-muted)">%</span></div>
+            <div class="stat-val"><span id="dash-schols">—</span><span style="font-size:14px;font-weight:400;color:var(--text-muted)">%</span></div>
             <div class="stat-note">Across all tracked</div>
           </div>
         </div>
@@ -296,17 +304,17 @@ html,body{height:100%;font-family:'IBM Plex Sans Arabic',sans-serif;background:v
         <div class="card">
           <div class="card-title"><i class="ti ti-calendar-event"></i> Upcoming Deadlines</div>
           <div class="deadline-grid">
-            <div class="dl-card" style="border-left:3px solid var(--rust)">
+            <div class="dl-card" style="border-left:4px solid #F97316">
               <div class="dl-urgency">🔴 Urgent · 18 days</div>
               <div class="dl-name">🇹🇷 Türkiye YTB</div>
               <div class="dl-note">Essay draft incomplete — action needed</div>
             </div>
-            <div class="dl-card" style="border-left:3px solid var(--amber)">
+            <div class="dl-card" style="border-left:4px solid #F59E0B">
               <div class="dl-urgency">🟡 Soon · 32 days</div>
               <div class="dl-name">🇭🇺 Stipendium Hungaricum</div>
               <div class="dl-note">Recommendation letter still pending</div>
             </div>
-            <div class="dl-card" style="border-left:3px solid var(--olive-light)">
+            <div class="dl-card" style="border-left:4px solid #10B981">
               <div class="dl-urgency">🟢 Upcoming · 68 days</div>
               <div class="dl-name">🇵🇰 HEC Pakistan</div>
               <div class="dl-note">On track — no action needed yet</div>
@@ -329,16 +337,16 @@ html,body{height:100%;font-family:'IBM Plex Sans Arabic',sans-serif;background:v
               <div class="profile-name" id="p-display-name">Your Name</div>
               <div class="profile-loc" id="p-display-loc">Gaza, Palestine</div>
               <svg width="90" height="90" viewBox="0 0 90 90" style="display:block;margin:0 auto 4px">
-                <circle cx="45" cy="45" r="36" fill="none" stroke="#EAE3D2" stroke-width="7"/>
-                <circle cx="45" cy="45" r="36" fill="none" stroke="#2D3B2A" stroke-width="7" stroke-dasharray="226" stroke-dashoffset="63" stroke-linecap="round" transform="rotate(-90 45 45)"/>
+                <circle cx="45" cy="45" r="36" fill="none" stroke="#263548" stroke-width="7"/>
+                <circle cx="45" cy="45" r="36" fill="none" stroke="var(--accent)" stroke-width="7" stroke-dasharray="226" stroke-dashoffset="63" stroke-linecap="round" transform="rotate(-90 45 45)"/>
                 <text x="45" y="50" text-anchor="middle" font-size="18" font-weight="700" fill="#2D3B2A" id="p-score-svg">—</text>
               </svg>
               <div class="score-label">Profile Score</div>
-              <div class="sub-scores" id="p-subscores"></div>
+              <div class="sub-scores" id="p-subscores" style="color:#94D4F0"></div>
             </div>
             <div class="card">
               <div class="card-title"><i class="ti ti-shield-check"></i> Humanitarian Status</div>
-              <div style="font-size:12px;line-height:1.9;color:var(--text-mid)" id="p-humanitarian-display"></div>
+              <div style="font-size:12px;line-height:1.9;color:#94D4F0" id="p-humanitarian-display"></div>
             </div>
           </div>
           <div class="profile-fields">
@@ -385,7 +393,7 @@ html,body{height:100%;font-family:'IBM Plex Sans Arabic',sans-serif;background:v
               <div class="field-group">
                 <div class="field-group-title">Academic Background</div>
                 <div class="field-row">
-                  <div><div class="field-label">Full Name</div><input class="search-input" id="e-name" placeholder="Ahmad Mahmoud"/></div>
+                  <div><div class="field-label">Full Name</div><input class="search-input" id="e-name" style="background:#0F172A;color:#E2F4FF;border-color:rgba(56,189,248,0.2)" placeholder="Ahmad Mahmoud"/></div>
                   <div><div class="field-label">GPA / Grade (%)</div><input class="search-input" id="e-gpa" placeholder="e.g. 93.4%"/></div>
                 </div>
                 <div class="field-row">
@@ -531,7 +539,8 @@ html,body{height:100%;font-family:'IBM Plex Sans Arabic',sans-serif;background:v
       <!-- DOCUMENTS -->
       <div class="panel" id="panel-documents">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem">
-          <div style="font-size:13px;color:var(--text-muted)" id="doc-summary">No documents added yet</div>
+          <div style="font-size:13px;color:var(--text-muted)" id="doc-summary">Loading documents from scholarships...</div>
+          <div style="font-size:11px;color:var(--olive-light);margin-top:2px">Auto-updated from scholarship requirements · Add your own anytime</div>
           <button class="btn btn-primary" onclick="openAddDoc()"><i class="ti ti-plus"></i> Add Document</button>
         </div>
         <div class="doc-progress-bar"><div class="doc-progress-fill" id="doc-progress-fill" style="width:0%"></div></div>
@@ -576,26 +585,36 @@ html,body{height:100%;font-family:'IBM Plex Sans Arabic',sans-serif;background:v
 
       <!-- AI ADVISOR -->
       <div class="panel" id="panel-advisor">
-        <div style="background:white;border:var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;height:calc(100vh - 130px)">
-          <div style="padding:0.75rem 1rem;border-bottom:var(--border);display:flex;align-items:center;gap:10px;flex-shrink:0">
+        <div style="background:#1E293B;border:1px solid rgba(56,189,248,0.12);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;height:calc(100vh - 130px)">
+          <div style="padding:0.75rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-shrink:0;background:var(--card)">
             <div style="width:8px;height:8px;border-radius:50%;background:#4caf50;animation:pulse 2s infinite"></div>
             <div style="flex:1">
-              <div style="font-size:13px;font-weight:600;color:var(--text)">Gaza Scholarship Guide — AI Advisor (v10)</div>
-              <div style="font-size:11px;color:var(--text-muted)">Reads your profile · Specialized for Gaza students · Powered by Groq</div>
+              <div style="font-size:13px;font-weight:600;color:#E2F4FF">Gaza Scholarship Guide — AI Advisor (v10)</div>
+              <div style="font-size:11px;color:var(--text-muted)">Reads your profile · Specialized for Gaza students · Powered by Gemini</div>
             </div>
-            <button onclick="clearChat()" style="font-size:11px;color:var(--text-muted);background:none;border:var(--border);border-radius:6px;padding:4px 10px;cursor:pointer;font-family:inherit">New chat</button>
+            <a href="https://chatgpt.com/g/g-69b186f6ed0081918247176f31030213-gaza-scholarship-guide-v10"
+              target="_blank"
+              title="Open original GPT by Mark Ashwill"
+              style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#0A4D68,#0891B2);color:white;text-decoration:none;padding:6px 12px;border-radius:8px;font-size:11px;font-weight:600;white-space:nowrap;box-shadow:0 2px 8px rgba(8,145,178,0.3);transition:all 0.15s;flex-shrink:0"
+              onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 4px 14px rgba(8,145,178,0.4)'"
+              onmouseout="this.style.transform='';this.style.boxShadow='0 2px 8px rgba(8,145,178,0.3)'">
+              <i class="ti ti-robot" style="font-size:14px"></i> Original GPT
+            </a>
+            <div style="display:none">
+            </div>
+            <button onclick="clearChat()" style="font-size:11px;color:var(--accent);background:none;border:1px solid var(--border);border-radius:6px;padding:4px 10px;cursor:pointer;font-family:inherit">New chat</button>
           </div>
-          <div id="chat-messages" style="flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:1rem"></div>
-          <div id="quick-prompts" style="padding:0.5rem 0.75rem;border-top:var(--border);display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0;background:var(--sand)">
+          <div id="chat-messages" style="flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:1rem;background:var(--bg)"></div>
+          <div id="quick-prompts" style="padding:0.5rem 0.75rem;border-top:1px solid var(--border);display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0;background:var(--card)">
             <button class="qbtn" onclick="sendQuick(this.textContent)">What scholarships match my profile?</button>
             <button class="qbtn" onclick="sendQuick(this.textContent)">Help me write my essay</button>
             <button class="qbtn" onclick="sendQuick(this.textContent)">I don't have IELTS — what can I do?</button>
             <button class="qbtn" onclick="sendQuick(this.textContent)">What documents am I missing?</button>
             <button class="qbtn" onclick="sendQuick(this.textContent)">Give me a 90-day action plan</button>
           </div>
-          <div style="display:flex;gap:8px;padding:0.6rem 0.75rem;border-top:var(--border);flex-shrink:0;background:white">
-            <textarea id="chat-input" placeholder="Ask about scholarships, essays, visas, documents..." style="flex:1;border:var(--border);border-radius:8px;padding:0.5rem 0.75rem;font-size:13px;font-family:inherit;resize:none;outline:none;min-height:38px;max-height:100px;line-height:1.5;color:var(--text)" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg()}"></textarea>
-            <button onclick="sendMsg()" style="background:var(--olive);color:white;border:none;border-radius:8px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;align-self:flex-end"><i class="ti ti-send" style="font-size:16px"></i></button>
+          <div style="display:flex;gap:8px;padding:0.6rem 0.75rem;border-top:1px solid rgba(148,163,184,0.12);flex-shrink:0;background:#1E293B">
+            <textarea id="chat-input" placeholder="Ask about scholarships, essays, visas, documents..." style="flex:1;border:1px solid rgba(148,163,184,0.2);border-radius:8px;padding:0.5rem 0.75rem;font-size:13px;font-family:inherit;resize:none;outline:none;min-height:38px;max-height:100px;line-height:1.5;color:#E2E8F0;background:#263548" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg()}"></textarea>
+            <button onclick="sendMsg()" style="background:linear-gradient(135deg,var(--primary),var(--accent));color:white;border:none;border-radius:8px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;align-self:flex-end"><i class="ti ti-send" style="font-size:16px"></i></button>
           </div>
         </div>
       </div>
@@ -641,6 +660,7 @@ function saveProfile() {
   renderProfile(p);
   toggleEdit(false);
   updateSidebarName(p);
+  updateDashboard();
 }
 
 function renderProfile(p) {
@@ -735,14 +755,14 @@ function toggleChip(el, filter) {
   document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
   el.classList.add('on');
   const q = document.getElementById('schol-search')?.value || '';
-  renderSchols(filter, q);
+  fetchAndRenderSchols(filter, q);
 }
 
 function filterSchols() {
   const q = document.getElementById('schol-search').value;
   const activeChip = document.querySelector('.chip.on');
   const filter = activeChip ? activeChip.getAttribute('data-filter') || 'all' : 'all';
-  renderSchols(filter, q);
+  fetchAndRenderSchols(filter, q);
 }
 
 // ── SCHOLARSHIPS DATABASE + DYNAMIC RENDERING ───
@@ -790,12 +810,23 @@ function calcMatch(schol, profile) {
   return Math.min(99, Math.max(5, Math.round(score)));
 }
 
-function renderSchols(filterTag = 'all', searchQ = '') {
+async function fetchAndRenderSchols(filterTag = 'all', searchQ = '') {
+  try {
+    const r = await fetch('/api/scholarships');
+    const live = await r.json();
+    if (live.length > 0) renderSchols(filterTag, searchQ, live);
+    else renderSchols(filterTag, searchQ, ALL_SCHOLARSHIPS);
+  } catch(e) {
+    renderSchols(filterTag, searchQ, ALL_SCHOLARSHIPS);
+  }
+}
+
+function renderSchols(filterTag = 'all', searchQ = '', sourceData = null) {
   const profile = loadProfile();
   const list = document.getElementById('schol-list');
   const empty = document.getElementById('schol-empty');
 
-  let schols = ALL_SCHOLARSHIPS.map(s => ({...s, match: calcMatch(s, profile)}));
+  let schols = (sourceData || ALL_SCHOLARSHIPS).map(s => ({...s, match: calcMatch(s, profile)}));
   schols.sort((a, b) => b.match - a.match);
 
   if (filterTag !== 'all') schols = schols.filter(s => s.tags.includes(filterTag));
@@ -848,31 +879,43 @@ function getDocIcon(name) {
   return DOC_ICONS.default;
 }
 
-const DEFAULT_DOCS = [
-  { name: 'Passport / Travel Document', status: 'missing', note: 'Required for all international applications. Contact UNRWA if expired.' },
-  { name: 'National ID Card', status: 'missing', note: 'Required by most scholarship programs as identity proof.' },
-  { name: 'Academic Transcripts', status: 'missing', note: 'Official transcripts from your university. If unavailable, a Letter of Circumstance may substitute.' },
-  { name: 'High School Certificate (Tawjihi)', status: 'missing', note: 'Original + translated copy required for undergraduate applications.' },
-  { name: 'English Proficiency (IELTS / TOEFL)', status: 'missing', note: 'If test centers are inaccessible in Gaza, apply for a humanitarian English waiver.' },
-  { name: 'Recommendation Letters (x3)', status: 'missing', note: 'From university professors or teachers. Usually 2-3 letters required.' },
-  { name: 'Personal Statement / Essay', status: 'missing', note: 'Your essay explaining why you deserve the scholarship. Use AI Advisor for help.' },
-  { name: 'Letter of Circumstance', status: 'missing', note: 'Explains disruption to studies due to conflict. Can be issued by your university.' },
-  { name: 'Passport Photos', status: 'missing', note: 'Usually 4-6 photos required. Check each scholarship for exact specifications.' },
-  { name: 'UNRWA Registration Proof', status: 'missing', note: 'Required for many humanitarian scholarships. Get from nearest UNRWA office.' },
-  { name: 'Medical Certificate', status: 'missing', note: 'Health clearance from a licensed doctor. Valid for 6 months from issue date.' },
-  { name: 'CV / Resume', status: 'missing', note: 'Academic and extracurricular achievements. Keep it under 2 pages.' },
-];
+// Fetch live scholarship data from server and merge required docs
+async function fetchLiveScholarshipDocs() {
+  try {
+    const r = await fetch('/api/scholarships');
+    const scholarships = await r.json();
+    // Collect all unique documents across all scholarships
+    const allDocs = new Set();
+    scholarships.forEach(s => {
+      (s.required_documents || []).forEach(d => allDocs.add(d.trim()));
+    });
+    return Array.from(allDocs);
+  } catch(e) { return []; }
+}
 
 function loadDocs() {
-  try {
-    const stored = localStorage.getItem('gsg_docs');
-    if (!stored) {
-      saveDocs(DEFAULT_DOCS);
-      return JSON.parse(JSON.stringify(DEFAULT_DOCS));
+  try { return JSON.parse(localStorage.getItem('gsg_docs') || '[]'); }
+  catch(e) { return []; }
+}
+
+async function syncDocsFromScholarships() {
+  // Get live docs from scholarship data
+  const liveDocs = await fetchLiveScholarshipDocs();
+  if (liveDocs.length === 0) return;
+
+  // Get student's saved docs
+  const saved = loadDocs();
+  const savedNames = saved.map(d => d.name.toLowerCase());
+
+  // Add any new docs from scholarships that student doesn't have yet
+  liveDocs.forEach(docName => {
+    if (!savedNames.includes(docName.toLowerCase())) {
+      saved.push({ name: docName, status: 'missing', note: 'Required by one or more of your tracked scholarships.' });
     }
-    return JSON.parse(stored);
-  }
-  catch(e) { return JSON.parse(JSON.stringify(DEFAULT_DOCS)); }
+  });
+
+  saveDocs(saved);
+  renderDocs();
 }
 
 function saveDocs(docs) {
@@ -1083,7 +1126,7 @@ async function sendMsg() {
 function appendUserMsg(text) {
   const el = document.createElement('div');
   el.style.cssText = 'align-self:flex-end;max-width:80%;display:flex;flex-direction:column;align-items:flex-end;gap:3px';
-  el.innerHTML = `<div style="background:var(--olive);color:white;padding:0.75rem 1rem;border-radius:12px;border-bottom-right-radius:3px;font-size:13px;line-height:1.6">${text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')}</div><div style="font-size:10px;color:var(--text-muted)">You</div>`;
+  el.innerHTML = `<div style="background:linear-gradient(135deg,var(--primary),var(--accent));color:white;padding:0.75rem 1rem;border-radius:12px;border-bottom-right-radius:3px;font-size:13px;line-height:1.6">${text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')}</div><div style="font-size:10px;color:var(--text-muted)">You</div>`;
   document.getElementById('chat-messages').appendChild(el);
   scrollChat();
 }
@@ -1092,7 +1135,7 @@ function appendAiMsg(text) {
   const el = document.createElement('div');
   el.style.cssText = 'align-self:flex-start;max-width:82%;display:flex;flex-direction:column;gap:3px';
   const html = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
-  el.innerHTML = `<div style="background:var(--sand);border:var(--border);color:var(--text);padding:0.75rem 1rem;border-radius:12px;border-bottom-left-radius:3px;font-size:13px;line-height:1.65">${html}</div><div style="font-size:10px;color:var(--text-muted)">AI Advisor · v10</div>`;
+  el.innerHTML = `<div style="background:var(--card2);border:1px solid var(--border);color:var(--text);padding:0.75rem 1rem;border-radius:12px;border-bottom-left-radius:3px;font-size:13px;line-height:1.65">${html}</div><div style="font-size:10px;color:var(--text-muted)">AI Advisor · v10</div>`;
   document.getElementById('chat-messages').appendChild(el);
   scrollChat();
 }
@@ -1105,12 +1148,112 @@ function scrollChat() {
 const ta = document.getElementById('chat-input');
 if (ta) ta.addEventListener('input', () => { ta.style.height='auto'; ta.style.height=Math.min(ta.scrollHeight,100)+'px'; });
 
+// ── THEME TOGGLE ─────────────────────────────
+function toggleTheme() {
+  const html = document.documentElement;
+  const current = html.getAttribute('data-theme') || 'dark';
+  const next = current === 'dark' ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  const icon = document.getElementById('theme-icon');
+  if (icon) icon.className = next === 'light' ? 'ti ti-moon' : 'ti ti-sun';
+  localStorage.setItem('gsg_theme', next);
+}
+
+// Set correct icon after DOM ready
+document.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem('gsg_theme') || 'dark';
+  const icon = document.getElementById('theme-icon');
+  if (icon) icon.className = saved === 'light' ? 'ti ti-moon' : 'ti ti-sun';
+});
+
+// Load saved theme on page load
+(function() {
+  const saved = localStorage.getItem('gsg_theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', saved);
+})();
+
+// ── DASHBOARD UPDATE ─────────────────────────
+function updateDashboard() {
+  const p = loadProfile();
+  const hour = new Date().getHours();
+  const timeGreet = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+  const name = p.name ? p.name.split(' ')[0] : null;
+
+  // Greeting
+  document.getElementById('dash-greeting').textContent = name
+    ? `${timeGreet}, ${name}.`
+    : `${timeGreet}.`;
+
+  // Profile score
+  const score = calcProfileScore(p);
+  document.getElementById('dash-score').textContent = score;
+  document.getElementById('dash-score-note').textContent = score >= 70
+    ? 'Strong profile' : score >= 50 ? 'Good profile' : 'Complete your profile';
+
+  // Sub text
+  document.getElementById('dash-sub').textContent = p.name
+    ? `Profile score: ${score}/100 · ${p.field || 'Add your field'} · ${p.location || 'Gaza'}`
+    : 'Complete your profile to get personalized scholarship matches.';
+
+  // Docs stats
+  const docs = loadDocs();
+  const ready = docs.filter(d => d.status === 'ready').length;
+  const missing = docs.filter(d => d.status === 'missing').length;
+  document.getElementById('dash-docs-ready').textContent = ready;
+  document.getElementById('dash-docs-total').textContent = `/${docs.length}`;
+  document.getElementById('dash-docs-note').textContent = docs.length === 0
+    ? 'No documents tracked yet'
+    : `${missing} missing · ${docs.length - ready - missing} partial`;
+
+  // Scholarships matched
+  const schols = document.querySelectorAll('#schol-list .schol-card');
+  const highMatch = Array.from(schols).filter(s => {
+    const pct = parseInt(s.querySelector('.match-pct')?.textContent || '0');
+    return pct >= 60;
+  }).length;
+  document.getElementById('dash-schols').textContent = highMatch || '—';
+  document.getElementById('dash-apps').textContent = '0';
+  document.getElementById('dash-apps-note').textContent = 'Track in Application Tracker';
+
+  // Sidebar
+  if (document.getElementById('sidebar-name')) {
+    document.getElementById('sidebar-name').textContent = p.name || 'Your Name';
+  }
+}
+
+function calcProfileScore(p) {
+  let score = 0;
+  if (p.name) score += 10;
+  if (p.gpa) {
+    const g = parseFloat(p.gpa);
+    if (g >= 90) score += 25;
+    else if (g >= 80) score += 18;
+    else if (g >= 70) score += 12;
+    else score += 5;
+  }
+  if (p.field) score += 15;
+  if (p.english) {
+    if (p.english.includes('C')) score += 15;
+    else if (p.english.includes('B2')) score += 12;
+    else if (p.english.includes('B1')) score += 8;
+    else score += 4;
+  }
+  if (p.funding === 'Full scholarship only') score += 10;
+  if (p.circumstances) score += 10;
+  if (p.location) score += 5;
+  if (p.fields) score += 5;
+  if (p.regions) score += 5;
+  return Math.min(100, score);
+}
+
 // Init
 const p = loadProfile();
 renderProfile(p);
 updateSidebarName(p);
 renderDocs();
-renderSchols();
+fetchAndRenderSchols();
+syncDocsFromScholarships();
+updateDashboard();
 initChat();
 </script>
 </body>
