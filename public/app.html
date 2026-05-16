@@ -181,13 +181,116 @@ html,body{height:100%;font-family:'IBM Plex Sans Arabic',sans-serif;background:#
 @keyframes blink{0%,80%,100%{opacity:0.15}40%{opacity:1}}
 .qbtn{font-size:11px;padding:5px 10px;border-radius:20px;border:1px solid rgba(148,163,184,0.2);background:#263548;cursor:pointer;color:#94A3B8;font-family:inherit;transition:all 0.15s;white-space:nowrap}
 .qbtn:hover{background:#2D3F55;border-color:#38BDF8;color:#38BDF8}
+
+/* ═══════════════════════════════════════
+   MOBILE RESPONSIVE
+═══════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Hide sidebar, show bottom nav */
+  .app-shell { grid-template-columns: 1fr; }
+  .sidebar {
+    display: none;
+    position: fixed; bottom: 0; left: 0; right: 0;
+    width: 100%; height: 60px; z-index: 50;
+    flex-direction: row; align-items: center;
+    background: var(--sidebar);
+    border-top: 1px solid var(--border);
+  }
+  .sidebar.mobile-open { display: flex; }
+  .logo-area { display: none; }
+  .sidebar-footer { display: none; }
+  .nav {
+    display: flex; flex-direction: row; padding: 0;
+    width: 100%; overflow-x: auto; gap: 0;
+  }
+  .nav-section { display: none; }
+  .nav-item {
+    flex-direction: column; gap: 2px; padding: 8px 12px;
+    border-left: none; border-top: 3px solid transparent;
+    flex: 1; min-width: 56px; justify-content: center;
+    font-size: 10px; text-align: center;
+  }
+  .nav-item.active { border-top-color: var(--accent); border-left: none; }
+  .nav-item i { font-size: 18px; width: auto; }
+  .nav-label { font-size: 9px; }
+
+  /* Mobile header bar */
+  .mobile-header {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--sidebar); padding: 0.75rem 1rem;
+    position: sticky; top: 0; z-index: 40;
+    border-bottom: 1px solid var(--border);
+  }
+  .mobile-logo { font-size: 14px; font-weight: 600; color: white; }
+  .mobile-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: white; cursor: pointer;
+  }
+
+  /* Hide desktop topbar on mobile */
+  .topbar { display: none; }
+
+  /* Content padding for bottom nav */
+  .main { padding-bottom: 60px; }
+  .content { padding: 1rem; }
+
+  /* Stats grid — 2 columns on mobile */
+  .stat-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .stat-val { font-size: 18px; }
+
+  /* Two col → single col */
+  .two-col { grid-template-columns: 1fr; }
+
+  /* Tracker — horizontal scroll */
+  .tracker-board {
+    grid-template-columns: repeat(5, 240px);
+    overflow-x: auto; padding-bottom: 0.5rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Scholarship cards */
+  .schol-card { grid-template-columns: auto 1fr; }
+  .schol-right { grid-column: 2; text-align: left; margin-top: 4px; }
+
+  /* Doc grid — 1 col on mobile */
+  .doc-grid { grid-template-columns: 1fr; }
+
+  /* Profile grid */
+  .profile-grid { grid-template-columns: 1fr; }
+
+  /* Chat height */
+  .chat-wrap { height: calc(100vh - 140px); }
+
+  /* Field rows */
+  .field-row { grid-template-columns: 1fr; }
+
+  /* Alert box */
+  .alert-box { font-size: 11px; }
+
+  /* Greeting */
+  .greeting { font-size: 18px; }
+}
+
+@media (max-width: 480px) {
+  .stat-grid { grid-template-columns: 1fr 1fr; }
+  .flag-big { font-size: 20px; }
+  .match-pct { font-size: 16px; }
+}
 </style>
 </head>
 <body>
 <div class="app-shell">
 
-  <!-- SIDEBAR -->
-  <div class="sidebar">
+  <!-- MOBILE HEADER (visible on mobile only) -->
+  <div class="mobile-header" id="mobile-header" style="display:none">
+    <div class="mobile-logo">🎓 Gaza Scholarship Guide</div>
+    <div class="mobile-avatar" id="mobile-avatar" onclick="showPanel('profile',null)">?</div>
+  </div>
+
+  <!-- SIDEBAR (desktop) / BOTTOM NAV (mobile) -->
+  <div class="sidebar" id="sidebar">
     <div class="logo-area">
       <div class="logo-icon"><i class="ti ti-school"></i></div>
       <div class="logo-name">Gaza Scholarship<br>Guide</div>
@@ -252,9 +355,9 @@ html,body{height:100%;font-family:'IBM Plex Sans Arabic',sans-serif;background:#
         <div class="greeting" id="dash-greeting">Good morning.</div>
         <div class="greeting-sub" id="dash-sub">Complete your profile to see your scholarship score.</div>
 
-        <div class="alert-box">
+        <div class="alert-box" id="urgent-alert" style="display:none">
           <i class="ti ti-alert-triangle"></i>
-          <span><strong>Urgent:</strong> Türkiye YTB deadline in 18 days — essay draft incomplete. Click "AI Advisor" in the sidebar for essay help right now.</span>
+          <span id="urgent-alert-text"></span>
         </div>
 
         <div class="stat-grid">
@@ -283,11 +386,7 @@ html,body{height:100%;font-family:'IBM Plex Sans Arabic',sans-serif;background:#
         <div class="two-col">
           <div class="card">
             <div class="card-title"><i class="ti ti-award"></i> Top Matched Scholarships</div>
-            <div class="schol-row"><span class="schol-flag">🇹🇷</span><div class="schol-info"><div class="schol-name">Türkiye Burslari (YTB)</div><div class="schol-country">Engineering · Full funded</div></div><span class="schol-prob prob-high">78%</span></div>
-            <div class="schol-row"><span class="schol-flag">🇯🇴</span><div class="schol-info"><div class="schol-name">Jordan Humanitarian Admission</div><div class="schol-country">Engineering · Full funded</div></div><span class="schol-prob prob-high">70%</span></div>
-            <div class="schol-row"><span class="schol-flag">🇭🇺</span><div class="schol-info"><div class="schol-name">Stipendium Hungaricum</div><div class="schol-country">STEM · Full funded</div></div><span class="schol-prob prob-high">65%</span></div>
-            <div class="schol-row"><span class="schol-flag">🇵🇰</span><div class="schol-info"><div class="schol-name">HEC Pakistan Scholarship</div><div class="schol-country">Engineering · Full funded</div></div><span class="schol-prob prob-mid">54%</span></div>
-            <div class="schol-row"><span class="schol-flag">🇩🇪</span><div class="schol-info"><div class="schol-name">DAAD Development</div><div class="schol-country">STEM · Partial funded</div></div><span class="schol-prob prob-low">38%</span></div>
+            <div id="dash-top-schols"><div style="font-size:12px;color:var(--text-muted);padding:1rem 0;text-align:center">Loading scholarships...</div></div>
           </div>
           <div class="card">
             <div class="card-title"><i class="ti ti-map-pin"></i> Mobility Risk Map</div>
@@ -474,63 +573,47 @@ html,body{height:100%;font-family:'IBM Plex Sans Arabic',sans-serif;background:#
 
       <!-- TRACKER -->
       <div class="panel" id="panel-tracker">
-        <div class="tracker-board">
-          <div class="tracker-col">
-            <div class="col-header">Researching <span class="col-count">2</span></div>
-            <div class="tracker-item">
-              <div class="t-flag">🇲🇾</div>
-              <div class="t-name">MTCP Malaysia</div>
-              <div class="t-dl">Sep 15 deadline</div>
-              <div class="t-bar"><div class="t-bar-fill" style="width:45%;background:#4caf50"></div></div>
-              <span class="risk-chip rc-ok">45% match</span>
+        <div style="display:flex;justify-content:flex-end;margin-bottom:1rem">
+          <button class="btn btn-primary" onclick="openTrackerModal()"><i class="ti ti-plus"></i> Add Application</button>
+        </div>
+        <div class="tracker-board" id="tracker-board"></div>
+
+        <!-- ADD/EDIT MODAL -->
+        <div id="tracker-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:200;align-items:center;justify-content:center;padding:1rem">
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.5rem;width:100%;max-width:460px">
+            <div style="font-size:16px;font-weight:600;color:var(--accent);margin-bottom:1rem" id="tracker-modal-title">Add Application</div>
+            <input type="hidden" id="t-edit-id"/>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+              <div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px">Scholarship Name *</div>
+                <input class="search-input" id="t-name" placeholder="e.g. Türkiye YTB" style="width:100%"/>
+              </div>
+              <div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px">Country / Flag</div>
+                <input class="search-input" id="t-flag" placeholder="🇹🇷 Türkiye" style="width:100%"/>
+              </div>
+              <div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px">Deadline</div>
+                <input class="search-input" id="t-deadline" placeholder="e.g. Jun 20" style="width:100%"/>
+              </div>
+              <div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px">Stage</div>
+                <select class="search-input" id="t-stage" style="width:100%">
+                  <option value="researching">Researching</option>
+                  <option value="inprogress">In Progress</option>
+                  <option value="submitted">Submitted</option>
+                  <option value="interview">Interview</option>
+                  <option value="decision">Decision</option>
+                </select>
+              </div>
+              <div style="grid-column:1/-1">
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px">Status / Note</div>
+                <input class="search-input" id="t-status" placeholder="e.g. Essay incomplete, Awaiting reply..." style="width:100%"/>
+              </div>
             </div>
-            <div class="tracker-item">
-              <div class="t-flag">🇩🇿</div>
-              <div class="t-name">Algeria Govt. Scholarship</div>
-              <div class="t-dl">Oct deadline</div>
-              <div class="t-bar"><div class="t-bar-fill" style="width:30%;background:#ff9800"></div></div>
-              <span class="risk-chip rc-warn">30% match</span>
-            </div>
-          </div>
-          <div class="tracker-col">
-            <div class="col-header">In Progress <span class="col-count">2</span></div>
-            <div class="tracker-item">
-              <div class="t-flag">🇹🇷</div>
-              <div class="t-name">Türkiye YTB</div>
-              <div class="t-dl">⚠ Jun 20 — 18 days</div>
-              <div class="t-bar"><div class="t-bar-fill" style="width:78%;background:#f44336"></div></div>
-              <span class="risk-chip rc-bad">Essay incomplete</span>
-            </div>
-            <div class="tracker-item">
-              <div class="t-flag">🇭🇺</div>
-              <div class="t-name">Stipendium Hungaricum</div>
-              <div class="t-dl">Jul 14 — 32 days</div>
-              <div class="t-bar"><div class="t-bar-fill" style="width:65%;background:#ff9800"></div></div>
-              <span class="risk-chip rc-warn">Rec. letter pending</span>
-            </div>
-          </div>
-          <div class="tracker-col">
-            <div class="col-header">Submitted <span class="col-count">1</span></div>
-            <div class="tracker-item">
-              <div class="t-flag">🇯🇴</div>
-              <div class="t-name">Jordan Humanitarian Admission</div>
-              <div class="t-dl">Submitted May 1</div>
-              <div class="t-bar"><div class="t-bar-fill" style="width:70%;background:#4caf50"></div></div>
-              <span class="risk-chip rc-ok">Awaiting review</span>
-            </div>
-          </div>
-          <div class="tracker-col">
-            <div class="col-header">Interview <span class="col-count">0</span></div>
-            <div class="col-empty">No interviews scheduled yet</div>
-          </div>
-          <div class="tracker-col">
-            <div class="col-header">Decision <span class="col-count">1</span></div>
-            <div class="tracker-item">
-              <div class="t-flag">🇵🇰</div>
-              <div class="t-name">HEC Pakistan</div>
-              <div class="t-dl">Applied Feb 2025</div>
-              <div class="t-bar"><div class="t-bar-fill" style="width:54%;background:#4caf50"></div></div>
-              <span class="risk-chip rc-ok">Waitlisted</span>
+            <div style="display:flex;gap:8px;justify-content:flex-end;padding-top:1rem;border-top:1px solid var(--border)">
+              <button class="btn btn-ghost" onclick="closeTrackerModal()">Cancel</button>
+              <button class="btn btn-primary" onclick="saveTrackerItem()"><i class="ti ti-check"></i> Save</button>
             </div>
           </div>
         </div>
@@ -782,30 +865,49 @@ const ALL_SCHOLARSHIPS = [
 ];
 
 function calcMatch(schol, profile) {
-  let score = schol.baseMatch;
-  const field = (profile.field || '').toLowerCase();
-  const english = (profile.english || '').toLowerCase();
-  const funding = profile.funding || '';
-  const gpa = parseFloat((profile.gpa || '0').replace('%',''));
+  const field    = (profile.field || '').toLowerCase();
+  const english  = (profile.english || '').toLowerCase();
+  const funding  = profile.funding || '';
+  const gpa      = parseFloat((profile.gpa || '0').replace('%',''));
+  const regions  = (profile.regions || '').toLowerCase();
+  const country  = (schol.country || '').toLowerCase();
 
-  // Field match boost
-  if (schol.fields.includes('all') || schol.fields.some(f => field.includes(f))) score += 8;
+  let score = 50; // base
+
+  // Gaza/Palestinian priority — big boost
+  if (schol.gaza_specific || schol.tags?.includes('high')) score += 20;
+
+  // Field match
+  const scholFields = schol.fields || ['all'];
+  if (scholFields.includes('all')) score += 10;
+  else if (scholFields.some(f => field.includes(f) || f.includes(field.split(' ')[0]))) score += 15;
+  else score -= 20;
+
+  // English feasibility
+  const engReq = schol.english || 'none'; // normalized field
+  if (engReq === 'none') score += 10;
+  else if (engReq === 'b1' && (english.includes('b1') || english.includes('b2') || english.includes('c'))) score += 5;
+  else if (engReq === 'b2' && (english.includes('b2') || english.includes('c'))) score += 3;
   else score -= 15;
 
-  // English match
-  if (schol.english === 'none' || schol.english === 'arabic') score += 5;
-  else if (schol.english === 'b1' && (english.includes('b1') || english.includes('b2') || english.includes('c'))) score += 3;
-  else if (schol.english === 'b2' && (english.includes('b2') || english.includes('c'))) score += 3;
+  // GPA
+  if (gpa >= 90) score += 12;
+  else if (gpa >= 80) score += 7;
+  else if (gpa >= 70) score += 3;
   else score -= 10;
 
-  // GPA boost
-  if (gpa >= 90) score += 8;
-  else if (gpa >= 80) score += 4;
-  else if (gpa >= 70) score += 0;
-  else score -= 8;
+  // Funding match
+  if (funding === 'Full scholarship only' && schol.funding !== 'full') score -= 25;
+  else if (schol.funding === 'full') score += 5;
 
-  // Funding requirement match
-  if (funding === 'Full scholarship only' && schol.funding !== 'full') score -= 20;
+  // Visa feasibility
+  const visa = schol.visa || schol.visa_feasibility || 'moderate';
+  if (visa === 'feasible' || visa === 'high') score += 8;
+  else if (visa === 'moderate') score += 2;
+  else score -= 10; // difficult
+
+  // Region preference match
+  if (regions && country && regions.includes(country.split(' ')[0])) score += 8;
 
   return Math.min(99, Math.max(5, Math.round(score)));
 }
@@ -814,9 +916,43 @@ async function fetchAndRenderSchols(filterTag = 'all', searchQ = '') {
   try {
     const r = await fetch('/api/scholarships');
     const live = await r.json();
-    if (live.length > 0) renderSchols(filterTag, searchQ, live);
-    else renderSchols(filterTag, searchQ, ALL_SCHOLARSHIPS);
+    if (live && live.length > 0) {
+      // Normalize DB schema → app schema so calcMatch() works correctly
+      const normalized = live.map(s => ({
+        flag: s.flag || '🌍',
+        code: (s.country || '').slice(0,2).toUpperCase(),
+        name: s.name,
+        meta: `${s.provider || s.country} · ${(s.level || []).join(' & ')}`,
+        funding: s.funding || 'full',
+        english: s.english_required ? (s.english_min || 'b2').toLowerCase() : 'none',
+        visa: s.visa_feasibility === 'high' ? 'feasible' : s.visa_feasibility === 'moderate' ? 'moderate' : 'difficult',
+        deadline: s.deadline || 'Check website',
+        baseMatch: s.gaza_specific ? 65 : 50,
+        tags: [
+          s.funding === 'full' ? 'funded' : null,
+          !s.english_required ? 'notest' : null,
+          s.visa_feasibility === 'high' ? 'feasible' : null,
+          (s.gaza_specific) ? 'high' : null,
+        ].filter(Boolean),
+        tagLabels: [
+          s.funding === 'full' ? 'Full funded' : 'Partial funded',
+          s.english_required ? (s.ielts_waiver ? (s.english_min||'B2') + ' (waiver ok)' : (s.english_min||'B2') + ' required') : 'No IELTS required',
+          s.visa_feasibility === 'high' ? 'Visa feasible' : s.visa_feasibility === 'moderate' ? 'Visa moderate' : 'Visa difficult',
+          s.gaza_specific ? 'Gaza priority' : null,
+        ].filter(Boolean),
+        fields: s.fields || ['all'],
+        levels: s.level || ['graduate'],
+        link: s.link || '',
+        required_documents: s.required_documents || [],
+        notes: s.notes || '',
+        covers: s.covers || '',
+      }));
+      renderSchols(filterTag, searchQ, normalized);
+    } else {
+      renderSchols(filterTag, searchQ, ALL_SCHOLARSHIPS);
+    }
   } catch(e) {
+    console.error('fetchAndRenderSchols error:', e);
     renderSchols(filterTag, searchQ, ALL_SCHOLARSHIPS);
   }
 }
@@ -857,9 +993,137 @@ function renderSchols(filterTag = 'all', searchQ = '', sourceData = null) {
         <div class="match-pct" style="color:${matchColor}">${s.match}%</div>
         <div class="match-label">match</div>
         <div class="deadline-note">Deadline: <strong>${s.deadline}</strong></div>
+        ${s.link ? `<a href="${s.link}" target="_blank" style="font-size:10px;color:var(--olive-light);text-decoration:none">🔗 Official link</a>` : ''}
       </div>
     </div>`;
   }).join('');
+}
+
+// ── APPLICATION TRACKER ──────────────────────
+const STAGES = [
+  { id:'researching', label:'Researching' },
+  { id:'inprogress',  label:'In Progress' },
+  { id:'submitted',   label:'Submitted' },
+  { id:'interview',   label:'Interview' },
+  { id:'decision',    label:'Decision' }
+];
+
+function loadTracker() {
+  try { return JSON.parse(localStorage.getItem('gsg_tracker') || '[]'); }
+  catch(e) { return []; }
+}
+
+function saveTracker(items) {
+  localStorage.setItem('gsg_tracker', JSON.stringify(items));
+}
+
+function renderTracker() {
+  const items = loadTracker();
+  const board = document.getElementById('tracker-board');
+  if (!board) return;
+
+  board.innerHTML = STAGES.map(stage => {
+    const stageItems = items.filter(i => i.stage === stage.id);
+    const cards = stageItems.length > 0
+      ? stageItems.map((item, idx) => {
+          const globalIdx = items.indexOf(item);
+          const statusColor = item.status?.toLowerCase().includes('complete') || item.status?.toLowerCase().includes('incomplete') ? '#f87171'
+            : item.status?.toLowerCase().includes('pending') || item.status?.toLowerCase().includes('waiting') ? '#fcd34d'
+            : '#34d399';
+          return `<div class="tracker-item">
+            <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:4px">
+              <div style="font-size:16px">${item.flag || '🌍'}</div>
+              <div style="display:flex;gap:4px">
+                <button onclick="editTrackerItem(${globalIdx})" style="background:none;border:1px solid var(--border);border-radius:5px;padding:2px 6px;cursor:pointer;font-size:10px;color:var(--text-muted)"><i class="ti ti-edit"></i></button>
+                <button onclick="deleteTrackerItem(${globalIdx})" style="background:none;border:1px solid rgba(248,113,113,0.3);border-radius:5px;padding:2px 6px;cursor:pointer;font-size:10px;color:#f87171"><i class="ti ti-trash"></i></button>
+              </div>
+            </div>
+            <div class="t-name">${item.name}</div>
+            <div class="t-dl">${item.deadline || ''}</div>
+            <div class="t-bar"><div class="t-bar-fill" style="width:60%;background:var(--secondary)"></div></div>
+            ${item.status ? `<span class="risk-chip" style="background:rgba(255,255,255,0.05);color:${statusColor};border:1px solid ${statusColor}33">${item.status}</span>` : ''}
+            <div style="margin-top:6px">
+              <select onchange="moveTrackerItem(${globalIdx}, this.value)" style="font-size:10px;background:var(--card2);border:1px solid var(--border);border-radius:5px;color:var(--text-muted);padding:2px 4px;cursor:pointer;width:100%">
+                ${STAGES.map(s => `<option value="${s.id}" ${s.id === stage.id ? 'selected' : ''}>${s.label}</option>`).join('')}
+              </select>
+            </div>
+          </div>`;
+        }).join('')
+      : `<div class="col-empty">No applications yet</div>`;
+
+    return `<div class="tracker-col">
+      <div class="col-header">${stage.label} <span class="col-count">${stageItems.length}</span></div>
+      ${cards}
+    </div>`;
+  }).join('');
+
+  // Update dashboard app count
+  const appCountEl = document.getElementById('dash-apps');
+  if (appCountEl) appCountEl.textContent = items.length || '0';
+  const appNoteEl = document.getElementById('dash-apps-note');
+  if (appNoteEl) appNoteEl.textContent = items.length > 0 ? `Across ${new Set(items.map(i=>i.flag)).size} scholarships` : 'Track in Application Tracker';
+}
+
+function openTrackerModal(prefill) {
+  document.getElementById('tracker-modal-title').textContent = 'Add Application';
+  document.getElementById('t-edit-id').value = '';
+  document.getElementById('t-name').value = prefill?.name || '';
+  document.getElementById('t-flag').value = prefill?.flag || '';
+  document.getElementById('t-deadline').value = prefill?.deadline || '';
+  document.getElementById('t-stage').value = 'researching';
+  document.getElementById('t-status').value = '';
+  document.getElementById('tracker-modal').style.display = 'flex';
+}
+
+function editTrackerItem(i) {
+  const items = loadTracker();
+  const item = items[i];
+  document.getElementById('tracker-modal-title').textContent = 'Edit Application';
+  document.getElementById('t-edit-id').value = i;
+  document.getElementById('t-name').value = item.name || '';
+  document.getElementById('t-flag').value = item.flag || '';
+  document.getElementById('t-deadline').value = item.deadline || '';
+  document.getElementById('t-stage').value = item.stage || 'researching';
+  document.getElementById('t-status').value = item.status || '';
+  document.getElementById('tracker-modal').style.display = 'flex';
+}
+
+function saveTrackerItem() {
+  const name = document.getElementById('t-name').value.trim();
+  if (!name) { alert('Please enter a scholarship name.'); return; }
+  const item = {
+    name,
+    flag: document.getElementById('t-flag').value.trim(),
+    deadline: document.getElementById('t-deadline').value.trim(),
+    stage: document.getElementById('t-stage').value,
+    status: document.getElementById('t-status').value.trim()
+  };
+  const items = loadTracker();
+  const editId = document.getElementById('t-edit-id').value;
+  if (editId !== '') items[parseInt(editId)] = item;
+  else items.push(item);
+  saveTracker(items);
+  closeTrackerModal();
+  renderTracker();
+}
+
+function deleteTrackerItem(i) {
+  if (!confirm('Remove this application?')) return;
+  const items = loadTracker();
+  items.splice(i, 1);
+  saveTracker(items);
+  renderTracker();
+}
+
+function moveTrackerItem(i, newStage) {
+  const items = loadTracker();
+  items[i].stage = newStage;
+  saveTracker(items);
+  renderTracker();
+}
+
+function closeTrackerModal() {
+  document.getElementById('tracker-modal').style.display = 'none';
 }
 
 // ── DOCUMENTS ────────────────────────────────
@@ -1024,6 +1288,23 @@ let aiTyping = false;
 
 function buildSystemPrompt() {
   const p = loadProfile();
+
+  // Pull tracker data
+  const tracker = loadTracker();
+  const trackerSummary = tracker.length > 0
+    ? tracker.map(t => `- ${t.flag||''} ${t.name} | Stage: ${t.stage} | Deadline: ${t.deadline||'?'} | Status: ${t.status||'—'}`).join('\n')
+    : 'No applications tracked yet';
+
+  // Pull documents data
+  const docs = loadDocs();
+  const docSummary = docs.length > 0
+    ? docs.map(d => `- ${d.name}: ${d.status}${d.note ? ' ('+d.note+')' : ''}`).join('\n')
+    : 'No documents tracked yet';
+
+  const ready   = docs.filter(d => d.status === 'ready').length;
+  const missing = docs.filter(d => d.status === 'missing').length;
+  const partial = docs.filter(d => d.status === 'partial').length;
+
   return `You are the Gaza Scholarship Guide AI Advisor (v10), a specialized scholarship intelligence system built for Gaza students.
 
 CURRENT STUDENT PROFILE:
@@ -1042,6 +1323,12 @@ CURRENT STUDENT PROFILE:
 - Special Circumstances: ${p.circumstances || 'Gaza student'}
 - Humanitarian Status: ${p.humanitarian || 'Gaza resident'}
 
+STUDENT'S APPLICATION TRACKER (current applications):
+${trackerSummary}
+
+STUDENT'S DOCUMENTS STATUS (${ready} ready, ${partial} partial, ${missing} missing):
+${docSummary}
+
 YOUR CORE RULES (v10 Engine):
 1. FUNDING SAFETY LOCK: Never recommend scholarships requiring fees or partial funding. Full coverage only unless student says otherwise.
 2. MOBILITY INTELLIGENCE: Always assess Palestinian passport visa feasibility before recommending any country.
@@ -1054,15 +1341,13 @@ YOUR CORE RULES (v10 Engine):
 9. HONEST PROBABILITY: Give realistic probability estimates (High/Medium/Low or %).
 10. ALWAYS HAVE PLAN B: Include fallback options.
 
-KNOWN SCHOLARSHIP DATABASE:
-- Türkiye YTB: Full funded, no IELTS, Palestinian visa feasible, Jun 20 deadline
-- Jordan Humanitarian Admission: Full funded, Arabic, visa very feasible, rolling
-- Stipendium Hungaricum (Hungary): Full funded, B2 English (waiver possible), visa feasible, Jul 14
-- HEC Pakistan: Full funded, Arabic-friendly, visa feasible, humanitarian priority, Aug 30
-- MTCP Malaysia: Full funded, no IELTS, visa feasible, Sep 15
-- DAAD Germany: Partial funded, high English requirement, visa moderate — not primary recommendation
-
-TONE: Warm, direct, honest. Speak like a knowledgeable friend who deeply understands Gaza reality. Be specific to this student's actual profile above. Keep responses focused and readable. Respond in English unless asked for Arabic.`;
+IMPORTANT INSTRUCTIONS:
+- You already have this student's full profile above — DO NOT ask for info already provided.
+- Skip MODE 1 DISCOVERY for fields already known. Go directly to MODE 2 MATCHING.
+- Use the live scholarship database provided by the server (100 real scholarships).
+- Always refer to the student by name if provided.
+- Be specific — mention actual scholarship names, deadlines, match reasons based on their field and GPA.
+- Respond in English unless asked for Arabic.`;
 }
 
 function initChat() {
@@ -1148,6 +1433,28 @@ function scrollChat() {
 const ta = document.getElementById('chat-input');
 if (ta) ta.addEventListener('input', () => { ta.style.height='auto'; ta.style.height=Math.min(ta.scrollHeight,100)+'px'; });
 
+// ── MOBILE DETECTION ─────────────────────────
+function setupMobile() {
+  const isMobile = window.innerWidth <= 768;
+  const mobileHeader = document.getElementById('mobile-header');
+  const sidebar = document.getElementById('sidebar');
+
+  if (isMobile) {
+    mobileHeader.style.display = 'flex';
+    sidebar.classList.add('mobile-open');
+    // Update mobile avatar initials
+    const p = loadProfile();
+    const initials = p.name ? p.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2) : '?';
+    const av = document.getElementById('mobile-avatar');
+    if (av) av.textContent = initials;
+  } else {
+    mobileHeader.style.display = 'none';
+    sidebar.classList.remove('mobile-open');
+  }
+}
+
+window.addEventListener('resize', setupMobile);
+
 // ── THEME TOGGLE ─────────────────────────────
 function toggleTheme() {
   const html = document.documentElement;
@@ -1219,6 +1526,119 @@ function updateDashboard() {
   if (document.getElementById('sidebar-name')) {
     document.getElementById('sidebar-name').textContent = p.name || 'Your Name';
   }
+
+  // Real deadlines from live scholarship database
+  fetch('/api/scholarships').then(r => r.json()).then(schols => {
+    // Calculate days until deadline
+    function daysUntil(deadlineStr) {
+      if (!deadlineStr || deadlineStr === 'Check website' || deadlineStr === 'Rolling') return null;
+      const months = {jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
+      const str = deadlineStr.toLowerCase();
+      for (const [mon, idx] of Object.entries(months)) {
+        if (str.includes(mon)) {
+          const day = parseInt(str.match(/\d+/)?.[0]) || 1;
+          const now = new Date();
+          let year = now.getFullYear();
+          const target = new Date(year, idx, day);
+          if (target < now) target.setFullYear(year + 1);
+          return Math.ceil((target - now) / (1000*60*60*24));
+        }
+      }
+      return null;
+    }
+
+    // Get profile for matching
+    const prof = loadProfile();
+    const userField = (prof.field || '').toLowerCase();
+
+    // Filter relevant scholarships with real deadlines, sorted by urgency
+    const withDeadlines = schols
+      .filter(s => {
+        const days = daysUntil(s.deadline);
+        return days !== null && days > 0 && days <= 120;
+      })
+      .map(s => ({ ...s, daysLeft: daysUntil(s.deadline) }))
+      .sort((a, b) => a.daysLeft - b.daysLeft)
+      .slice(0, 3);
+
+    // Update deadline cards
+    const dlGrid = document.querySelector('.deadline-grid');
+    if (dlGrid && withDeadlines.length > 0) {
+      dlGrid.innerHTML = withDeadlines.map(s => {
+        const d = s.daysLeft;
+        const color = d <= 20 ? '#F97316' : d <= 45 ? '#F59E0B' : '#10B981';
+        const emoji = d <= 20 ? '🔴 Urgent' : d <= 45 ? '🟡 Soon' : '🟢 Upcoming';
+        return `<div class="dl-card" style="border-left:4px solid ${color}">
+          <div class="dl-urgency">${emoji} · ${d} days</div>
+          <div class="dl-name">${s.flag||'🎓'} ${s.name}</div>
+          <div class="dl-note">${s.notes || s.covers || 'Check official website'}</div>
+          ${s.link ? `<a href="${s.link}" target="_blank" style="font-size:10px;color:var(--olive-light)">🔗 Apply</a>` : ''}
+        </div>`;
+      }).join('');
+    } else if (dlGrid) {
+      dlGrid.innerHTML = '<div class="dl-card" style="grid-column:1/-1;text-align:center;color:var(--text-muted);font-size:12px">No upcoming deadlines found in database. Ask admin to add deadline dates.</div>';
+    }
+
+    // Show/hide urgent alert based on real deadlines
+    const alertBox = document.getElementById('urgent-alert');
+    const alertText = document.getElementById('urgent-alert-text');
+    const mostUrgent = withDeadlines[0];
+    if (alertBox && mostUrgent && mostUrgent.daysLeft <= 30) {
+      alertText.innerHTML = `<strong>Urgent (${mostUrgent.daysLeft} days):</strong> ${mostUrgent.flag||''} ${mostUrgent.name} deadline approaching. ${mostUrgent.link ? `<a href="${mostUrgent.link}" target="_blank" style="color:var(--rust)">Apply now →</a>` : 'Check official website.'}`;
+      alertBox.style.display = 'flex';
+    } else if (alertBox) {
+      alertBox.style.display = 'none';
+    }
+
+    // Update avg funding probability stat
+    const feasible = schols.filter(s => s.visa_feasibility === 'high' && s.funding === 'full').length;
+    const pct = schols.length > 0 ? Math.round((feasible / schols.length) * 100) : 0;
+    const scholEl = document.getElementById('dash-schols');
+    if (scholEl) scholEl.textContent = pct;
+
+  }).catch(() => {});
+
+  // Top scholarships on dashboard
+  setTimeout(() => {
+    const scholList = document.querySelectorAll('#schol-list .schol-card');
+    const topEl = document.getElementById('dash-top-schols');
+    if (topEl && scholList.length > 0) {
+      const top5 = Array.from(scholList).slice(0, 5);
+      topEl.innerHTML = top5.map(card => {
+        const flag = card.querySelector('.flag-big')?.textContent || '🌍';
+        const title = card.querySelector('.schol-card-title')?.textContent || '';
+        const meta = card.querySelector('.schol-card-meta')?.textContent || '';
+        const match = card.querySelector('.match-pct')?.textContent || '';
+        const matchNum = parseInt(match);
+        const cls = matchNum >= 65 ? 'prob-high' : matchNum >= 45 ? 'prob-mid' : 'prob-low';
+        return `<div class="schol-row">
+          <span class="schol-flag">${flag}</span>
+          <div class="schol-info"><div class="schol-name">${title}</div><div class="schol-country">${meta.split('·')[1]?.trim() || ''}</div></div>
+          <span class="schol-prob ${cls}">${match}</span>
+        </div>`;
+      }).join('');
+    }
+  }, 800);
+
+  // Tracker summary on dashboard
+  const trackerItems = loadTracker();
+  const summaryEl = document.getElementById('dash-tracker-summary');
+  if (summaryEl) {
+    if (trackerItems.length === 0) {
+      summaryEl.innerHTML = 'No applications tracked yet. <a href="#" onclick="showPanel(\'tracker\',document.querySelectorAll(\'.nav-item\')[3])" style="color:var(--accent);text-decoration:none">Add your first →</a>';
+    } else {
+      const stages = {researching:0,inprogress:0,submitted:0,interview:0,decision:0};
+      trackerItems.forEach(i => { if(stages[i.stage]!==undefined) stages[i.stage]++; });
+      summaryEl.innerHTML = `<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:4px">
+        ${Object.entries({researching:'Researching',inprogress:'In Progress',submitted:'Submitted',interview:'Interview',decision:'Decision'}).map(([k,v]) =>
+          `<div style="background:var(--card2);border-radius:8px;padding:0.5rem;text-align:center">
+            <div style="font-size:18px;font-weight:700;color:var(--accent)">${stages[k]}</div>
+            <div style="font-size:10px;color:var(--text-muted)">${v}</div>
+          </div>`
+        ).join('')}
+      </div>`;
+    }
+  }
 }
 
 function calcProfileScore(p) {
@@ -1254,6 +1674,7 @@ renderDocs();
 fetchAndRenderSchols();
 syncDocsFromScholarships();
 updateDashboard();
+renderTracker();
 initChat();
 </script>
 </body>

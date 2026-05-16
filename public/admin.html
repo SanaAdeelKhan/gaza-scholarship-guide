@@ -8,20 +8,34 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--olive:#0A4D68;--olive-lt:#38BDF8;--sand:#F0FAFA;--sand-d:#E0F2FE;--rust:#F97316;--text:#0C2D3F;--text-muted:#5B9AB5;--white:#fff;--r:10px;--b:1px solid #BAE6FD}
-body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+:root{
+  --olive:#0A4D68;--olive-mid:#0D6B8F;--olive-lt:#38BDF8;
+  --sand:#F0FAFA;--sand-d:#E0F2FE;
+  --rust:#F97316;--text:#0C2D3F;--text-mid:#1E4A62;--text-muted:#5B9AB5;
+  --white:#fff;--r:10px;
+  --bg:#F0FAFA;--card:#fff;--card2:#E0F2FE;
+  --border:1px solid #BAE6FD;--accent:#0A4D68;--secondary:#0891B2;
+  --primary:#0A4D68
+}
+[data-theme="dark"]{
+  --bg:#0F172A;--card:#1E293B;--card2:#263548;
+  --border:1px solid rgba(148,163,184,0.12);
+  --text:#E2E8F0;--text-mid:#CBD5E1;--text-muted:#64748B;
+  --accent:#38BDF8;--secondary:#06B6D4
+}
+body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background 0.2s,color 0.2s}
 
 /* LOGIN */
 #login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:1rem}
-.login-box{background:white;border:1px solid var(--border);border-radius:16px;padding:2.5rem;width:100%;max-width:380px;text-align:center}
+.login-box{background:var(--card);border:var(--border);border-radius:16px;padding:2.5rem;width:100%;max-width:380px;text-align:center;box-shadow:0 4px 24px rgba(8,77,104,0.08)}
 .login-icon{width:56px;height:56px;background:var(--olive);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem}
 .login-icon i{color:white;font-size:26px}
 .login-title{font-size:20px;font-weight:600;color:var(--accent);margin-bottom:0.25rem}
 .login-sub{font-size:13px;color:var(--text-muted);margin-bottom:1.75rem}
-.login-input{width:100%;padding:0.65rem 0.9rem;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;outline:none;margin-bottom:0.75rem}
+.login-input{width:100%;padding:0.65rem 0.9rem;border:var(--border);border-radius:8px;font-size:14px;font-family:inherit;outline:none;margin-bottom:0.75rem;background:var(--card);color:var(--text)}
 .login-input:focus{border-color:var(--olive-lt)}
 .login-btn{width:100%;padding:0.7rem;background:linear-gradient(135deg,#0A4D68,#0891B2);color:white;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;box-shadow:0 2px 10px rgba(8,145,178,0.3)}
-.login-btn:hover{background:#3D5238}
+.login-btn:hover{opacity:0.9}
 .login-error{font-size:12px;color:var(--rust);margin-top:0.5rem;display:none}
 
 /* APP */
@@ -40,26 +54,35 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
 .page-title{font-size:20px;font-weight:600;color:var(--accent)}
 .page-sub{font-size:13px;color:var(--text-muted);margin-top:2px}
 .btn{display:inline-flex;align-items:center;gap:6px;padding:0.5rem 1rem;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;border:none;font-family:inherit;transition:all 0.15s}
-.btn-primary{background:linear-gradient(135deg,#0A4D68,#0891B2);color:white;box-shadow:0 2px 8px rgba(8,145,178,0.3)}.btn-primary:hover{background:linear-gradient(135deg,#0D6B8F,#06B6D4)}
-.btn-ghost{background:white;color:var(--text);border:1px solid var(--border)}.btn-ghost:hover{background:var(--card2)}
-.btn-danger{background:#fce4ec;color:#c62828;border:1px solid rgba(198,40,40,0.2)}.btn-danger:hover{background:#f8bbd0}
-.btn-success{background:#e8f5e9;color:#2e7d32;border:1px solid rgba(46,125,50,0.2)}.btn-success:hover{background:#c8e6c9}
+.btn-primary{background:linear-gradient(135deg,#0A4D68,#0891B2);color:white;box-shadow:0 2px 8px rgba(8,145,178,0.3)}
+.btn-primary:hover{opacity:0.9}
+.btn-ghost{background:var(--card);color:var(--text);border:var(--border)}
+.btn-ghost:hover{background:var(--card2)}
+.btn-danger{background:#fce4ec;color:#c62828;border:1px solid rgba(198,40,40,0.2)}
+.btn-danger:hover{background:#f8bbd0}
+.btn-success{background:#e8f5e9;color:#2e7d32;border:1px solid rgba(46,125,50,0.2)}
+.btn-success:hover{background:#c8e6c9}
 
 /* STATS */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.5rem}
-.stat{background:white;border:1px solid var(--border);border-radius:var(--r);padding:1rem}
+.stat{background:var(--card);border:var(--border);border-radius:var(--r);padding:1rem}
 .stat-label{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
 .stat-val{font-size:24px;font-weight:700;color:var(--accent)}
 
+/* TABS */
+.tabs{display:flex;gap:4px;margin-bottom:1.25rem;background:var(--card2);border-radius:10px;padding:4px;width:fit-content}
+.tab{padding:6px 16px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;color:var(--text-muted);transition:all 0.15s;border:none;background:none;font-family:inherit}
+.tab.active{background:var(--card);color:var(--accent);box-shadow:0 1px 4px rgba(0,0,0,0.1)}
+
 /* TABLE */
-.table-card{background:white;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:1.5rem}
-.table-head{padding:0.9rem 1.25rem;border-bottom:var(--b);display:flex;align-items:center;justify-content:space-between}
+.table-card{background:var(--card);border:var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:1.5rem}
+.table-head{padding:0.9rem 1.25rem;border-bottom:var(--border);display:flex;align-items:center;justify-content:space-between}
 .table-title{font-size:14px;font-weight:600;color:var(--text-mid)}
 table{width:100%;border-collapse:collapse}
-th{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;padding:0.65rem 1.25rem;text-align:left;border-bottom:var(--b);background:var(--bg)}
-td{font-size:13px;color:var(--text-mid);padding:0.75rem 1.25rem;border-bottom:1px solid var(--border)}
+th{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;padding:0.65rem 1.25rem;text-align:left;border-bottom:var(--border);background:var(--bg)}
+td{font-size:13px;color:var(--text-mid);padding:0.75rem 1.25rem;border-bottom:var(--border)}
 tr:last-child td{border-bottom:none}
-tr:hover td{background:var(--bg)}
+tr:hover td{background:var(--card2)}
 .badge{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px}
 .badge-full{background:#e8f5e9;color:#2e7d32}
 .badge-partial{background:#fff8e1;color:#f57c00}
@@ -70,20 +93,60 @@ tr:hover td{background:var(--bg)}
 /* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:100;display:none;align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto}
 .modal-overlay.open{display:flex}
-.modal{background:white;border-radius:14px;width:100%;max-width:680px;padding:1.75rem;margin:auto}
+.modal{background:var(--card);border-radius:14px;width:100%;max-width:680px;padding:1.75rem;margin:auto}
 .modal-title{font-size:18px;font-weight:600;color:var(--accent);margin-bottom:0.25rem}
 .modal-sub{font-size:12px;color:var(--text-muted);margin-bottom:1.5rem}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
 .form-group{display:flex;flex-direction:column;gap:4px}
 .form-group.full{grid-column:1/-1}
 .form-label{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.4px}
-.form-input,.form-select,.form-textarea{padding:0.5rem 0.75rem;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;color:var(--text);outline:none}
-.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent)}
+.form-input,.form-select,.form-textarea{padding:0.5rem 0.75rem;border:var(--border);border-radius:8px;font-size:13px;font-family:inherit;color:var(--text);outline:none;background:var(--card);transition:border-color 0.15s}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--olive-lt);box-shadow:0 0 0 3px rgba(56,189,248,0.1)}
 .form-textarea{resize:vertical;min-height:80px;line-height:1.5}
-.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--border)}
-.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--olive);color:white;padding:0.75rem 1.25rem;border-radius:10px;font-size:13px;font-weight:500;z-index:200;display:none;align-items:center;gap:8px;box-shadow:0 4px 20px rgba(0,0,0,0.2)}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:1.25rem;padding-top:1rem;border-top:var(--border)}
+.section-divider{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;padding:0.75rem 0 0.5rem;border-top:var(--border);margin-top:0.5rem;grid-column:1/-1}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--olive);color:white;padding:0.75rem 1.25rem;border-radius:10px;font-size:13px;font-weight:500;z-index:9999;display:none;align-items:center;gap:8px;box-shadow:0 4px 20px rgba(0,0,0,0.2)}
 .toast.show{display:flex}
-.section-divider{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;padding:0.75rem 0 0.5rem;border-top:var(--b);margin-top:0.5rem;grid-column:1/-1}
+
+/* BATCH PROGRESS */
+.batch-progress-box{display:none;background:var(--card2);border:var(--border);border-radius:10px;padding:1rem;margin-bottom:1rem}
+.batch-bar-track{height:6px;background:var(--bg);border-radius:3px;overflow:hidden;margin:8px 0}
+.batch-bar-fill{height:100%;background:linear-gradient(90deg,#0A4D68,#38BDF8);border-radius:3px;transition:width 0.4s;width:0%}
+.batch-steps{display:flex;flex-direction:column;gap:4px;max-height:180px;overflow-y:auto;margin-top:8px}
+.batch-step{display:flex;align-items:center;gap:8px;font-size:11px;padding:4px 8px;background:var(--card);border-radius:6px;border:var(--border)}
+
+/* FILE LIBRARY */
+.file-library{background:var(--card2);border:var(--border);border-radius:10px;padding:1rem;margin-bottom:1rem}
+.file-library-title{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.75rem;display:flex;align-items:center;justify-content:space-between}
+.file-row{display:flex;align-items:center;gap:10px;padding:6px 10px;background:var(--card);border:var(--border);border-radius:8px;margin-bottom:4px;font-size:12px}
+.file-row:last-child{margin-bottom:0}
+.file-row-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text-mid)}
+.file-row-meta{font-size:10px;color:var(--text-muted);flex-shrink:0}
+.file-row-status{font-size:10px;font-weight:600;flex-shrink:0}
+.status-done{color:#2e7d32}
+.status-pending{color:#f57c00}
+
+@media(max-width:768px){
+  .topbar{padding:0.6rem 1rem;flex-wrap:wrap;gap:6px}
+  .topbar-logo{font-size:12px}
+  .topbar-link,.logout-btn{font-size:10px;padding:3px 8px}
+  .content{padding:1rem}
+  .stats{grid-template-columns:1fr 1fr;gap:8px}
+  .stat-val{font-size:18px}
+  .page-header{flex-direction:column;gap:10px;align-items:flex-start}
+  table{font-size:11px}
+  th,td{padding:0.5rem 0.6rem}
+  th:nth-child(3),td:nth-child(3),th:nth-child(4),td:nth-child(4){display:none}
+  .modal{padding:1.25rem;margin:0.5rem}
+  .form-grid{grid-template-columns:1fr}
+  .form-group.full,.section-divider{grid-column:1}
+}
+@media(max-width:480px){
+  .stats{grid-template-columns:1fr 1fr}
+  th:nth-child(5),td:nth-child(5){display:none}
+}
 </style>
 </head>
 <body>
@@ -112,7 +175,7 @@ tr:hover td{background:var(--bg)}
     <div class="topbar-right">
       <a href="/" class="topbar-link"><i class="ti ti-external-link"></i> View Landing</a>
       <a href="/app" class="topbar-link"><i class="ti ti-layout-dashboard"></i> View App</a>
-      <button onclick="toggleAdminTheme()" style="background:none;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);font-size:12px;padding:4px 10px;border-radius:6px;cursor:pointer;font-family:inherit" id="admin-theme-btn">🌙</button>
+      <button onclick="toggleAdminTheme()" style="background:none;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);font-size:16px;padding:4px 10px;border-radius:6px;cursor:pointer" id="admin-theme-btn">🌙</button>
       <button class="logout-btn" onclick="logout()"><i class="ti ti-logout"></i> Logout</button>
     </div>
   </div>
@@ -124,7 +187,7 @@ tr:hover td{background:var(--bg)}
         <div class="page-sub">All changes reflect immediately across the app for all students</div>
       </div>
       <div style="display:flex;gap:8px">
-        <button class="btn btn-ghost" onclick="openImportModal()"><i class="ti ti-download"></i> Import from Text</button>
+        <button class="btn btn-ghost" onclick="openImportModal()"><i class="ti ti-file-upload"></i> Import Files / Text</button>
         <button class="btn btn-primary" onclick="openAddModal()"><i class="ti ti-plus"></i> Add Scholarship</button>
       </div>
     </div>
@@ -137,27 +200,59 @@ tr:hover td{background:var(--bg)}
       <div class="stat"><div class="stat-label">Gaza Specific</div><div class="stat-val" id="stat-gaza">0</div></div>
     </div>
 
-    <!-- TABLE -->
-    <div class="table-card">
-      <div class="table-head">
-        <div class="table-title">All Scholarships</div>
-        <div style="font-size:12px;color:var(--text-muted)" id="last-updated-label"></div>
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Scholarship</th>
-            <th>Country</th>
-            <th>Funding</th>
-            <th>English</th>
-            <th>Visa</th>
-            <th>Deadline</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="schol-tbody"></tbody>
-      </table>
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('scholarships',this)"><i class="ti ti-award"></i> Scholarships</button>
+      <button class="tab" onclick="switchTab('files',this)"><i class="ti ti-files"></i> Uploaded Files</button>
     </div>
+
+    <!-- SCHOLARSHIPS TAB -->
+    <div id="tab-scholarships">
+      <div class="table-card">
+        <div class="table-head">
+          <div class="table-title">All Scholarships</div>
+          <div style="font-size:12px;color:var(--text-muted)" id="last-updated-label"></div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Scholarship</th>
+              <th>Country</th>
+              <th>Funding</th>
+              <th>English</th>
+              <th>Visa</th>
+              <th>Deadline</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="schol-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- FILES TAB -->
+    <div id="tab-files" style="display:none">
+      <div class="table-card">
+        <div class="table-head">
+          <div class="table-title">Uploaded File Library</div>
+          <button class="btn btn-ghost" style="font-size:11px" onclick="openImportModal()"><i class="ti ti-plus"></i> Upload More</button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>File Name</th>
+              <th>Type</th>
+              <th>Size</th>
+              <th>Uploaded</th>
+              <th>Scholarships Extracted</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="files-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -179,7 +274,6 @@ tr:hover td{background:var(--bg)}
       </div>
       <div class="form-group"><div class="form-label">Deadline *</div><input class="form-input" id="f-deadline" placeholder="e.g. June 20 or Rolling"/></div>
       <div class="form-group full"><div class="form-label">What it Covers *</div><input class="form-input" id="f-covers" placeholder="Tuition, housing, stipend, health insurance..."/></div>
-
       <div class="section-divider">Eligibility</div>
       <div class="form-group"><div class="form-label">Minimum GPA (%)</div><input class="form-input" id="f-gpa" placeholder="e.g. 70"/></div>
       <div class="form-group"><div class="form-label">Study Level *</div>
@@ -221,7 +315,6 @@ tr:hover td{background:var(--bg)}
           <option value="low">Low — difficult</option>
         </select>
       </div>
-
       <div class="section-divider">Details</div>
       <div class="form-group full"><div class="form-label">Official Link</div><input class="form-input" id="f-link" placeholder="https://..."/></div>
       <div class="form-group full"><div class="form-label">Required Documents (one per line)</div>
@@ -255,47 +348,66 @@ tr:hover td{background:var(--bg)}
 
 <!-- IMPORT MODAL -->
 <div class="modal-overlay" id="import-modal">
-  <div class="modal" style="max-width:620px">
-    <div class="modal-title">Import Scholarships from Text</div>
-    <div class="modal-sub">Paste any raw text — WhatsApp message, email, notes, website copy. Groq AI will extract and structure the scholarship data automatically.</div>
+  <div class="modal" style="max-width:640px">
+    <div class="modal-title">Import Scholarships from Files / Text</div>
+    <div class="modal-sub">Upload PDFs, Word, Excel, TXT files or paste raw text. Gemini AI will extract and structure the scholarship data automatically — including deadlines, documents required, eligibility, and visa info.</div>
 
-    <div style="background:var(--bg);border-radius:8px;padding:1rem;margin-bottom:1rem;font-size:12px;color:var(--text-muted);line-height:1.7">
+    <!-- EXAMPLE -->
+    <div style="background:var(--card2);border-radius:8px;padding:0.75rem 1rem;margin-bottom:1rem;font-size:12px;color:var(--text-muted);line-height:1.7;border:var(--border)">
       <strong style="color:var(--text)">Example input:</strong><br/>
       "Türkiye Burslari — full scholarship for all fields, no IELTS needed, covers housing and monthly stipend of $400, deadline is June 20 every year, Palestinian passport accepted easily, need transcripts and passport and motivation letter"
     </div>
 
-    <!-- FILE UPLOAD -->
+    <!-- FILE DROP ZONE -->
     <div style="margin-bottom:1rem">
-      <div class="form-label" style="margin-bottom:0.5rem">Upload Files (PDF, Excel, Word — multiple allowed)</div>
-      <div id="drop-zone" onclick="document.getElementById('file-input').click()"
+      <div class="form-label" style="margin-bottom:0.5rem">Upload Files (PDF, Excel, Word, TXT, CSV, PPT — multiple allowed)</div>
+      <div id="drop-zone"
+        onclick="document.getElementById('file-input').click()"
         style="border:2px dashed rgba(58,191,248,0.3);border-radius:10px;padding:1.5rem;text-align:center;cursor:pointer;transition:all 0.2s;background:rgba(58,191,248,0.03)"
-        ondragover="event.preventDefault();this.style.borderColor='var(--accent)'"
+        ondragover="event.preventDefault();this.style.borderColor='var(--olive-lt)'"
         ondragleave="this.style.borderColor='rgba(58,191,248,0.3)'"
         ondrop="handleDrop(event)">
-        <i class="ti ti-cloud-upload" style="font-size:28px;color:var(--accent);display:block;margin-bottom:0.5rem"></i>
-        <div style="font-size:13px;color:var(--text-mid)">Click to upload or drag & drop files here</div>
-        <div style="font-size:11px;color:var(--text-muted);margin-top:4px">PDF, Excel (.xlsx), Word (.docx) · Up to 10 files · 20MB each</div>
+        <i class="ti ti-cloud-upload" style="font-size:28px;color:var(--olive-lt);display:block;margin-bottom:0.5rem"></i>
+        <div style="font-size:13px;color:var(--text-mid)">Click to upload or drag &amp; drop files here</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:4px">PDF, Word, Excel, TXT, CSV, PPT, MD · Up to 25 files · 50MB each</div>
       </div>
-      <input type="file" id="file-input" multiple accept=".pdf,.xlsx,.xls,.docx,.doc,.txt,.csv" style="display:none" onchange="handleFileSelect(this.files)"/>
-      <div id="file-list" style="margin-top:0.5rem;display:flex;flex-wrap:wrap;gap:6px"></div>
+      <input type="file" id="file-input" multiple accept=".pdf,.xlsx,.xls,.docx,.doc,.txt,.csv,.odt,.rtf,.pptx,.ppt,.md" style="display:none" onchange="handleFileSelect(this.files)"/>
+      <div id="file-list" style="margin-top:0.5rem"></div>
     </div>
 
+    <!-- DIVIDER -->
     <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem">
       <div style="flex:1;height:1px;background:var(--border)"></div>
       <div style="font-size:11px;color:var(--text-muted);font-weight:600">OR PASTE TEXT</div>
       <div style="flex:1;height:1px;background:var(--border)"></div>
     </div>
 
-    <div class="form-group full" style="margin-bottom:1rem">
-      <div class="form-label">Paste text about scholarships</div>
-      <textarea class="form-textarea" id="import-text" rows="5" style="width:100%;font-size:13px" placeholder="Paste any text — WhatsApp message, email, notes, website copy. Gemini will extract scholarship data automatically..."></textarea>
+    <!-- TEXT INPUT -->
+    <div style="margin-bottom:1rem">
+      <div class="form-label" style="margin-bottom:4px">Paste text about scholarships</div>
+      <textarea class="form-textarea" id="import-text" rows="5" style="width:100%;font-size:13px" oninput="saveDraftText()" placeholder="Paste any text — WhatsApp message, email, notes, website copy. Gemini will extract scholarship data automatically..."></textarea>
     </div>
 
+    <!-- BATCH PROGRESS (hidden until extraction starts) -->
+    <div class="batch-progress-box" id="batch-progress">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+        <div style="font-size:12px;font-weight:600;color:var(--text-mid)">Extraction Progress</div>
+        <div style="font-size:11px;color:var(--text-muted)" id="batch-summary">Starting...</div>
+      </div>
+      <div class="batch-bar-track"><div class="batch-bar-fill" id="batch-bar"></div></div>
+      <div class="batch-steps" id="batch-steps"></div>
+    </div>
+
+    <!-- EXTRACTED PREVIEW -->
     <div id="import-result" style="display:none;margin-bottom:1rem">
-      <div style="font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.5rem">Groq extracted this data — review before saving:</div>
-      <div id="import-preview" style="background:var(--bg);border-radius:8px;padding:1rem;font-size:12px;line-height:1.8;max-height:250px;overflow-y:auto;border:1px solid var(--border)"></div>
+      <div style="font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.5rem">
+        Gemini extracted this data — review before saving:
+        <span id="extracted-count" style="color:var(--accent)"></span>
+      </div>
+      <div id="import-preview" style="background:var(--card2);border-radius:8px;padding:1rem;font-size:12px;line-height:1.8;max-height:250px;overflow-y:auto;border:var(--border)"></div>
     </div>
 
+    <!-- ERROR BOX -->
     <div id="import-error" style="display:none;background:#fce4ec;border-radius:8px;padding:0.75rem 1rem;font-size:12px;color:#c62828;margin-bottom:1rem"></div>
 
     <div class="modal-actions">
@@ -315,9 +427,8 @@ function doLogin() {
   const user = document.getElementById('login-user').value.trim();
   const pass = document.getElementById('login-pass').value.trim();
   fetch('/api/admin/login', {
-    method: 'POST',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({username: user, password: pass})
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({username:user, password:pass})
   })
   .then(r => r.json())
   .then(data => {
@@ -331,8 +442,9 @@ function doLogin() {
     }
   })
   .catch(() => {
-    document.getElementById('login-error').style.display = 'block';
-    document.getElementById('login-error').textContent = 'Server error. Is the server running?';
+    const el = document.getElementById('login-error');
+    el.style.display = 'block';
+    el.textContent = 'Server error. Is the server running?';
   });
 }
 
@@ -343,25 +455,36 @@ function logout() {
 
 function getToken() { return sessionStorage.getItem('gsg_admin_token'); }
 
-// Check if already logged in
 if (getToken()) {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('admin-app').style.display = 'block';
   loadData();
 }
 
+// ── TABS ──────────────────────────────────────
+function switchTab(name, btn) {
+  document.getElementById('tab-scholarships').style.display = name === 'scholarships' ? 'block' : 'none';
+  document.getElementById('tab-files').style.display = name === 'files' ? 'block' : 'none';
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  if (name === 'files') renderFileLibrary();
+}
+
 // ── DATA ──────────────────────────────────────
 let scholarships = [];
+let fileLibrary = []; // persisted list of uploaded files + what was extracted
 
 async function loadData() {
   try {
     const r = await fetch('/api/admin/scholarships', {
-      headers: {'Authorization': `Bearer ${getToken()}`}
+      headers:{'Authorization':`Bearer ${getToken()}`}
     });
     if (r.status === 401) { logout(); return; }
     scholarships = await r.json();
     renderTable();
     renderStats();
+    // Load file library from localStorage
+    try { fileLibrary = JSON.parse(localStorage.getItem('gsg_file_library') || '[]'); } catch(e) { fileLibrary = []; }
   } catch(e) {
     showToast('Error loading data', true);
   }
@@ -378,7 +501,7 @@ function renderStats() {
 function renderTable() {
   const tbody = document.getElementById('schol-tbody');
   if (scholarships.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--text-muted)">No scholarships yet. Click "Add Scholarship" to get started.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--text-muted)">No scholarships yet. Click "Add Scholarship" or "Import Files / Text" to get started.</td></tr>';
     return;
   }
   tbody.innerHTML = scholarships.map((s, i) => `
@@ -398,11 +521,58 @@ function renderTable() {
     </tr>`).join('');
 }
 
-// ── MODAL ─────────────────────────────────────
+function renderFileLibrary() {
+  const tbody = document.getElementById('files-tbody');
+  if (fileLibrary.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--text-muted)">No files uploaded yet. Use "Import Files / Text" to upload files.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = fileLibrary.map((f, i) => `
+    <tr>
+      <td>
+        <div style="display:flex;align-items:center;gap:8px">
+          <i class="ti ${getFileIcon(f.name)}" style="color:var(--accent);font-size:16px;flex-shrink:0"></i>
+          <span style="font-weight:500">${f.name}</span>
+        </div>
+      </td>
+      <td>${f.type || '—'}</td>
+      <td>${f.sizeKB ? f.sizeKB + ' KB' : '—'}</td>
+      <td style="font-size:11px;color:var(--text-muted)">${f.uploadedAt ? new Date(f.uploadedAt).toLocaleString() : '—'}</td>
+      <td>
+        ${f.extracted > 0
+          ? `<span style="color:#2e7d32;font-weight:600">${f.extracted} scholarship${f.extracted > 1 ? 's' : ''}</span>`
+          : `<span style="color:var(--text-muted)">—</span>`}
+      </td>
+      <td>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-danger" style="padding:4px 10px;font-size:11px" onclick="deleteFileFromLibrary(${i})"><i class="ti ti-trash"></i> Remove</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+function getFileIcon(name) {
+  const ext = (name || '').split('.').pop().toLowerCase();
+  const map = {pdf:'ti-file-type-pdf', xlsx:'ti-file-spreadsheet', xls:'ti-file-spreadsheet',
+    docx:'ti-file-word', doc:'ti-file-word', txt:'ti-file-text', csv:'ti-file-spreadsheet',
+    pptx:'ti-presentation', ppt:'ti-presentation', md:'ti-markdown'};
+  return map[ext] || 'ti-file';
+}
+
+function deleteFileFromLibrary(i) {
+  if (!confirm(`Remove "${fileLibrary[i].name}" from the library? This doesn't delete extracted scholarships.`)) return;
+  fileLibrary.splice(i, 1);
+  localStorage.setItem('gsg_file_library', JSON.stringify(fileLibrary));
+  renderFileLibrary();
+  showToast('File removed from library');
+}
+
+// ── SCHOLARSHIP MODAL ─────────────────────────
 function openAddModal() {
   document.getElementById('modal-title').textContent = 'Add Scholarship';
   document.getElementById('edit-id').value = '';
-  ['f-name','f-country','f-flag','f-deadline','f-covers','f-gpa','f-link','f-docs','f-notes','f-visanotes'].forEach(id => document.getElementById(id).value = '');
+  ['f-name','f-country','f-flag','f-deadline','f-covers','f-gpa','f-link','f-docs','f-notes','f-visanotes']
+    .forEach(id => document.getElementById(id).value = '');
   document.getElementById('f-funding').value = 'full';
   document.getElementById('f-level').value = 'undergraduate,graduate,phd';
   document.getElementById('f-english').value = 'false';
@@ -445,12 +615,10 @@ async function saveScholarship() {
   const name = document.getElementById('f-name').value.trim();
   const country = document.getElementById('f-country').value.trim();
   if (!name || !country) { alert('Name and Country are required.'); return; }
-
   const englishVal = document.getElementById('f-english').value;
   const s = {
-    id: name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
-    name,
-    country,
+    id: name.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,''),
+    name, country,
     flag: document.getElementById('f-flag').value.trim(),
     funding: document.getElementById('f-funding').value,
     deadline: document.getElementById('f-deadline').value.trim(),
@@ -463,18 +631,16 @@ async function saveScholarship() {
     fields: document.getElementById('f-fields').value.split(','),
     visa_feasibility: document.getElementById('f-visa').value,
     link: document.getElementById('f-link').value.trim(),
-    required_documents: document.getElementById('f-docs').value.split('\n').map(d => d.trim()).filter(Boolean),
+    required_documents: document.getElementById('f-docs').value.split('\n').map(d=>d.trim()).filter(Boolean),
     notes: document.getElementById('f-notes').value.trim(),
     visa_notes: document.getElementById('f-visanotes').value.trim(),
     gaza_specific: document.getElementById('f-gazaspecific').value === 'true',
     verified: document.getElementById('f-verified').value === 'true',
     last_updated: new Date().toISOString().split('T')[0]
   };
-
   const editId = document.getElementById('edit-id').value;
   if (editId !== '') scholarships[parseInt(editId)] = s;
   else scholarships.push(s);
-
   await pushData();
   closeModal();
 }
@@ -488,8 +654,8 @@ async function deleteScholarship(i) {
 async function pushData() {
   try {
     const r = await fetch('/api/admin/scholarships', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json','Authorization':`Bearer ${getToken()}`},
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':`Bearer ${getToken()}`},
       body: JSON.stringify(scholarships)
     });
     if (r.status === 401) { logout(); return; }
@@ -499,22 +665,23 @@ async function pushData() {
   } catch(e) { showToast('Server error', true); }
 }
 
-function showToast(msg, isError = false) {
+function showToast(msg, isError=false) {
   const t = document.getElementById('toast');
   document.getElementById('toast-msg').textContent = msg;
-  t.style.background = isError ? '#c62828' : 'var(--olive)';
+  t.style.background = isError ? '#c62828' : '#0A4D68';
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
+  setTimeout(() => t.classList.remove('show'), 3500);
 }
 
+// Close modals on backdrop click
 document.getElementById('schol-modal').addEventListener('click', e => {
   if (e.target === document.getElementById('schol-modal')) closeModal();
 });
-
 document.getElementById('import-modal').addEventListener('click', e => {
   if (e.target === document.getElementById('import-modal')) closeImportModal();
 });
 
+// ── THEME ─────────────────────────────────────
 function toggleAdminTheme() {
   const html = document.documentElement;
   const isLight = html.getAttribute('data-theme') === 'light';
@@ -523,20 +690,37 @@ function toggleAdminTheme() {
   localStorage.setItem('gsg_admin_theme', isLight ? 'dark' : 'light');
 }
 (function(){
-  const t = localStorage.getItem('gsg_admin_theme') || 'dark';
+  const t = localStorage.getItem('gsg_admin_theme') || 'light';
   document.documentElement.setAttribute('data-theme', t);
+  document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('admin-theme-btn');
+    if (btn) btn.textContent = t === 'light' ? '🌙' : '☀️';
+  });
 })();
 
-// ── IMPORT FROM TEXT ───────────────────────────
+// ── IMPORT MODAL ──────────────────────────────
 let importedScholarships = [];
+let selectedFiles = [];
 
 function openImportModal() {
-  document.getElementById('import-text').value = '';
+  // Restore draft text
+  const saved = sessionStorage.getItem('gsg_import_draft');
+  const textEl = document.getElementById('import-text');
+  if (saved && textEl) textEl.value = saved;
+
+  // Reset state
   document.getElementById('import-result').style.display = 'none';
   document.getElementById('import-error').style.display = 'none';
   document.getElementById('btn-save-import').style.display = 'none';
-  document.getElementById('btn-extract').textContent = '✦ Extract with Groq AI';
-  document.getElementById('btn-extract').disabled = false;
+  document.getElementById('batch-progress').style.display = 'none';
+  document.getElementById('batch-steps').innerHTML = '';
+  document.getElementById('batch-bar').style.width = '0%';
+  document.getElementById('batch-summary').textContent = 'Starting...';
+
+  const btn = document.getElementById('btn-extract');
+  btn.innerHTML = '<i class="ti ti-wand"></i> Extract with Gemini AI';
+  btn.disabled = false;
+
   importedScholarships = [];
   document.getElementById('import-modal').classList.add('open');
 }
@@ -545,31 +729,52 @@ function closeImportModal() {
   document.getElementById('import-modal').classList.remove('open');
 }
 
-// ── FILE HANDLING ─────────────────────────────
-let selectedFiles = [];
+function saveDraftText() {
+  const t = document.getElementById('import-text')?.value || '';
+  sessionStorage.setItem('gsg_import_draft', t);
+}
 
+// ── FILE HANDLING ─────────────────────────────
 function handleFileSelect(files) {
-  selectedFiles = Array.from(files);
-  renderFileList();
+  const newFiles = Array.from(files);
+  const existingNames = selectedFiles.map(f => f.name);
+  newFiles.forEach(f => { if (!existingNames.includes(f.name)) selectedFiles.push(f); });
+  renderSelectedFiles();
 }
 
 function handleDrop(e) {
   e.preventDefault();
   document.getElementById('drop-zone').style.borderColor = 'rgba(58,191,248,0.3)';
-  selectedFiles = Array.from(e.dataTransfer.files);
-  renderFileList();
+  handleFileSelect(e.dataTransfer.files);
 }
 
-function renderFileList() {
+function removeFile(idx) {
+  selectedFiles.splice(idx, 1);
+  renderSelectedFiles();
+}
+
+function renderSelectedFiles() {
   const list = document.getElementById('file-list');
-  list.innerHTML = selectedFiles.map((f, i) => `
-    <div style="display:flex;align-items:center;gap:6px;background:rgba(58,191,248,0.08);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px">
-      <i class="ti ti-file" style="color:var(--accent)"></i>
-      <span style="color:var(--text-mid)">${f.name}</span>
-      <button onclick="selectedFiles.splice(${i},1);renderFileList()" style="background:none;border:none;cursor:pointer;color:#f87171;font-size:14px;line-height:1;padding:0">×</button>
-    </div>`).join('');
+  if (selectedFiles.length === 0) { list.innerHTML = ''; return; }
+  const totalSize = selectedFiles.reduce((a,f) => a + f.size, 0);
+  const sizeMB = (totalSize / (1024*1024)).toFixed(1);
+  list.innerHTML = `
+    <div style="font-size:11px;color:var(--accent);margin-bottom:6px;font-weight:600;display:flex;align-items:center;justify-content:space-between">
+      <span>${selectedFiles.length} file${selectedFiles.length>1?'s':''} selected · ${sizeMB}MB total</span>
+      <button onclick="selectedFiles=[];renderSelectedFiles()" style="background:none;border:none;cursor:pointer;color:#f87171;font-size:11px">Clear all</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:4px;max-height:160px;overflow-y:auto">
+      ${selectedFiles.map((f,i) => `
+        <div style="display:flex;align-items:center;gap:8px;background:rgba(58,191,248,0.06);border:var(--border);border-radius:6px;padding:5px 10px;font-size:11px">
+          <i class="ti ${getFileIcon(f.name)}" style="color:var(--accent);flex-shrink:0"></i>
+          <span style="color:var(--text-mid);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${f.name}">${f.name}</span>
+          <span style="color:var(--text-muted);flex-shrink:0">${(f.size/1024).toFixed(0)}KB</span>
+          <button onclick="removeFile(${i})" style="background:none;border:none;cursor:pointer;color:#f87171;font-size:16px;line-height:1;padding:0;flex-shrink:0">×</button>
+        </div>`).join('')}
+    </div>`;
 }
 
+// ── EXTRACTION ────────────────────────────────
 async function extractAll() {
   const text = document.getElementById('import-text').value.trim();
   if (selectedFiles.length === 0 && !text) {
@@ -577,85 +782,172 @@ async function extractAll() {
   }
 
   const btn = document.getElementById('btn-extract');
-  btn.innerHTML = '⏳ Gemini is reading...';
+  btn.innerHTML = '⏳ Starting...';
   btn.disabled = true;
+
+  // Reset UI
   document.getElementById('import-result').style.display = 'none';
   document.getElementById('import-error').style.display = 'none';
   document.getElementById('btn-save-import').style.display = 'none';
   importedScholarships = [];
 
+  // Show progress box
+  const batchProgress = document.getElementById('batch-progress');
+  const batchSteps = document.getElementById('batch-steps');
+  const batchBar = document.getElementById('batch-bar');
+  const batchSummary = document.getElementById('batch-summary');
+  batchProgress.style.display = 'block';
+  batchSteps.innerHTML = '';
+  batchBar.style.width = '0%';
+  batchSummary.textContent = 'Preparing...';
+
+  const totalItems = selectedFiles.length + (text ? 1 : 0);
+  let processed = 0;
+
+  function addStep(name, status, count) {
+    const icons = { pending:'⏳', done:'✅', error:'❌', running:'🔄' };
+    const safeId = 'step-' + name.replace(/[^a-z0-9]/gi, '_').slice(0, 30);
+    let el = document.getElementById(safeId);
+    if (!el) {
+      el = document.createElement('div');
+      el.id = safeId;
+      el.className = 'batch-step';
+      batchSteps.appendChild(el);
+    }
+    el.innerHTML = `
+      <span style="flex-shrink:0">${icons[status] || '•'}</span>
+      <span style="flex:1;color:var(--text-mid);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${name}</span>
+      ${count != null ? `<span style="color:var(--accent);font-weight:600;flex-shrink:0">${count} found</span>` : ''}`;
+    batchSteps.scrollTop = batchSteps.scrollHeight;
+    const pct = Math.round((processed / totalItems) * 100);
+    batchBar.style.width = pct + '%';
+    batchSummary.textContent = `${processed}/${totalItems} processed · ${importedScholarships.length} scholarships extracted`;
+  }
+
   try {
-    // Handle file uploads
+    // Handle files
     if (selectedFiles.length > 0) {
+      selectedFiles.forEach(f => addStep(f.name, 'pending', null));
+      addStep('Uploading files...', 'running', null);
+
       const formData = new FormData();
       selectedFiles.forEach(f => formData.append('files', f));
+
       const r = await fetch('/api/admin/extract-files', {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${getToken()}` },
+        method:'POST',
+        headers:{'Authorization':`Bearer ${getToken()}`},
         body: formData
       });
       const data = await r.json();
       if (!r.ok) throw new Error(data.error || 'File extraction failed');
-      importedScholarships.push(...(data.extracted || []));
+
+      const fileExtracted = data.extracted || [];
+      importedScholarships.push(...fileExtracted);
+      processed += selectedFiles.length;
+
+      // Add to file library
+      selectedFiles.forEach(f => {
+        fileLibrary.push({
+          name: f.name,
+          type: f.name.split('.').pop().toUpperCase(),
+          sizeKB: Math.round(f.size / 1024),
+          uploadedAt: new Date().toISOString(),
+          extracted: fileExtracted.length
+        });
+      });
+      localStorage.setItem('gsg_file_library', JSON.stringify(fileLibrary));
+
+      selectedFiles.forEach(f => addStep(f.name, 'done', null));
+      addStep(`All ${selectedFiles.length} files processed`, 'done', fileExtracted.length);
+      btn.innerHTML = `⏳ ${processed}/${totalItems} done...`;
     }
 
     // Handle text
     if (text) {
+      addStep('Pasted text', 'running', null);
       const r = await fetch('/api/admin/extract-text', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken()}` },
-        body: JSON.stringify({ text })
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':`Bearer ${getToken()}`},
+        body: JSON.stringify({text})
       });
       const data = await r.json();
       if (!r.ok) throw new Error(data.error || 'Text extraction failed');
-      importedScholarships.push(...(data.extracted || []));
+      const textExtracted = data.extracted || [];
+      importedScholarships.push(...textExtracted);
+      processed++;
+      addStep('Pasted text', 'done', textExtracted.length);
+      btn.innerHTML = `⏳ ${processed}/${totalItems} done...`;
     }
 
-    if (importedScholarships.length === 0) throw new Error('No scholarships found. Try different content.');
+    if (importedScholarships.length === 0) {
+      throw new Error('No scholarships found in the provided content. Try adding more specific details about scholarships.');
+    }
 
     // Show preview
     const preview = document.getElementById('import-preview');
     preview.innerHTML = importedScholarships.map((s, i) => `
-      <div style="padding:0.5rem 0;${i > 0 ? 'border-top:1px solid var(--border);margin-top:0.5rem' : ''}">
-        <strong>${s.flag || ''} ${s.name}</strong> — ${s.country}<br/>
-        💰 ${s.funding === 'full' ? 'Full funded' : 'Partial'} &nbsp;|&nbsp;
-        🌐 English: ${s.english_required ? (s.english_min || '') + (s.ielts_waiver ? ' (waiver ok)' : '') : 'Not required'} &nbsp;|&nbsp;
-        ✈️ Visa: ${s.visa_feasibility} &nbsp;|&nbsp; 📅 ${s.deadline}<br/>
-        📋 Docs: ${(s.required_documents || []).slice(0,4).join(', ')}${(s.required_documents||[]).length > 4 ? '...' : ''}<br/>
-        📝 ${s.notes || ''}
+      <div style="padding:0.5rem 0;${i > 0 ? 'border-top:1px solid rgba(148,163,184,0.15);margin-top:0.5rem' : ''}">
+        <strong style="color:var(--text)">${s.flag || '🎓'} ${s.name}</strong>
+        <span style="color:var(--text-muted)"> — ${s.country}</span><br/>
+        💰 ${s.funding === 'full' ? '<span style="color:#2e7d32">Full funded</span>' : 'Partial'} &nbsp;|&nbsp;
+        🌐 English: ${s.english_required ? ((s.english_min || '') + (s.ielts_waiver ? ' (waiver ok)' : '')) : '<span style="color:#2e7d32">Not required</span>'} &nbsp;|&nbsp;
+        ✈️ Visa: ${s.visa_feasibility} &nbsp;|&nbsp;
+        📅 <strong>${s.deadline}</strong><br/>
+        ${s.covers ? `📦 Covers: ${s.covers}<br/>` : ''}
+        ${(s.required_documents||[]).length > 0 ? `📋 Docs: ${(s.required_documents||[]).slice(0,4).join(', ')}${(s.required_documents||[]).length > 4 ? '...' : ''}<br/>` : ''}
+        ${s.notes ? `📝 <em style="color:var(--text-muted)">${s.notes}</em>` : ''}
       </div>`).join('');
 
+    document.getElementById('extracted-count').textContent = `(${importedScholarships.length} scholarship${importedScholarships.length > 1 ? 's' : ''} found)`;
     document.getElementById('import-result').style.display = 'block';
     document.getElementById('btn-save-import').style.display = 'inline-flex';
-    btn.innerHTML = '✦ Re-extract';
+    btn.innerHTML = '<i class="ti ti-refresh"></i> Re-extract';
     btn.disabled = false;
-    showToast(`✨ Gemini found ${importedScholarships.length} scholarship${importedScholarships.length > 1 ? 's' : ''} — review and save`);
+    batchBar.style.width = '100%';
+    batchSummary.textContent = `✅ Complete — ${importedScholarships.length} scholarships ready to save`;
+    showToast(`✨ Found ${importedScholarships.length} scholarship${importedScholarships.length > 1 ? 's' : ''} — review and save`);
 
   } catch(e) {
-    document.getElementById('import-error').style.display = 'block';
-    document.getElementById('import-error').textContent = 'Error: ' + (e.message || 'Extraction failed');
-    btn.innerHTML = '✦ Extract with Gemini AI';
+    const errEl = document.getElementById('import-error');
+    errEl.style.display = 'block';
+    errEl.textContent = '❌ ' + (e.message || 'Extraction failed. Check server logs.');
+    btn.innerHTML = '<i class="ti ti-wand"></i> Try Again';
     btn.disabled = false;
+    batchSummary.textContent = 'Failed — see error above';
+    // Mark last pending step as error
+    const lastStep = batchSteps.lastElementChild;
+    if (lastStep) {
+      const icon = lastStep.querySelector('span:first-child');
+      if (icon) icon.textContent = '❌';
+    }
   }
 }
 
+// ── SAVE IMPORTED ─────────────────────────────
 async function saveImported() {
   if (!importedScholarships.length) return;
-  // Merge with existing — avoid duplicates by name
-  const existing = scholarships.map(s => s.name.toLowerCase());
-  const newOnes = importedScholarships.filter(s => !existing.includes(s.name.toLowerCase()));
-  const updated = [...scholarships, ...newOnes];
 
-  // Also update existing ones if same name
+  // Merge: update existing by name, add new ones
+  const merged = [...scholarships];
   importedScholarships.forEach(imp => {
-    const idx = scholarships.findIndex(s => s.name.toLowerCase() === imp.name.toLowerCase());
-    if (idx >= 0) updated[idx] = imp;
+    const idx = merged.findIndex(s => s.name.toLowerCase() === imp.name.toLowerCase());
+    if (idx >= 0) merged[idx] = imp;
+    else merged.push(imp);
   });
+  scholarships = merged;
 
-  scholarships = updated;
   await pushData();
+
+  // Clear draft text and file selection after save
+  sessionStorage.removeItem('gsg_import_draft');
+  selectedFiles = [];
+  renderSelectedFiles();
+  const textEl = document.getElementById('import-text');
+  if (textEl) textEl.value = '';
+
   closeImportModal();
-  showToast(`✅ ${importedScholarships.length} scholarship${importedScholarships.length > 1 ? 's' : ''} saved to database!`);
+  showToast(`✅ ${importedScholarships.length} scholarship${importedScholarships.length > 1 ? 's' : ''} saved to database — students can see them now!`);
+  importedScholarships = [];
 }
 </script>
 </body>

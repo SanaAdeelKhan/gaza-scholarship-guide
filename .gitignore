@@ -17,3 +17,15 @@ Thumbs.db
 # ── Logs ──
 logs/
 *.log
+
+# ── Uploads & Data (Mark's private content) ──
+uploads/
+knowledge_base/
+
+# ── Keep data folder but not the actual data files ──
+data/scholarships.json
+data/knowledge.json
+
+# ── Python cache ──
+__pycache__/
+*.pyc
