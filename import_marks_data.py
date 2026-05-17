@@ -1,21 +1,60 @@
 #!/usr/bin/env python3
 """
-Run this once from ~/gaza-scholarship-guide:
+Run once from ~/gaza-scholarship-guide:
   python3 import_marks_data.py
 
-It will:
-1. Parse gaza_scholarship_dataset_100.csv → scholarships.json (100 real scholarships)
-2. Read all knowledge text files → knowledge.json (AI Advisor context)
+Imports:
+1. gaza_scholarship_dataset_100.csv → MongoDB scholarships collection
+2. All knowledge files (txt, pdf, xlsx) → MongoDB knowledge collection
+
+Data persists permanently in MongoDB Atlas — survives server restarts and Render redeploys.
 """
 
-import csv, json, os, re
+import csv, json, os, re, sys
+from datetime import datetime
+
+# ── Load .env ─────────────────────────────────
+def load_env():
+    env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env')
+    if not os.path.exists(env_path):
+        print("❌ .env file not found")
+        sys.exit(1)
+    with open(env_path) as f:
+        for line in f:
+            line = line.strip()
+            if line and not line.startswith('#') and '=' in line:
+                k, v = line.split('=', 1)
+                os.environ.setdefault(k.strip(), v.strip())
+
+load_env()
+
+MONGODB_URI = os.environ.get('MONGODB_URI')
+if not MONGODB_URI:
+    print("❌ MONGODB_URI not found in .env")
+    sys.exit(1)
+
+try:
+    from pymongo import MongoClient, ReplaceOne
+    print("✅ pymongo imported")
+except ImportError:
+    print("❌ pymongo not installed. Run: pip install pymongo dnspython")
+    sys.exit(1)
+
+# ── Connect to MongoDB ────────────────────────
+print(f"\nConnecting to MongoDB Atlas...")
+client = MongoClient(MONGODB_URI)
+db = client['gazadb']
+schol_col   = db['scholarships']
+know_col    = db['knowledges']
+
+# Test connection
+client.admin.command('ping')
+print("✅ Connected to MongoDB Atlas\n")
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 KB   = os.path.join(BASE, 'knowledge_base')
-DATA = os.path.join(BASE, 'data')
-os.makedirs(DATA, exist_ok=True)
 
-# ── Country → flag emoji map ──────────────────
+# ── Country → flag emoji ──────────────────────
 FLAGS = {
     'usa': '🇺🇸', 'united states': '🇺🇸', 'uk': '🇬🇧', 'united kingdom': '🇬🇧',
     'ireland': '🇮🇪', 'germany': '🇩🇪', 'france': '🇫🇷', 'turkey': '🇹🇷',
@@ -24,22 +63,16 @@ FLAGS = {
     'canada': '🇨🇦', 'australia': '🇦🇺', 'new zealand': '🇳🇿', 'norway': '🇳🇴',
     'sweden': '🇸🇪', 'finland': '🇫🇮', 'denmark': '🇩🇰', 'netherlands': '🇳🇱',
     'belgium': '🇧🇪', 'switzerland': '🇨🇭', 'austria': '🇦🇹', 'italy': '🇮🇹',
-    'spain': '🇪🇸', 'portugal': '🇵🇹', 'poland': '🇵🇱', 'czech republic': '🇨🇿',
-    'czechia': '🇨🇿', 'slovakia': '🇸🇰', 'romania': '🇷🇴', 'bulgaria': '🇧🇬',
-    'greece': '🇬🇷', 'cyprus': '🇨🇾', 'malta': '🇲🇹', 'croatia': '🇭🇷',
-    'serbia': '🇷🇸', 'ukraine': '🇺🇦', 'egypt': '🇪🇬', 'jordan': '🇯🇴',
-    'lebanon': '🇱🇧', 'morocco': '🇲🇦', 'tunisia': '🇹🇳', 'algeria': '🇩🇿',
-    'libya': '🇱🇾', 'sudan': '🇸🇩', 'qatar': '🇶🇦', 'kuwait': '🇰🇼',
-    'saudi arabia': '🇸🇦', 'uae': '🇦🇪', 'united arab emirates': '🇦🇪',
-    'bahrain': '🇧🇭', 'oman': '🇴🇲', 'yemen': '🇾🇪', 'iraq': '🇮🇶',
-    'iran': '🇮🇷', 'pakistan': '🇵🇰', 'india': '🇮🇳', 'bangladesh': '🇧🇩',
-    'indonesia': '🇮🇩', 'thailand': '🇹🇭', 'vietnam': '🇻🇳', 'philippines': '🇵🇭',
-    'singapore': '🇸🇬', 'taiwan': '🇹🇼', 'brazil': '🇧🇷', 'argentina': '🇦🇷',
-    'mexico': '🇲🇽', 'colombia': '🇨🇴', 'chile': '🇨🇱', 'peru': '🇵🇪',
-    'south africa': '🇿🇦', 'nigeria': '🇳🇬', 'kenya': '🇰🇪', 'ethiopia': '🇪🇹',
-    'ghana': '🇬🇭', 'tanzania': '🇹🇿', 'uganda': '🇺🇬', 'senegal': '🇸🇳',
-    'multiple': '🌍', 'global': '🌍', 'various': '🌍', 'international': '🌍',
-    'europe': '🇪🇺', 'european': '🇪🇺',
+    'spain': '🇪🇸', 'portugal': '🇵🇹', 'poland': '🇵🇱', 'czech': '🇨🇿',
+    'romania': '🇷🇴', 'bulgaria': '🇧🇬', 'greece': '🇬🇷', 'croatia': '🇭🇷',
+    'egypt': '🇪🇬', 'jordan': '🇯🇴', 'lebanon': '🇱🇧', 'morocco': '🇲🇦',
+    'tunisia': '🇹🇳', 'qatar': '🇶🇦', 'kuwait': '🇰🇼', 'saudi': '🇸🇦',
+    'uae': '🇦🇪', 'united arab': '🇦🇪', 'bahrain': '🇧🇭', 'oman': '🇴🇲',
+    'pakistan': '🇵🇰', 'india': '🇮🇳', 'bangladesh': '🇧🇩', 'indonesia': '🇮🇩',
+    'thailand': '🇹🇭', 'vietnam': '🇻🇳', 'philippines': '🇵🇭', 'singapore': '🇸🇬',
+    'taiwan': '🇹🇼', 'brazil': '🇧🇷', 'south africa': '🇿🇦', 'nigeria': '🇳🇬',
+    'kenya': '🇰🇪', 'multiple': '🌍', 'global': '🌍', 'various': '🌍',
+    'international': '🌍', 'europe': '🇪🇺', 'european': '🇪🇺',
 }
 
 def get_flag(country):
@@ -53,10 +86,7 @@ def slug(name):
     return re.sub(r'[^a-z0-9-]', '', re.sub(r'\s+', '-', (name or '').lower()))[:60]
 
 def parse_funding(coverage):
-    c = (coverage or '').lower()
-    if 'partial' in c or 'tuition only' in c:
-        return 'partial'
-    return 'full'
+    return 'partial' if 'partial' in (coverage or '').lower() else 'full'
 
 def parse_english(notes, name):
     text = ((notes or '') + ' ' + (name or '')).lower()
@@ -72,47 +102,46 @@ def parse_english(notes, name):
 
 def parse_visa(country, relevance):
     c = (country or '').lower()
-    r = (relevance or '').lower()
-    if any(x in c for x in ['turkey', 'türkiye', 'jordan', 'malaysia', 'pakistan', 'egypt', 'morocco', 'qatar', 'kuwait', 'uae', 'saudi']):
+    if any(x in c for x in ['turkey','türkiye','jordan','malaysia','pakistan','egypt','morocco','qatar','kuwait','uae','saudi']):
         return 'high'
-    if any(x in c for x in ['hungary', 'germany', 'ireland', 'france', 'netherlands', 'china', 'russia', 'indonesia']):
-        return 'moderate'
-    if any(x in c for x in ['usa', 'united states', 'uk', 'united kingdom', 'australia', 'canada']):
+    if any(x in c for x in ['usa','united states','uk','united kingdom','australia','canada']):
         return 'low'
-    if 'very high' in r or 'high' in r:
-        return 'moderate'
     return 'moderate'
 
 def parse_level(degree):
     d = (degree or '').lower()
     levels = []
-    if any(x in d for x in ["bachelor", "undergrad", "undergraduate", "bsc", "ba "]):
+    if any(x in d for x in ['bachelor','undergrad','bsc','ba ']):
         levels.append('undergraduate')
-    if any(x in d for x in ["master", "graduate", "msc", "ma ", "postgrad", "taught"]):
+    if any(x in d for x in ['master','msc','ma ','postgrad','taught','graduate']):
         levels.append('graduate')
-    if any(x in d for x in ["phd", "doctoral", "doctorate", "research"]):
+    if any(x in d for x in ['phd','doctoral','doctorate','research']):
         levels.append('phd')
-    if any(x in d for x in ["all", "any", "various", "multiple"]):
-        levels = ['undergraduate', 'graduate', 'phd']
+    if any(x in d for x in ['all','any','various','multiple']):
+        levels = ['undergraduate','graduate','phd']
     return levels if levels else ['graduate']
 
 def parse_fields(best_for, notes):
     text = ((best_for or '') + ' ' + (notes or '')).lower()
-    if any(x in text for x in ['engineer', 'stem', 'science', 'technology', 'math', 'comput']):
-        if any(x in text for x in ['medicine', 'medical', 'health']):
-            return ['engineering', 'science', 'it', 'medicine']
-        return ['engineering', 'science', 'it']
-    if any(x in text for x in ['medicine', 'medical', 'health', 'nursing', 'pharma']):
-        return ['medicine', 'health']
-    if any(x in text for x in ['humanities', 'social', 'arts', 'law', 'political']):
-        return ['humanities', 'social']
+    if any(x in text for x in ['engineer','stem','science','technology','math','comput']):
+        if any(x in text for x in ['medicine','medical','health']):
+            return ['engineering','science','it','medicine']
+        return ['engineering','science','it']
+    if any(x in text for x in ['medicine','medical','health']):
+        return ['medicine','health']
+    if any(x in text for x in ['humanities','social','arts','law']):
+        return ['humanities','social']
     return ['all']
 
-def parse_gaza_specific(relevance, target, name):
+def parse_gaza(relevance, target, name):
     text = ((relevance or '') + ' ' + (target or '') + ' ' + (name or '')).lower()
     return 'very high' in text or 'gaza' in text or 'palestin' in text
 
-# ── 1. IMPORT CSV → scholarships.json ────────
+# ── 1. IMPORT CSV → MongoDB ───────────────────
+print("=" * 50)
+print("STEP 1: Importing scholarships from CSV")
+print("=" * 50)
+
 csv_path = None
 for f in os.listdir(KB):
     if 'dataset_100' in f.lower() and f.endswith('.csv'):
@@ -121,126 +150,127 @@ for f in os.listdir(KB):
 
 if not csv_path:
     print("❌ CSV file not found in knowledge_base/")
-    exit(1)
+else:
+    scholarships = []
+    with open(csv_path, 'r', encoding='utf-8-sig') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            name     = (row.get('Opportunity_Name') or '').strip()
+            country  = (row.get('Country_or_Region') or '').strip()
+            degree   = (row.get('Degree_Level') or '').strip()
+            coverage = (row.get('Coverage_Type') or '').strip()
+            target   = (row.get('Target_Group') or '').strip()
+            relevance= (row.get('Gaza_or_Palestinian_Relevance') or '').strip()
+            best_for = (row.get('Best_For') or '').strip()
+            url      = (row.get('Source_URL') or '').strip()
+            verified = (row.get('Verification_Status') or '').strip()
+            notes    = (row.get('Notes') or '').strip()
+            provider = (row.get('Provider') or '').strip()
 
-scholarships = []
-with open(csv_path, 'r', encoding='utf-8-sig') as f:
-    reader = csv.DictReader(f)
-    for row in reader:
-        name    = (row.get('Opportunity_Name') or '').strip()
-        country = (row.get('Country_or_Region') or '').strip()
-        degree  = (row.get('Degree_Level') or '').strip()
-        coverage= (row.get('Coverage_Type') or '').strip()
-        target  = (row.get('Target_Group') or '').strip()
-        relevance=(row.get('Gaza_or_Palestinian_Relevance') or '').strip()
-        best_for= (row.get('Best_For') or '').strip()
-        url     = (row.get('Source_URL') or '').strip()
-        verified= (row.get('Verification_Status') or '').strip()
-        notes   = (row.get('Notes') or '').strip()
-        provider= (row.get('Provider') or '').strip()
+            if not name:
+                continue
 
-        if not name:
-            continue
+            eng_req, eng_min, waiver = parse_english(notes, name)
 
-        eng_req, eng_min, waiver = parse_english(notes, name)
-        levels  = parse_level(degree)
-        fields  = parse_fields(best_for, notes)
-        funding = parse_funding(coverage)
-        visa    = parse_visa(country, relevance)
-        gaza_sp = parse_gaza_specific(relevance, target, name)
+            s = {
+                'id':                slug(name),
+                'name':              name,
+                'country':           country,
+                'flag':              get_flag(country),
+                'provider':          provider,
+                'funding':           parse_funding(coverage),
+                'covers':            coverage,
+                'fields':            parse_fields(best_for, notes),
+                'level':             parse_level(degree),
+                'english_required':  eng_req,
+                'english_min':       eng_min,
+                'ielts_waiver':      waiver,
+                'visa_feasibility':  parse_visa(country, relevance),
+                'deadline':          'Check website',
+                'gpa_min':           70,
+                'link':              url,
+                'required_documents':['Passport','Academic transcripts','Personal statement'],
+                'notes':             notes or best_for,
+                'visa_notes':        '',
+                'gaza_specific':     parse_gaza(relevance, target, name),
+                'verified':          'verified' in verified.lower(),
+                'last_updated':      datetime.now().strftime('%Y-%m-%d'),
+                'target_group':      target,
+                'degree_level':      degree,
+            }
+            scholarships.append(s)
 
-        s = {
-            'id':                slug(name),
-            'name':              name,
-            'country':           country,
-            'flag':              get_flag(country),
-            'provider':          provider,
-            'funding':           funding,
-            'covers':            coverage,
-            'fields':            fields,
-            'level':             levels,
-            'english_required':  eng_req,
-            'english_min':       eng_min,
-            'ielts_waiver':      waiver,
-            'visa_feasibility':  visa,
-            'deadline':          'Check website',
-            'gpa_min':           70,
-            'link':              url,
-            'required_documents':['Passport', 'Academic transcripts', 'Personal statement'],
-            'notes':             notes or best_for,
-            'visa_notes':        '',
-            'gaza_specific':     gaza_sp,
-            'verified':          'verified' in verified.lower(),
-            'last_updated':      '2026-05-16',
-            'target_group':      target,
-            'degree_level':      degree,
-        }
-        scholarships.append(s)
+    # Clear existing and insert all
+    schol_col.delete_many({})
+    if scholarships:
+        schol_col.insert_many(scholarships)
+    print(f"✅ Imported {len(scholarships)} scholarships → MongoDB Atlas (scholarships collection)")
 
-out_path = os.path.join(DATA, 'scholarships.json')
-with open(out_path, 'w', encoding='utf-8') as f:
-    json.dump(scholarships, f, indent=2, ensure_ascii=False)
+    # Also save to JSON as backup
+    os.makedirs(os.path.join(BASE, 'data'), exist_ok=True)
+    with open(os.path.join(BASE, 'data', 'scholarships.json'), 'w') as f:
+        json.dump(scholarships, f, indent=2, ensure_ascii=False)
+    print(f"✅ Backup saved → data/scholarships.json")
 
-print(f"✅ Imported {len(scholarships)} scholarships → data/scholarships.json")
-
-# ── 2. IMPORT KNOWLEDGE FILES → knowledge.json ─
-knowledge_files = [
-    'Scholarship_Essay_Templates_War_Affected_Students (1).pdf',
-    'Scholarship_Application_Playbook (1).txt',
-    'Student_Profile_Strategies (1).txt',
-    'Gaza_Scholarship_Strategy_Engine (2).pdf',
-    'Scholarship_Matching_Rules (1).pdf',
-    'Displacement_Documentation_Guide (1).txt',
-]
+# ── 2. IMPORT KNOWLEDGE → MongoDB ────────────
+print("\n" + "=" * 50)
+print("STEP 2: Importing knowledge documents")
+print("=" * 50)
 
 knowledge_texts = []
 
-for fname in knowledge_files:
+# Text files
+txt_files = [
+    'Scholarship_Application_Playbook (1).txt',
+    'Student_Profile_Strategies (1).txt',
+    'Displacement_Documentation_Guide (1).txt',
+]
+for fname in txt_files:
     fpath = os.path.join(KB, fname)
     if not os.path.exists(fpath):
         print(f"⚠️  Skipping {fname} — not found")
         continue
+    with open(fpath, 'r', encoding='utf-8', errors='ignore') as f:
+        text = f.read().strip()
+    if text:
+        knowledge_texts.append({'source': fname, 'content': text})
+        print(f"✅ Read: {fname} ({len(text)} chars)")
 
-    ext = fname.lower().split('.')[-1]
-
-    if ext == 'txt':
-        with open(fpath, 'r', encoding='utf-8', errors='ignore') as f:
-            text = f.read().strip()
-        if text:
-            knowledge_texts.append({'source': fname, 'content': text})
-            print(f"✅ Read text: {fname} ({len(text)} chars)")
-
-    elif ext == 'pdf':
-        # Try to extract with pdfplumber or pypdf
+# PDF files
+pdf_files = [
+    'Scholarship_Essay_Templates_War_Affected_Students (1).pdf',
+    'Gaza_Scholarship_Strategy_Engine (2).pdf',
+    'Scholarship_Matching_Rules (1).pdf',
+]
+try:
+    import pdfplumber
+    for fname in pdf_files:
+        fpath = os.path.join(KB, fname)
+        if not os.path.exists(fpath):
+            print(f"⚠️  Skipping {fname} — not found")
+            continue
         try:
-            import pdfplumber
             with pdfplumber.open(fpath) as pdf:
                 text = '\n'.join(p.extract_text() or '' for p in pdf.pages).strip()
             if text:
                 knowledge_texts.append({'source': fname, 'content': text})
                 print(f"✅ Read PDF: {fname} ({len(text)} chars)")
-        except ImportError:
-            try:
-                from pypdf import PdfReader
-                reader = PdfReader(fpath)
-                text = '\n'.join(p.extract_text() or '' for p in reader.pages).strip()
-                if text:
-                    knowledge_texts.append({'source': fname, 'content': text})
-                    print(f"✅ Read PDF: {fname} ({len(text)} chars)")
-            except ImportError:
-                print(f"⚠️  Can't read PDF {fname} — install pdfplumber: pip install pdfplumber --break-system-packages")
+        except Exception as e:
+            print(f"⚠️  Could not read {fname}: {e}")
+except ImportError:
+    print("⚠️  pdfplumber not installed — run: pip install pdfplumber")
 
-# Also read the xlsx knowledge files
-xlsx_knowledge = [
+# Excel knowledge files
+xlsx_files = [
     'Palestinian_Friendly_Universities (1).xlsx',
     'Need_Met_Universities_International (1).xlsx',
     'scholarship_probability_calculator (1).xlsx',
     'gaza_scholarship_gpt_build_kit (1).xlsx',
+    '100_simulated_student_profiles (1).xlsx',
 ]
-
 try:
     import openpyxl
-    for fname in xlsx_knowledge:
+    for fname in xlsx_files:
         fpath = os.path.join(KB, fname)
         if not os.path.exists(fpath):
             continue
@@ -252,21 +282,35 @@ try:
                 for row in ws.iter_rows(values_only=True):
                     if any(cell is not None for cell in row):
                         rows_text.append('\t'.join(str(c) if c is not None else '' for c in row))
-            text = f"[Sheet: {fname}]\n" + '\n'.join(rows_text[:200])  # limit rows
+            text = f"[{fname}]\n" + '\n'.join(rows_text[:300])
             if text.strip():
                 knowledge_texts.append({'source': fname, 'content': text})
                 print(f"✅ Read Excel: {fname}")
         except Exception as e:
             print(f"⚠️  Could not read {fname}: {e}")
 except ImportError:
-    print("⚠️  openpyxl not installed — skipping Excel knowledge files")
-    print("    Run: pip install openpyxl --break-system-packages")
+    print("⚠️  openpyxl not installed — run: pip install openpyxl")
 
-# Save knowledge.json
-knowledge_path = os.path.join(DATA, 'knowledge.json')
-with open(knowledge_path, 'w', encoding='utf-8') as f:
+# Save to MongoDB
+know_col.delete_many({})
+if knowledge_texts:
+    know_col.insert_many(knowledge_texts)
+print(f"\n✅ Saved {len(knowledge_texts)} knowledge documents → MongoDB Atlas (knowledges collection)")
+
+# Also save JSON backup
+with open(os.path.join(BASE, 'data', 'knowledge.json'), 'w') as f:
     json.dump(knowledge_texts, f, indent=2, ensure_ascii=False)
+print(f"✅ Backup saved → data/knowledge.json")
 
-print(f"\n✅ Saved {len(knowledge_texts)} knowledge documents → data/knowledge.json")
-print(f"\n🎉 Done! Restart server with: npm run dev")
-print(f"   Then check localhost:3000/api/health to verify scholarship count")
+# ── Summary ───────────────────────────────────
+print("\n" + "=" * 50)
+schol_count = schol_col.count_documents({})
+know_count  = know_col.count_documents({})
+print(f"🎉 Import complete!")
+print(f"   Scholarships in MongoDB:   {schol_count}")
+print(f"   Knowledge docs in MongoDB: {know_count}")
+print(f"\n   Restart server: npm run dev")
+print(f"   Check health:   curl localhost:3000/api/health")
+print("=" * 50)
+
+client.close()

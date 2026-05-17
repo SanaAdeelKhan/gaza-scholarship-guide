@@ -8,19 +8,58 @@ const XLSX = require('xlsx');
 const mammoth = require('mammoth');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const fetch = require('node-fetch');
+const mongoose = require('mongoose');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const DATA_FILE      = path.join(__dirname, 'data', 'scholarships.json');
-const KNOWLEDGE_FILE = path.join(__dirname, 'data', 'knowledge.json');
-const UPLOAD_DIR     = path.join(__dirname, 'uploads');
+const UPLOAD_DIR = path.join(__dirname, 'uploads');
 
 if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
-if (!fs.existsSync(path.dirname(DATA_FILE))) fs.mkdirSync(path.dirname(DATA_FILE), { recursive: true });
 
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+// ── MongoDB Connection ────────────────────────
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('   MongoDB:        ✅ Connected to Atlas'))
+  .catch(e => console.error('   MongoDB:        ❌ Connection failed:', e.message));
+
+// ── MongoDB Schemas ───────────────────────────
+const scholarshipSchema = new mongoose.Schema({
+  id:                 String,
+  name:               { type: String, required: true },
+  country:            String,
+  flag:               String,
+  provider:           String,
+  funding:            { type: String, enum: ['full', 'partial'], default: 'full' },
+  covers:             String,
+  fields:             [String],
+  level:              [String],
+  english_required:   Boolean,
+  english_min:        String,
+  ielts_waiver:       Boolean,
+  visa_feasibility:   { type: String, enum: ['high', 'moderate', 'low'], default: 'moderate' },
+  deadline:           String,
+  gpa_min:            Number,
+  link:               String,
+  required_documents: [String],
+  notes:              String,
+  visa_notes:         String,
+  gaza_specific:      Boolean,
+  verified:           Boolean,
+  last_updated:       String,
+  target_group:       String,
+  degree_level:       String,
+}, { timestamps: true });
+
+const knowledgeSchema = new mongoose.Schema({
+  source:  String,
+  content: String,
+}, { timestamps: true });
+
+const Scholarship = mongoose.model('Scholarship', scholarshipSchema);
+const Knowledge   = mongoose.model('Knowledge', knowledgeSchema);
 
 // ── Multer ────────────────────────────────────
 const storage = multer.diskStorage({
@@ -40,7 +79,7 @@ const upload = multer({
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
 async function callGemini(parts) {
-  const MODELS = ['gemini-2.5-flash-preview-05-20','gemini-2.0-flash','gemini-2.0-flash'];
+  const MODELS = ['gemini-2.5-flash-preview-05-20','gemini-2.0-flash','gemini-1.5-flash'];
   let lastError;
   for (const modelName of MODELS) {
     try {
@@ -74,18 +113,22 @@ async function extractWithGroq(text, filename) {
   return JSON.parse(reply);
 }
 
-// ── Data helpers ──────────────────────────────
-function readScholarships() {
-  try { return JSON.parse(fs.readFileSync(DATA_FILE, 'utf8')); } catch(e) { return []; }
-}
-function writeScholarships(data) {
-  fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), 'utf8');
-}
-function readKnowledge() {
-  try { return JSON.parse(fs.readFileSync(KNOWLEDGE_FILE, 'utf8')); } catch(e) { return []; }
-}
-function writeKnowledge(data) {
-  fs.writeFileSync(KNOWLEDGE_FILE, JSON.stringify(data, null, 2), 'utf8');
+async function chatWithGroq(messages, systemPrompt) {
+  if (!process.env.GROQ_API_KEY) throw new Error('GROQ_API_KEY not set');
+  const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${process.env.GROQ_API_KEY}` },
+    body: JSON.stringify({
+      model: 'llama-3.3-70b-versatile', max_tokens: 1500,
+      messages: [
+        { role: 'system', content: systemPrompt.slice(0, 24000) },
+        ...messages.map(m => ({ role: m.role === 'assistant' ? 'assistant' : 'user', content: m.content }))
+      ]
+    })
+  });
+  const data = await r.json();
+  if (!r.ok) throw new Error(data.error?.message || 'Groq chat error');
+  return data.choices?.[0]?.message?.content || 'No response';
 }
 
 // ── Auth ──────────────────────────────────────
@@ -118,7 +161,7 @@ async function extractTextFromFile(filePath, originalName) {
   return text;
 }
 
-// ── Extraction prompt ─────────────────────────
+// ── Prompts ───────────────────────────────────
 const EXTRACTION_PROMPT = `You are a scholarship data extractor for the Gaza Scholarship Guide.
 
 Extract ALL scholarships from the content and return ONLY a valid JSON array — no markdown, no explanation.
@@ -145,12 +188,11 @@ Each scholarship must have these exact fields:
   "visa_notes": "visa tips",
   "gaza_specific": true/false,
   "verified": false,
-  "last_updated": "2026-05-16"
+  "last_updated": "2026-05-17"
 }
 
 Return [] if no scholarships found. Start with [ end with ].`;
 
-// ── Mark's v10 system prompt ──────────────────
 const MARK_SYSTEM_PROMPT = `
 🌍 GAZA SCHOLARSHIP GUIDE — SYSTEM v10 (ADAPTIVE EXECUTION ENGINE)
 
@@ -165,7 +207,7 @@ MODE ARCHITECTURE — detect user state and switch automatically:
 
 MODE 1 DISCOVERY: Collect minimum viable data WITHOUT overwhelm.
 Ask MAX 2 questions per turn.
-Collect: Major, Budget, English/test status, GPA, Location (inside Gaza/outside), Passport/travel ability, Urgency.
+Collect: Major, Budget, English/test status, GPA, Location, Passport/travel ability, Urgency.
 If missing → assume + label clearly. EXIT when 3+ key variables known.
 
 MODE 2 MATCHING: Apply filters in order:
@@ -207,14 +249,17 @@ This AI IS: a decision engine, an execution coach, a realistic pathway builder.
 
 // ── Routes ────────────────────────────────────
 
-app.get('/api/health', (req, res) => {
+app.get('/api/health', async (req, res) => {
+  const scholCount = await Scholarship.countDocuments();
+  const knowCount  = await Knowledge.countDocuments();
   res.json({
     status: 'ok',
     gemini: !!process.env.GEMINI_API_KEY,
-    groq: !!process.env.GROQ_API_KEY,
-    scholarships: readScholarships().length,
-    knowledge_docs: readKnowledge().length,
-    version: '2.2.0'
+    groq:   !!process.env.GROQ_API_KEY,
+    mongodb: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
+    scholarships:   scholCount,
+    knowledge_docs: knowCount,
+    version: '3.0.0'
   });
 });
 
@@ -231,27 +276,72 @@ app.post('/api/admin/login', (req, res) => {
   }
 });
 
-// ── Public (student app reads these) ─────────
-app.get('/api/scholarships', (req, res) => res.json(readScholarships()));
-
-// ── Admin ─────────────────────────────────────
-app.get('/api/admin/scholarships', authMiddleware, (req, res) => res.json(readScholarships()));
-app.get('/api/admin/knowledge',    authMiddleware, (req, res) => res.json(readKnowledge()));
-
-app.post('/api/admin/scholarships', authMiddleware, (req, res) => {
+// ── Public: student app ───────────────────────
+app.get('/api/scholarships', async (req, res) => {
   try {
-    if (!Array.isArray(req.body)) return res.status(400).json({ error: 'Expected array' });
-    writeScholarships(req.body);
-    res.json({ success: true, count: req.body.length });
-  } catch(e) { res.status(500).json({ error: 'Failed to save' }); }
+    const schols = await Scholarship.find({}).lean();
+    res.json(schols);
+  } catch(e) { res.status(500).json({ error: e.message }); }
 });
 
-app.post('/api/admin/knowledge', authMiddleware, (req, res) => {
+// ── Admin: scholarships ───────────────────────
+app.get('/api/admin/scholarships', authMiddleware, async (req, res) => {
+  try {
+    const schols = await Scholarship.find({}).lean();
+    res.json(schols);
+  } catch(e) { res.status(500).json({ error: e.message }); }
+});
+
+app.post('/api/admin/scholarships', authMiddleware, async (req, res) => {
   try {
     if (!Array.isArray(req.body)) return res.status(400).json({ error: 'Expected array' });
-    writeKnowledge(req.body);
+    // Replace all scholarships
+    await Scholarship.deleteMany({});
+    if (req.body.length > 0) await Scholarship.insertMany(req.body);
     res.json({ success: true, count: req.body.length });
-  } catch(e) { res.status(500).json({ error: 'Failed to save knowledge' }); }
+  } catch(e) { res.status(500).json({ error: e.message }); }
+});
+
+// Add single scholarship
+app.post('/api/admin/scholarship', authMiddleware, async (req, res) => {
+  try {
+    const s = new Scholarship(req.body);
+    await s.save();
+    res.json({ success: true, id: s._id });
+  } catch(e) { res.status(500).json({ error: e.message }); }
+});
+
+// Update single scholarship
+app.put('/api/admin/scholarship/:id', authMiddleware, async (req, res) => {
+  try {
+    await Scholarship.findByIdAndUpdate(req.params.id, req.body);
+    res.json({ success: true });
+  } catch(e) { res.status(500).json({ error: e.message }); }
+});
+
+// Delete single scholarship
+app.delete('/api/admin/scholarship/:id', authMiddleware, async (req, res) => {
+  try {
+    await Scholarship.findByIdAndDelete(req.params.id);
+    res.json({ success: true });
+  } catch(e) { res.status(500).json({ error: e.message }); }
+});
+
+// ── Admin: knowledge ──────────────────────────
+app.get('/api/admin/knowledge', authMiddleware, async (req, res) => {
+  try {
+    const docs = await Knowledge.find({}).lean();
+    res.json(docs);
+  } catch(e) { res.status(500).json({ error: e.message }); }
+});
+
+app.post('/api/admin/knowledge', authMiddleware, async (req, res) => {
+  try {
+    if (!Array.isArray(req.body)) return res.status(400).json({ error: 'Expected array' });
+    await Knowledge.deleteMany({});
+    if (req.body.length > 0) await Knowledge.insertMany(req.body);
+    res.json({ success: true, count: req.body.length });
+  } catch(e) { res.status(500).json({ error: e.message }); }
 });
 
 // ── Extract files ─────────────────────────────
@@ -331,15 +421,16 @@ app.post('/api/admin/extract-text', authMiddleware, async (req, res) => {
 });
 
 // ── AI Chat ───────────────────────────────────
-// Reads BOTH scholarships.json AND knowledge.json → AI knows everything admin uploaded
 app.post('/api/chat', async (req, res) => {
   const { messages, systemPrompt } = req.body;
-  if (!process.env.GEMINI_API_KEY) return res.status(500).json({ error: 'GEMINI_API_KEY not set' });
+  if (!process.env.GEMINI_API_KEY && !process.env.GROQ_API_KEY) {
+    return res.status(500).json({ error: 'No AI API key set' });
+  }
 
-  const scholarships = readScholarships();
-  const knowledge    = readKnowledge();
+  // Read from MongoDB
+  const scholarships = await Scholarship.find({}).lean();
+  const knowledge    = await Knowledge.find({}).lean();
 
-  // All scholarships injected so AI can recommend them accurately
   const scholSection = scholarships.length > 0
     ? `\n\n═══ LIVE SCHOLARSHIP DATABASE (${scholarships.length} scholarships) ═══\n` +
       scholarships.map(s =>
@@ -347,35 +438,25 @@ app.post('/api/chat', async (req, res) => {
         ` | English: ${s.english_required?(s.english_min||'Required')+(s.ielts_waiver?' (waiver ok)':''):'NOT REQUIRED'}` +
         ` | Visa: ${s.visa_feasibility} | Deadline: ${s.deadline}` +
         ` | Fields: ${(s.fields||['all']).join(',')} | Level: ${(s.level||[]).join(',')}` +
-        ` | Docs needed: ${(s.required_documents||[]).join('; ')}` +
+        ` | Docs: ${(s.required_documents||[]).join('; ')}` +
         ` | Notes: ${s.notes||''} | Link: ${s.link||''}`
       ).join('\n')
-    : '\n\nNo scholarships in database yet — admin needs to upload data.';
+    : '\n\nNo scholarships in database yet.';
 
-  // Knowledge base: essay templates, strategy guides, playbook etc.
   const knowledgeSection = knowledge.length > 0
-    ? '\n\n═══ KNOWLEDGE BASE (admin uploaded) ═══\n' +
+    ? '\n\n═══ KNOWLEDGE BASE ═══\n' +
       knowledge.map(k => `\n--- ${k.source} ---\n${k.content}`).join('\n')
     : '';
 
-  // Student profile sent from app.html
   const profileSection = systemPrompt
-    ? 'STUDENT PROFILE IS ALREADY COMPLETE — BEGIN IN MODE 2 MATCHING, NOT MODE 1 DISCOVERY.\n' +
-      'DO NOT ASK FOR ANY INFORMATION LISTED BELOW. USE IT DIRECTLY.\n\n' +
-      systemPrompt +
-      '\n\nThe profile above is complete and verified. Skip all discovery questions. ' +
-      'Immediately recommend the top 3-5 scholarships from the database that match this student.'
+    ? 'STUDENT PROFILE IS COMPLETE — GO DIRECTLY TO MODE 2 MATCHING.\nDO NOT ASK FOR INFO ALREADY PROVIDED BELOW.\n\n' + systemPrompt
     : '';
 
-  // Scholarships get full context, knowledge gets trimmed to fit Groq's window
-  // Priority: profile > Mark's prompt > ALL scholarships > knowledge (trimmed)
   const baseSystem = profileSection + '\n\n' + MARK_SYSTEM_PROMPT + scholSection;
-  const remainingChars = 28000 - baseSystem.length;
-  const trimmedKnowledge = remainingChars > 500
-    ? knowledgeSection.slice(0, remainingChars)
-    : '';
-  const fullSystem = baseSystem + trimmedKnowledge;
+  const remaining  = 28000 - baseSystem.length;
+  const fullSystem = baseSystem + (remaining > 500 ? knowledgeSection.slice(0, remaining) : '');
 
+  // Try Gemini first, fallback to Groq
   try {
     const model = genAI.getGenerativeModel({
       model: 'gemini-2.0-flash',
@@ -389,26 +470,14 @@ app.post('/api/chat', async (req, res) => {
     const result = await chat.sendMessage(messages[messages.length-1].content);
     res.json({ reply: result.response.text() });
   } catch(e) {
-    console.error('Chat error:', e.message);
+    console.error('Gemini chat error:', e.message);
+    // Fallback to Groq
     if (process.env.GROQ_API_KEY) {
       try {
-        console.log('  Falling back to Groq for chat...');
-        const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${process.env.GROQ_API_KEY}` },
-          body: JSON.stringify({
-            model: 'llama-3.3-70b-versatile',
-            max_tokens: 1500,
-            messages: [
-              { role: 'system', content: fullSystem.slice(0, 24000) },
-              ...messages.map(m => ({ role: m.role === 'assistant' ? 'assistant' : 'user', content: m.content }))
-            ]
-          })
-        });
-        const data = await r.json();
-        if (!r.ok) throw new Error(data.error?.message || 'Groq error');
-        console.log('  Used Groq fallback successfully');
-        return res.json({ reply: data.choices?.[0]?.message?.content || 'No response' });
+        console.log('  Falling back to Groq...');
+        const reply = await chatWithGroq(messages, fullSystem);
+        console.log('  Groq fallback successful');
+        return res.json({ reply });
       } catch(groqErr) {
         console.error('Groq fallback failed:', groqErr.message);
       }
@@ -423,14 +492,16 @@ app.get('/app',   (req, res) => res.sendFile(path.join(__dirname, 'public', 'app
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));
 
 // ── Start ─────────────────────────────────────
-app.listen(PORT, () => {
-  console.log('\n🌿 Gaza Scholarship Guide v2.2');
+app.listen(PORT, async () => {
+  const scholCount = await Scholarship.countDocuments().catch(() => 0);
+  const knowCount  = await Knowledge.countDocuments().catch(() => 0);
+  console.log('\n🌿 Gaza Scholarship Guide v3.0');
   console.log(`   http://localhost:${PORT}/app   — Student app`);
   console.log(`   http://localhost:${PORT}/admin — Admin panel`);
   console.log(`   Gemini:         ${process.env.GEMINI_API_KEY ? '✅' : '❌ MISSING'}`);
   console.log(`   Groq:           ${process.env.GROQ_API_KEY   ? '✅' : '⚠️  not set'}`);
-  console.log(`   Scholarships:   ${readScholarships().length}`);
-  console.log(`   Knowledge docs: ${readKnowledge().length}`);
-  if (readScholarships().length === 0) console.log(`\n   ⚠️  No scholarships! Run: python3 import_marks_data.py`);
+  console.log(`   Scholarships:   ${scholCount}`);
+  console.log(`   Knowledge docs: ${knowCount}`);
+  if (scholCount === 0) console.log(`\n   ⚠️  No scholarships! Run: python3 import_marks_data.py`);
   console.log('');
 });
