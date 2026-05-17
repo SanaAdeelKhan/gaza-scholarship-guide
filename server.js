@@ -79,7 +79,7 @@ const upload = multer({
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
 async function callGemini(parts) {
-  const MODELS = ['gemini-2.5-flash-preview-05-20','gemini-2.0-flash','gemini-1.5-flash'];
+  const MODELS = ['gemini-2.5-flash-preview-05-20','gemini-2.5-flash','gemini-1.5-flash'];
   let lastError;
   for (const modelName of MODELS) {
     try {
@@ -459,7 +459,7 @@ app.post('/api/chat', async (req, res) => {
   // Try Gemini first, fallback to Groq
   try {
     const model = genAI.getGenerativeModel({
-      model: 'gemini-2.0-flash',
+      model: 'gemini-2.5-flash',
       systemInstruction: fullSystem
     });
     const history = messages.slice(0,-1).map(m => ({
